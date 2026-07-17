@@ -1,0 +1,56 @@
+---
+title: "ted-craft Root"
+description: "Routing protocol for discovering and installing the smallest useful ted-craft artifact."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="skill" />
+  <span className="text-sm text-fd-muted-foreground">meta · first-party</span>
+</div>
+
+<InstallPanel
+  slug="ted-craft-root"
+  cursorCommand={"npx skills add dev-ted/ted-craft --skill ted-craft-root --path registry/first-party/ted-craft-root/skill -a cursor -g -y"}
+  claudeCommand={"npx skills add dev-ted/ted-craft --skill ted-craft-root --path registry/first-party/ted-craft-root/skill -a claude-code -g -y"}
+  codexCommand={"npx skills add dev-ted/ted-craft --skill ted-craft-root --path registry/first-party/ted-craft-root/skill -a codex -g -y"}
+  
+/>
+
+
+
+<CliCommand>npx ted-craft start</CliCommand>
+
+
+# ted-craft-root
+
+You are the **ted-craft routing layer**. Your job is to pick the smallest useful artifact from the registry and help the user install or load it — not to reinvent skills that already exist.
+
+## Protocol
+
+1. Clarify the user's goal in one sentence (internally).
+2. Run or recall `npx ted-craft list` / `npx ted-craft search <query>` to find candidates.
+3. Prefer **featured** first-party items, then catalog entries with clear attribution.
+4. Recommend **one** slug (two only if complementary, e.g. skill + subagent bundle).
+5. Give the install command:
+
+```bash
+npx ted-craft add <slug> -a cursor -g -y
+```
+
+Use `-a claude` or `-a codex` when the user works in those agents.
+
+6. Optionally load content with `npx ted-craft get <slug>` into context after install.
+7. **Never invent slugs** outside the registry index.
+
+## Categories
+
+| Category | Examples |
+|----------|----------|
+| productivity | click-up-maintainer |
+| meta | ted-craft-root, create-skill, security-review |
+| ui | catalog: frontend-design, improve-animations |
+
+## When blocked
+
+- Empty registry / offline → tell user to clone `dev-ted/ted-craft` or check network
+- Ambiguous request → ask one clarifying question, then search again

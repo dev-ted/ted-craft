@@ -1,0 +1,46 @@
+{
+  "name": "ted-craft",
+  "version": "0.1.0",
+  "description": "CLI for the ted-craft agent artifact marketplace",
+  "type": "module",
+  "bin": {
+    "ted-craft": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && node -e \"const fs=require('fs');const p='dist/cli.js';fs.writeFileSync(p,'#!/usr/bin/env node\\n'+fs.readFileSync(p,'utf8').replace(/^#!.*\\n/,''))\"",
+    "start": "tsx src/cli.ts",
+    "dev": "tsx src/cli.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "cursor",
+    "skills",
+    "claude",
+    "codex",
+    "agents"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-ted/ted-craft.git"
+  },
+  "homepage": "https://github.com/dev-ted/ted-craft",
+  "bugs": {
+    "url": "https://github.com/dev-ted/ted-craft/issues"
+  }
+}

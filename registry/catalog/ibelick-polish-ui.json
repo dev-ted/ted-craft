@@ -1,0 +1,24 @@
+{
+  "slug": "ibelick/polish-ui",
+  "kind": "skill",
+  "name": "Polish UI",
+  "description": "Detail-oriented UI polish — spacing, hierarchy, states, and finishing passes that raise interface quality.",
+  "category": "ui",
+  "tags": ["ui", "polish", "design"],
+  "attribution": {
+    "author": "ibelick",
+    "repo": "ibelick/ui-skills",
+    "skill": "polish-ui",
+    "license": "MIT",
+    "catalogUrl": "https://www.ui-skills.com/"
+  },
+  "source": {
+    "type": "catalog"
+  },
+  "install": {
+    "default": "npx skills add ibelick/ui-skills --skill polish-ui -g -y",
+    "cursor": "npx skills add ibelick/ui-skills --skill polish-ui -a cursor -g -y",
+    "claude": "npx skills add ibelick/ui-skills --skill polish-ui -a claude-code -g -y",
+    "codex": "npx skills add ibelick/ui-skills --skill polish-ui -a codex -g -y"
+  }
+}

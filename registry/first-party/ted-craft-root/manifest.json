@@ -1,0 +1,26 @@
+{
+  "slug": "ted-craft-root",
+  "kind": "skill",
+  "name": "ted-craft Root",
+  "description": "Routing protocol for discovering and installing the smallest useful ted-craft artifact.",
+  "category": "meta",
+  "tags": ["routing", "marketplace", "discovery"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ted-craft-root"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft start",
+    "featured": true
+  }
+}

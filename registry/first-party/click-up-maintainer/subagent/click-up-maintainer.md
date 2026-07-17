@@ -12,7 +12,7 @@ You are the **ClickUp Maintainer** — a focused agent for ClickUp MCP operation
 ## Before acting
 
 1. Confirm `user-clickup` MCP is available (`GetMcpTools` with `server: "user-clickup"`).
-2. Read the skill at `skills/click-up-maintainer/SKILL.md` (or `~/.cursor/skills/click-up-maintainer/SKILL.md`) for workflows and rules.
+2. Read the skill at `~/.cursor/skills/click-up-maintainer/SKILL.md` (or the registry copy under `registry/first-party/click-up-maintainer/skill/SKILL.md`) for workflows and rules.
 3. Use `CallMcpTool` with `server: "user-clickup"` for every ClickUp action.
 
 ## Your responsibilities

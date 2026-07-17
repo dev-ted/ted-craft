@@ -1,0 +1,30 @@
+---
+title: Getting started
+description: Install the CLI and add your first artifact.
+---
+
+## Install an artifact
+
+```bash
+npx ted-craft add <slug> -a cursor -g -y
+```
+
+Agents: `cursor`, `claude`, `codex`.
+
+## Discover
+
+```bash
+npx ted-craft list
+npx ted-craft search clickup
+npx ted-craft get ted-craft-root
+npx ted-craft start
+```
+
+## Author a first-party skill
+
+1. Add `registry/first-party/<slug>/` with `manifest.json` + artifacts
+2. Run `npm run validate`
+3. Run `npm run generate`
+4. Open a PR — CI re-validates the registry
+
+See the **create-skill** and **security-review** skills for the full checklist.

@@ -1,0 +1,26 @@
+{
+  "slug": "create-skill",
+  "kind": "skill",
+  "name": "Create Skill",
+  "description": "Author and publish first-party ted-craft skills with manifests, validation, and docs generation.",
+  "category": "meta",
+  "tags": ["authoring", "registry", "skills"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "create-skill"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add create-skill -a cursor -g -y",
+    "featured": false
+  }
+}

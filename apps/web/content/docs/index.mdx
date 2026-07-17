@@ -1,0 +1,27 @@
+---
+title: ted-craft
+description: Agent artifact marketplace — skills, subagents, rules, and hooks.
+---
+
+**ted-craft** is a registry + docs site + CLI for sharing agent artifacts.
+
+## Quick start
+
+<CliCommand>npx ted-craft start</CliCommand>
+
+Then install something useful:
+
+<CliCommand>npx ted-craft add click-up-maintainer -a cursor -g -y</CliCommand>
+
+## Explore
+
+- [Getting started](/docs/getting-started)
+- [Browse the registry](/browse)
+- Registry docs are generated from manifests under `/docs/registry`
+
+## Sources
+
+| Source | Meaning |
+|--------|---------|
+| **first-party** | Artifacts living in this repo under `registry/first-party/` |
+| **catalog** | Metadata-only entries with attribution + upstream install commands |

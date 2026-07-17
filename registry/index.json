@@ -1,0 +1,298 @@
+{
+  "generatedAt": "2026-07-17T09:47:10.896Z",
+  "items": [
+    {
+      "slug": "click-up-maintainer",
+      "kind": "bundle",
+      "name": "ClickUp Maintainer",
+      "description": "Create, update, search, and manage ClickUp tasks via MCP — skill plus focused subagent for bulk triage.",
+      "category": "productivity",
+      "tags": [
+        "clickup",
+        "tasks",
+        "mcp",
+        "project-management"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "click-up-maintainer"
+        },
+        "subagent": {
+          "file": "subagent/click-up-maintainer.md",
+          "name": "click-up-maintainer"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add click-up-maintainer -a cursor -g -y",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/click-up-maintainer"
+    },
+    {
+      "slug": "create-skill",
+      "kind": "skill",
+      "name": "Create Skill",
+      "description": "Author and publish first-party ted-craft skills with manifests, validation, and docs generation.",
+      "category": "meta",
+      "tags": [
+        "authoring",
+        "registry",
+        "skills"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "create-skill"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add create-skill -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/create-skill"
+    },
+    {
+      "slug": "ibelick/frontend-design",
+      "kind": "skill",
+      "name": "Frontend Design",
+      "description": "Distinctive, intentional UI design guidance — typography, palette, and anti-template aesthetics for web interfaces.",
+      "category": "ui",
+      "tags": [
+        "design",
+        "ui",
+        "frontend",
+        "typography"
+      ],
+      "attribution": {
+        "author": "ibelick",
+        "repo": "ibelick/ui-skills",
+        "skill": "frontend-design",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add ibelick/ui-skills --skill frontend-design -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill frontend-design -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill frontend-design -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill frontend-design -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/ibelick-frontend-design.json"
+    },
+    {
+      "slug": "ibelick/improve-animations",
+      "kind": "skill",
+      "name": "Improve Animations",
+      "description": "Motion polish for UI — timing, easing, reduced-motion, and interaction feedback that feels intentional.",
+      "category": "ui",
+      "tags": [
+        "animation",
+        "motion",
+        "ui"
+      ],
+      "attribution": {
+        "author": "ibelick",
+        "repo": "ibelick/ui-skills",
+        "skill": "improve-animations",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add ibelick/ui-skills --skill improve-animations -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill improve-animations -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill improve-animations -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill improve-animations -a codex -g -y"
+      },
+      "cli": {
+        "featured": false
+      },
+      "sourceType": "catalog",
+      "path": "catalog/ibelick-improve-animations.json"
+    },
+    {
+      "slug": "ibelick/polish-ui",
+      "kind": "skill",
+      "name": "Polish UI",
+      "description": "Detail-oriented UI polish — spacing, hierarchy, states, and finishing passes that raise interface quality.",
+      "category": "ui",
+      "tags": [
+        "ui",
+        "polish",
+        "design"
+      ],
+      "attribution": {
+        "author": "ibelick",
+        "repo": "ibelick/ui-skills",
+        "skill": "polish-ui",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add ibelick/ui-skills --skill polish-ui -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill polish-ui -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill polish-ui -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill polish-ui -a codex -g -y"
+      },
+      "sourceType": "catalog",
+      "path": "catalog/ibelick-polish-ui.json"
+    },
+    {
+      "slug": "ibelick/responsive-design",
+      "kind": "skill",
+      "name": "Responsive Design",
+      "description": "Build layouts that work across breakpoints with intentional mobile and desktop behavior.",
+      "category": "ui",
+      "tags": [
+        "responsive",
+        "layout",
+        "mobile"
+      ],
+      "attribution": {
+        "author": "ibelick",
+        "repo": "ibelick/ui-skills",
+        "skill": "responsive-design",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add ibelick/ui-skills --skill responsive-design -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill responsive-design -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill responsive-design -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill responsive-design -a codex -g -y"
+      },
+      "sourceType": "catalog",
+      "path": "catalog/ibelick-responsive-design.json"
+    },
+    {
+      "slug": "ibelick/ui-skills-root",
+      "kind": "skill",
+      "name": "UI Skills Root",
+      "description": "Routing skill for the ui-skills catalog — discover and install the smallest useful UI skill.",
+      "category": "ui",
+      "tags": [
+        "routing",
+        "ui",
+        "discovery"
+      ],
+      "attribution": {
+        "author": "ibelick",
+        "repo": "ibelick/ui-skills",
+        "skill": "ui-skills-root",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add ibelick/ui-skills --skill ui-skills-root -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill ui-skills-root -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill ui-skills-root -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill ui-skills-root -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/ibelick-ui-skills-root.json"
+    },
+    {
+      "slug": "security-review",
+      "kind": "skill",
+      "name": "Security Review",
+      "description": "Pre-publish checklist: secrets, personal IDs, attribution, and validate-registry gates for ted-craft artifacts.",
+      "category": "security",
+      "tags": [
+        "security",
+        "secrets",
+        "validation"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "security-review"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add security-review -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/security-review"
+    },
+    {
+      "slug": "ted-craft-root",
+      "kind": "skill",
+      "name": "ted-craft Root",
+      "description": "Routing protocol for discovering and installing the smallest useful ted-craft artifact.",
+      "category": "meta",
+      "tags": [
+        "routing",
+        "marketplace",
+        "discovery"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ted-craft-root"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft start",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ted-craft-root"
+    }
+  ]
+}

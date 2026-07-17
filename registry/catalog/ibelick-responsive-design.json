@@ -1,0 +1,24 @@
+{
+  "slug": "ibelick/responsive-design",
+  "kind": "skill",
+  "name": "Responsive Design",
+  "description": "Build layouts that work across breakpoints with intentional mobile and desktop behavior.",
+  "category": "ui",
+  "tags": ["responsive", "layout", "mobile"],
+  "attribution": {
+    "author": "ibelick",
+    "repo": "ibelick/ui-skills",
+    "skill": "responsive-design",
+    "license": "MIT",
+    "catalogUrl": "https://www.ui-skills.com/"
+  },
+  "source": {
+    "type": "catalog"
+  },
+  "install": {
+    "default": "npx skills add ibelick/ui-skills --skill responsive-design -g -y",
+    "cursor": "npx skills add ibelick/ui-skills --skill responsive-design -a cursor -g -y",
+    "claude": "npx skills add ibelick/ui-skills --skill responsive-design -a claude-code -g -y",
+    "codex": "npx skills add ibelick/ui-skills --skill responsive-design -a codex -g -y"
+  }
+}
