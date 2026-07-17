@@ -1,0 +1,30 @@
+{
+  "slug": "click-up-maintainer",
+  "kind": "bundle",
+  "name": "ClickUp Maintainer",
+  "description": "Create, update, search, and manage ClickUp tasks via MCP — skill plus focused subagent for bulk triage.",
+  "category": "productivity",
+  "tags": ["clickup", "tasks", "mcp", "project-management"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "click-up-maintainer"
+    },
+    "subagent": {
+      "file": "subagent/click-up-maintainer.md",
+      "name": "click-up-maintainer"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add click-up-maintainer -a cursor -g -y",
+    "featured": true
+  }
+}

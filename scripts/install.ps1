@@ -1,35 +1,30 @@
-# Sync cursor-config skills and agents into ~/.cursor/
+# Deprecated: prefer `npx ted-craft add <slug> -a cursor -g -y`
 $ErrorActionPreference = "Stop"
+$RepoRoot = Split-Path -Parent $PSScriptRoot
+Write-Host "ted-craft: prefer npx ted-craft add <slug>. Syncing first-party registry…"
 
-$RepoRoot = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 $CursorHome = Join-Path $env:USERPROFILE ".cursor"
 $SkillsDest = Join-Path $CursorHome "skills"
 $AgentsDest = Join-Path $CursorHome "agents"
+New-Item -ItemType Directory -Force -Path $SkillsDest, $AgentsDest | Out-Null
 
-Write-Host "Installing from: $RepoRoot"
-Write-Host "Target: $CursorHome"
-
-New-Item -ItemType Directory -Force -Path $SkillsDest | Out-Null
-New-Item -ItemType Directory -Force -Path $AgentsDest | Out-Null
-
-# Skills
-$SkillsSrc = Join-Path $RepoRoot "skills"
-if (Test-Path $SkillsSrc) {
-    Get-ChildItem -Path $SkillsSrc -Directory | ForEach-Object {
-        $dest = Join-Path $SkillsDest $_.Name
-        if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
-        Copy-Item -Recurse -Force $_.FullName $dest
-        Write-Host "  skill: $($_.Name)"
+$FirstParty = Join-Path $RepoRoot "registry\first-party"
+Get-ChildItem -Directory $FirstParty | ForEach-Object {
+  $name = $_.Name
+  $skill = Join-Path $_.FullName "skill"
+  if (Test-Path $skill) {
+    $dest = Join-Path $SkillsDest $name
+    if (Test-Path $dest) { Remove-Item -Recurse -Force $dest }
+    Copy-Item -Recurse $skill $dest
+    Write-Host "  skill: $name"
+  }
+  $sub = Join-Path $_.FullName "subagent"
+  if (Test-Path $sub) {
+    Get-ChildItem -Filter *.md $sub | ForEach-Object {
+      Copy-Item $_.FullName $AgentsDest -Force
+      Write-Host "  agent: $($_.Name)"
     }
-}
-
-# Agents
-$AgentsSrc = Join-Path $RepoRoot "agents"
-if (Test-Path $AgentsSrc) {
-    Get-ChildItem -Path $AgentsSrc -Filter "*.md" | ForEach-Object {
-        Copy-Item -Force $_.FullName (Join-Path $AgentsDest $_.Name)
-        Write-Host "  agent: $($_.Name)"
-    }
+  }
 }
 
 Write-Host ""

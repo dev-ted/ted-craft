@@ -1,0 +1,30 @@
+{
+  "slug": "docs-maintainer",
+  "kind": "bundle",
+  "name": "Docs Maintainer",
+  "description": "Keep ted-craft site docs and marketplace copy user-facing — tone, structure, and audience checks for people browsing and installing skills, not for repo maintainers.",
+  "category": "meta",
+  "tags": ["docs", "tone", "copy", "marketplace", "writing"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "docs-maintainer"
+    },
+    "subagent": {
+      "file": "subagent/docs-maintainer.md",
+      "name": "docs-maintainer"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add docs-maintainer -a cursor -g -y",
+    "featured": true
+  }
+}

@@ -1,0 +1,40 @@
+---
+title: Getting started
+description: Add your first skill to Cursor, Claude, or Codex.
+---
+
+## Add a skill
+
+Pick your agent, then run:
+
+```bash
+npx ted-craft add <slug> -a cursor -g -y
+```
+
+Swap the agent flag as needed:
+
+| Agent | Flag |
+|-------|------|
+| Cursor | `-a cursor` |
+| Claude Code | `-a claude` |
+| Codex | `-a codex` |
+
+Find slugs on [Browse](/browse) or on each skill's docs page.
+
+## Find something useful
+
+```bash
+npx ted-craft list
+npx ted-craft search clickup
+npx ted-craft get click-up-maintainer
+npx ted-craft start
+```
+
+- **list** — see what is available  
+- **search** — filter by keyword  
+- **get** — print a skill's details  
+- **start** — let the router suggest what to install  
+
+## What you will see on a skill page
+
+Each skill page explains what it is for, shows install commands for your agent, and includes the skill's own instructions so you can tell whether it matches what you need before you add it.

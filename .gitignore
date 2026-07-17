@@ -1,0 +1,17 @@
+node_modules
+dist
+.turbo
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+
+# Build / generate outputs that are committed selectively
+apps/web/.source
+apps/web/.tanstack
+apps/web/.vercel
+apps/web/dist
+
+# Local Cursor hooks state
+.cursor/hooks/state/

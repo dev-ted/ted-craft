@@ -1,0 +1,79 @@
+---
+title: "UI Skills Root"
+description: "Routing skill for the ui-skills catalog — discover and install the smallest useful UI skill."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="skill" />
+  <span className="text-sm text-fd-muted-foreground">ibelick</span>
+</div>
+
+
+<AttributionCard
+  author="ibelick"
+  repo="ibelick/ui-skills"
+  license="MIT"
+  catalogUrl="https://www.ui-skills.com/"
+/>
+
+
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx skills add ibelick/ui-skills --skill ui-skills-root -a cursor -g -y"}
+  claudeCommand={"npx skills add ibelick/ui-skills --skill ui-skills-root -a claude-code -g -y"}
+  codexCommand={"npx skills add ibelick/ui-skills --skill ui-skills-root -a codex -g -y"}
+  showInstall={true}>{
+"---\nname: ui-skills-root\ndescription: Use before UI-related work to select the smallest useful UI Skills context through the ui-skills CLI.\nlicense: MIT\nmetadata:\n  author: ibelick\n  version: \"1.0.0\"\n---\n\n# UI Skills Root\n\nYou are the routing layer for UI Skills.\n\nThis skill is shown by `npx ui-skills start` and is also available in the registry.\n\nUse it when an agent in Codex, Cursor, or Claude Code has a clear UI goal.\n\nIf the goal is unclear, ask one short question.\n\nIf the goal is clear, choose the right category, load the smallest useful skill context, then implement.\n\n## Protocol\n\n1. decide if the task is UI-related\n2. if not, return `no skill needed`\n3. identify the likely category\n4. inspect that category with the CLI\n5. select the smallest useful skill set\n6. load only selected skill(s)\n7. implement using that context\n\n## CLI\n\n```bash\nnpx ui-skills start\nnpx ui-skills categories\nnpx ui-skills list --category <category>\nnpx ui-skills get <slug>\n```\n\n## Selection Rules\n\nPrefer 1 skill.\n\nUse 2 only when the task needs two clear angles.\n\nUse 3 only for broad review, redesign, or multi-surface work.\n\nNever use more than 3.\n\nRoute by topic, then stack, then specificity.\n\nPrefer specific skills over broad skills.\n\nPrefer framework-specific skills when the stack is obvious.\n\nFor quick cleanup, prefer the most specific craft, visual, or layout skill available.\n\nIf unsure, inspect categories and pick the safest narrow skill."
+}</RegistryInstallPreview>
+
+# UI Skills Root
+
+You are the routing layer for UI Skills.
+
+This skill is shown by `npx ui-skills start` and is also available in the registry.
+
+Use it when an agent in Codex, Cursor, or Claude Code has a clear UI goal.
+
+If the goal is unclear, ask one short question.
+
+If the goal is clear, choose the right category, load the smallest useful skill context, then implement.
+
+## Protocol
+
+1. decide if the task is UI-related
+2. if not, return `no skill needed`
+3. identify the likely category
+4. inspect that category with the CLI
+5. select the smallest useful skill set
+6. load only selected skill(s)
+7. implement using that context
+
+## CLI
+
+```bash
+npx ui-skills start
+npx ui-skills categories
+npx ui-skills list --category &lt;category&gt;
+npx ui-skills get &lt;slug&gt;
+```
+
+## Selection Rules
+
+Prefer 1 skill.
+
+Use 2 only when the task needs two clear angles.
+
+Use 3 only for broad review, redesign, or multi-surface work.
+
+Never use more than 3.
+
+Route by topic, then stack, then specificity.
+
+Prefer specific skills over broad skills.
+
+Prefer framework-specific skills when the stack is obvious.
+
+For quick cleanup, prefer the most specific craft, visual, or layout skill available.
+
+If unsure, inspect categories and pick the safest narrow skill.

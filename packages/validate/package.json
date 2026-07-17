@@ -1,0 +1,29 @@
+{
+  "name": "@ted-craft/validate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "ted-craft-validate": "./dist/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "validate": "tsx src/cli.ts",
+    "generate": "tsx src/generate.ts",
+    "generate-index": "tsx src/generate-index.ts",
+    "generate-docs": "tsx src/generate-docs.ts"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

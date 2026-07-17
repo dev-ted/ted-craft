@@ -1,0 +1,21 @@
+{
+  "name": "ted-craft",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "node scripts/ws.mjs @ted-craft/validate generate && node scripts/ws.mjs @ted-craft/web dev",
+    "build": "node scripts/ws.mjs @ted-craft/validate generate && node scripts/ws.mjs @ted-craft/web build",
+    "generate": "node scripts/ws.mjs @ted-craft/validate generate",
+    "validate": "node scripts/ws.mjs @ted-craft/validate validate",
+    "types:check": "node scripts/ws.mjs @ted-craft/validate generate && node scripts/ws.mjs @ted-craft/web types:check",
+    "cli": "node scripts/ws.mjs ted-craft start",
+    "lint": "node scripts/ws.mjs @ted-craft/web lint"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,83 +1,59 @@
-# cursor-config
+# ted-craft
 
-Personal Cursor configuration synced via GitHub — skills, subagents, and setup scripts.
+Agent artifact marketplace: first-party skills/subagents/rules/hooks, an attributed third-party catalog, a Fumadocs site, and `npx ted-craft`.
 
-## Contents
+**Repo:** [github.com/dev-ted/ted-craft](https://github.com/dev-ted/ted-craft)
 
-| Path | Purpose |
-|------|---------|
-| `skills/click-up-maintainer/` | ClickUp MCP skill (task/card management) |
-| `agents/click-up-maintainer.md` | ClickUp subagent for bulk triage and complex ops |
-| `scripts/install.ps1` | Install/sync to `~/.cursor/` on Windows |
-| `scripts/install.sh` | Install/sync to `~/.cursor/` on macOS/Linux |
-
-## Quick install
-
-### Windows (PowerShell)
-
-```powershell
-git clone https://github.com/dev-ted/cursor-config.git
-cd cursor-config
-.\scripts\install.ps1
-```
-
-### macOS / Linux
+## Quick start
 
 ```bash
-git clone https://github.com/dev-ted/cursor-config.git
-cd cursor-config
-chmod +x scripts/install.sh
+npx ted-craft start
+npx ted-craft add click-up-maintainer -a cursor -g -y
+npx ted-craft list
+npx ted-craft search clickup
+```
+
+Browse the registry on the site (`/browse`) or read generated docs under `/docs`.
+
+## Clone
+
+```bash
+git clone https://github.com/dev-ted/ted-craft.git
+cd ted-craft
+npm install
+npm run generate
+npm run dev
+```
+
+## Monorepo
+
+| Path | Package |
+|------|---------|
+| `apps/web` | `@ted-craft/web` — TanStack Start + Fumadocs marketplace |
+| `packages/cli` | `ted-craft` — npm CLI |
+| `packages/validate` | Schema validation, secret scan, generate index/docs |
+| `registry/first-party` | Owned artifacts + manifests |
+| `registry/catalog` | Third-party metadata + install commands only |
+
+```bash
+npm install
+npm run generate   # validate + write index.json + docs
+npm run dev        # web on :3000
+npm run validate
+```
+
+## Install from this clone
+
+Prefer the CLI. Legacy full sync:
+
+```bash
 ./scripts/install.sh
 ```
 
-Restart Cursor after installing.
+## Authoring
 
-## Usage
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Security checklist lives in the `security-review` skill.
 
-### Skill (auto-discovered)
+## License
 
-The agent loads `click-up-maintainer` when you mention ClickUp, tasks, cards, tickets, backlog, etc.
-
-Example prompts:
-
-- "Create a ClickUp task for fixing the login bug in the Backend list"
-- "Show my open ClickUp tasks due this week"
-- "Move DEV-1234 to In Progress and assign to me"
-- "Add a comment on the auth refactor task with today's progress"
-
-### Subagent (explicit)
-
-In chat, invoke the custom agent by name or ask Cursor to use the **click-up-maintainer** agent for bulk work:
-
-- "Use click-up-maintainer to triage all unassigned bugs in Engineering"
-- "Have the ClickUp maintainer create tasks from this meeting notes list"
-
-## Sync across laptops
-
-1. Clone this repo on each machine
-2. Run the install script (copies skills + agents into `~/.cursor/`)
-3. Pull updates when you change the repo: `git pull && ./scripts/install.ps1`
-
-Optional: symlink instead of copy — edit the install script if you prefer live sync from the clone.
-
-## Prerequisites
-
-- [Cursor](https://cursor.com) with MCP enabled
-- **ClickUp MCP** connected (`user-clickup` server)
-
-## Customize defaults
-
-Edit the "Default targets" table in `skills/click-up-maintainer/SKILL.md` with your preferred space, list, and list_id after running workspace hierarchy once.
-
-## Adding more skills
-
-```text
-cursor-config/
-├── skills/
-│   └── your-skill/
-│       └── SKILL.md
-└── agents/
-    └── your-agent.md
-```
-
-Re-run the install script after adding new files.
+MIT for first-party artifacts unless a manifest specifies otherwise. Catalog entries remain under their upstream licenses.

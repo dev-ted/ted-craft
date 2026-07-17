@@ -1,0 +1,60 @@
+---
+title: "Create Skill"
+description: "Author and publish first-party ted-craft skills with manifests, validation, and docs generation."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="skill" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add create-skill -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add create-skill -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add create-skill -a claude -g -y"}
+  codexCommand={"npx ted-craft add create-skill -a codex -g -y"}
+  showInstall={true}>{
+"---\nname: create-skill\ndescription: >-\n  Guide for authoring a new first-party ted-craft skill or bundle with manifest,\n  SKILL.md frontmatter, validation, and docs generation. Use when creating or\n  publishing a new registry artifact.\n---\n\n# Create a ted-craft skill\n\n## Layout\n\n```text\nregistry/first-party/<slug>/\n├── manifest.json\n├── skill/\n│   └── SKILL.md\n└── subagent/          # optional\n    └── <name>.md\n```\n\n## Checklist\n\n1. Pick a kebab-case `slug` matching the folder name.\n2. Write `SKILL.md` with YAML frontmatter: `name`, `description` (name must match folder / manifest artifact name).\n3. Fill `manifest.json` (`kind`, `category`, `tags`, `artifacts`, `source.type: first-party`).\n4. Run `npm run validate` — must pass secret scan, frontmatter, and path checks.\n5. Run `npm run generate` to refresh `registry/index.json` and docs.\n6. Never commit secrets, personal emails, workspace IDs, or absolute home-directory paths — use placeholders.\n\n## Frontmatter template\n\n```yaml\n---\nname: my-skill\ndescription: >-\n  One or two sentences. Include trigger phrases for when agents should load this.\n---\n```\n\n## Manifest essentials\n\n- `kind`: `skill` | `subagent` | `rule` | `hook` | `bundle`\n- `cli.featured`: only for high-signal starter items\n- `cli.promptExample`: the install or start command users should copy"
+}</RegistryInstallPreview>
+
+# Create a ted-craft skill
+
+## Layout
+
+```text
+registry/first-party/&lt;slug&gt;/
+├── manifest.json
+├── skill/
+│   └── SKILL.md
+└── subagent/          # optional
+    └── &lt;name&gt;.md
+```
+
+## Checklist
+
+1. Pick a kebab-case `slug` matching the folder name.
+2. Write `SKILL.md` with YAML frontmatter: `name`, `description` (name must match folder / manifest artifact name).
+3. Fill `manifest.json` (`kind`, `category`, `tags`, `artifacts`, `source.type: first-party`).
+4. Run `npm run validate` — must pass secret scan, frontmatter, and path checks.
+5. Run `npm run generate` to refresh `registry/index.json` and docs.
+6. Never commit secrets, personal emails, workspace IDs, or absolute home-directory paths — use placeholders.
+
+## Frontmatter template
+
+```yaml
+---
+name: my-skill
+description: &gt;-
+  One or two sentences. Include trigger phrases for when agents should load this.
+---
+```
+
+## Manifest essentials
+
+- `kind`: `skill` | `subagent` | `rule` | `hook` | `bundle`
+- `cli.featured`: only for high-signal starter items
+- `cli.promptExample`: the install or start command users should copy

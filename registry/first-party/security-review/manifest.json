@@ -1,0 +1,26 @@
+{
+  "slug": "security-review",
+  "kind": "skill",
+  "name": "Security Review",
+  "description": "Pre-publish checklist: secrets, personal IDs, attribution, and validate-registry gates for ted-craft artifacts.",
+  "category": "security",
+  "tags": ["security", "secrets", "validation"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "security-review"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add security-review -a cursor -g -y",
+    "featured": false
+  }
+}
