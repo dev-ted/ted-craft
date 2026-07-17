@@ -1,27 +1,31 @@
 ---
 title: ted-craft
-description: Agent artifact marketplace — skills, subagents, rules, and hooks.
+description: Find skills for your AI agent and add them in one command.
 ---
 
-**ted-craft** is a registry + docs site + CLI for sharing agent artifacts.
+**ted-craft** is a marketplace of skills and helpers for Cursor, Claude, and Codex — browse what each one does, then add it to your setup.
 
 ## Quick start
 
+Ask your agent to route you to something useful:
+
 <CliCommand>npx ted-craft start</CliCommand>
 
-Then install something useful:
+Or install a skill directly (Cursor example):
 
 <CliCommand>npx ted-craft add click-up-maintainer -a cursor -g -y</CliCommand>
 
+Use `-a claude` or `-a codex` if you work in those agents instead.
+
 ## Explore
 
-- [Getting started](/docs/getting-started)
-- [Browse the registry](/browse)
-- Registry docs are generated from manifests under `/docs/registry`
+- [Getting started](/docs/getting-started) — install and discovery commands
+- [Browse](/browse) — see everything available
+- Skill pages under Docs → Registry — what each skill is for and how to add it
 
-## Sources
+## Where skills come from
 
-| Source | Meaning |
-|--------|---------|
-| **first-party** | Artifacts living in this repo under `registry/first-party/` |
-| **catalog** | Metadata-only entries with attribution + upstream install commands |
+| On the site | What it means for you |
+|-------------|------------------------|
+| **Maintained here** | Skills kept in this project, ready to install |
+| **From other authors** | Credited upstream skills — same install flow, with attribution on the page |

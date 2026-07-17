@@ -1,0 +1,27 @@
+{
+  "slug": "ibelick/fixing-motion-performance",
+  "kind": "skill",
+  "name": "Fixing Motion Performance",
+  "description": "Diagnose and fix animation performance issues — jank, layout thrash, and motion that fights the main thread.",
+  "category": "ui",
+  "tags": ["animation", "motion", "performance", "ui"],
+  "attribution": {
+    "author": "ibelick",
+    "repo": "ibelick/ui-skills",
+    "skill": "fixing-motion-performance",
+    "license": "MIT",
+    "catalogUrl": "https://www.ui-skills.com/"
+  },
+  "source": {
+    "type": "catalog"
+  },
+  "install": {
+    "default": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -g -y",
+    "cursor": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a cursor -g -y",
+    "claude": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a claude-code -g -y",
+    "codex": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a codex -g -y"
+  },
+  "cli": {
+    "featured": false
+  }
+}

@@ -10,6 +10,7 @@ import {
 } from '@/lib/registry';
 import { KindBadge } from '@/components/KindBadge';
 import type { Kind } from '@/components/kind';
+import { authorDisplay } from '@/lib/shared';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -94,8 +95,8 @@ function BrowsePage() {
             Browse
           </h1>
           <p className="mt-2 max-w-2xl text-[color:var(--tc-muted)]">
-            Filter first-party craft and attributed catalog skills. Copy an install
-            command or open the docs page.
+            Search skills by name or topic. Open a page to see what it does, then
+            copy an install command for your agent.
           </p>
         </header>
 
@@ -134,8 +135,8 @@ function BrowsePage() {
             onChange={(e) => update({ source: e.target.value || undefined })}
           >
             <NativeSelectOption value="">All sources</NativeSelectOption>
-            <NativeSelectOption value="first-party">first-party</NativeSelectOption>
-            <NativeSelectOption value="catalog">catalog</NativeSelectOption>
+            <NativeSelectOption value="first-party">dev-ted</NativeSelectOption>
+            <NativeSelectOption value="catalog">Other authors</NativeSelectOption>
           </NativeSelect>
         </div>
 
@@ -154,7 +155,7 @@ function BrowsePage() {
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <KindBadge kind={item.kind as Kind} />
                     <span className="font-mono text-[10px] uppercase tracking-wide text-[color:var(--tc-muted)]">
-                      {item.category} · {item.sourceType}
+                      {authorDisplay(item)}
                     </span>
                   </div>
                   <h2 className="text-lg font-semibold text-[color:var(--tc-ink)]">

@@ -12,6 +12,11 @@ function escapeMdx(text: string): string {
   return text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+/** Escape `{` / `}` so MDX does not treat them as expressions. */
+function escapeMdxBody(text: string): string {
+  return escapeMdx(text).replace(/\{/g, "&#123;").replace(/\}/g, "&#125;");
+}
+
 function installCommands(item: RegistryItem): {
   cursor: string;
   claude: string;
@@ -25,40 +30,246 @@ function installCommands(item: RegistryItem): {
     };
   }
 
-  const skillName = item.artifacts.skill?.name ?? item.slug;
-  const skillPath = `registry/first-party/${item.slug}/skill`;
-  const base = `npx skills add dev-ted/ted-craft --skill ${skillName} --path ${skillPath}`;
   return {
-    cursor: `${base} -a cursor -g -y`,
-    claude: `${base} -a claude-code -g -y`,
-    codex: `${base} -a codex -g -y`,
+    cursor: `npx ted-craft add ${item.slug} -a cursor -g -y`,
+    claude: `npx ted-craft add ${item.slug} -a claude -g -y`,
+    codex: `npx ted-craft add ${item.slug} -a codex -g -y`,
   };
 }
 
-function skillBody(repoRoot: string, item: RegistryItem): string {
-  if (item.sourceType !== "first-party" || !item.artifacts.skill) {
-    return "";
+function githubHandleFromUrl(url?: string): string | null {
+  if (!url) return null;
+  try {
+    const pathname = new URL(url).pathname.replace(/^\/+|\/+$/g, "");
+    const handle = pathname.split("/")[0];
+    return handle || null;
+  } catch {
+    return null;
   }
-  const skillMd = path.join(
-    repoRoot,
-    "registry",
-    item.path,
-    item.artifacts.skill.dir,
-    "SKILL.md",
-  );
-  if (!fs.existsSync(skillMd)) return "";
-  const raw = fs.readFileSync(skillMd, "utf8");
-  // Strip YAML frontmatter for docs body
-  return raw.replace(/^---[\s\S]*?---\s*/, "").trim();
+}
+
+function authorDisplay(item: RegistryItem): string {
+  if (item.sourceType === "catalog") {
+    return item.attribution.author;
+  }
+  return githubHandleFromUrl(item.author.url) ?? item.author.name;
 }
 
 function safeSlug(slug: string): string {
   return slug.replace(/\//g, "--");
 }
 
-function renderPage(repoRoot: string, item: RegistryItem): string {
+function readText(filePath: string): string | null {
+  if (!fs.existsSync(filePath)) return null;
+  return fs.readFileSync(filePath, "utf8");
+}
+
+type InstallCmds = {
+  cursor: string;
+  claude: string;
+  codex: string;
+};
+
+/** Full MD in RegistryInstallPreview + escaped prose body below. */
+function renderMarkdownArtifact(
+  raw: string,
+  opts: {
+    sectionTitle?: string;
+    install?: InstallCmds | false;
+  } = {},
+): string {
+  const parts: string[] = [];
+
+  if (opts.sectionTitle) {
+    parts.push(`## ${opts.sectionTitle}\n`);
+  }
+
+  const showInstall = opts.install !== false && opts.install != null;
+  const installAttrs = showInstall
+    ? `
+  cursorCommand={${JSON.stringify(opts.install!.cursor)}}
+  claudeCommand={${JSON.stringify(opts.install!.claude)}}
+  codexCommand={${JSON.stringify(opts.install!.codex)}}
+  showInstall={true}`
+    : `
+  showInstall={false}`;
+
+  parts.push(
+    `<RegistryInstallPreview${installAttrs}>{\n${JSON.stringify(raw.trim())}\n}</RegistryInstallPreview>\n`,
+  );
+
+  const fmMatch = raw.match(/^---\r?\n[\s\S]*?\r?\n---/);
+  let body = raw;
+  if (fmMatch) {
+    body = raw.slice(fmMatch[0].length);
+  }
+
+  body = body.trim();
+  if (body) {
+    parts.push(escapeMdxBody(body));
+  }
+
+  return parts.join("\n");
+}
+
+function renderCodeArtifact(raw: string, label: string, sectionTitle: string): string {
+  return `## ${sectionTitle}\n\n<CodeBlock label=${JSON.stringify(label)}>{\n${JSON.stringify(raw.trim())}\n}</CodeBlock>\n`;
+}
+
+function firstPartyBody(
+  repoRoot: string,
+  item: RegistryItem,
+  cmds: InstallCmds,
+): string {
+  if (item.sourceType !== "first-party") return "";
+
+  const base = path.join(repoRoot, "registry", item.path);
+  const sections: string[] = [];
+  const artifacts = item.artifacts ?? {};
+  const multi =
+    [artifacts.skill, artifacts.subagent, artifacts.rule, artifacts.hook].filter(Boolean)
+      .length > 1;
+
+  let installAttached = false;
+
+  if (artifacts.skill) {
+    const skillDir = path.join(base, artifacts.skill.dir);
+    const skillMd = readText(path.join(skillDir, "SKILL.md"));
+    if (skillMd) {
+      sections.push(
+        renderMarkdownArtifact(skillMd, {
+          sectionTitle: multi ? "Skill" : undefined,
+          install: cmds,
+        }),
+      );
+      installAttached = true;
+    }
+    if (fs.existsSync(skillDir)) {
+      for (const file of fs.readdirSync(skillDir).sort()) {
+        if (!file.endsWith(".md") || file === "SKILL.md") continue;
+        const extra = readText(path.join(skillDir, file));
+        if (!extra) continue;
+        const title = file
+          .replace(/\.md$/i, "")
+          .split(/[-_]/)
+          .map((w) => (w.toLowerCase() === "mcp" ? "MCP" : w.charAt(0).toUpperCase() + w.slice(1)))
+          .join(" ");
+        sections.push(
+          renderMarkdownArtifact(extra, {
+            sectionTitle: title,
+            install: false,
+          }),
+        );
+      }
+    }
+  }
+
+  if (artifacts.subagent) {
+    const sub = readText(path.join(base, artifacts.subagent.file));
+    if (sub) {
+      sections.push(
+        renderMarkdownArtifact(sub, {
+          sectionTitle: multi ? "Subagent" : undefined,
+          install: installAttached ? false : cmds,
+        }),
+      );
+      installAttached = true;
+    }
+  }
+
+  if (artifacts.rule) {
+    const rule = readText(path.join(base, artifacts.rule.file));
+    if (rule) {
+      sections.push(
+        renderMarkdownArtifact(rule, {
+          sectionTitle: multi ? "Rule" : undefined,
+          install: installAttached ? false : cmds,
+        }),
+      );
+      installAttached = true;
+    }
+  }
+
+  if (artifacts.hook) {
+    const hook = readText(path.join(base, artifacts.hook.config));
+    if (hook) {
+      sections.push(renderCodeArtifact(hook, "hooks.json", multi ? "Hook" : "Hook config"));
+    }
+  }
+
+  if (sections.length === 0) {
+    return escapeMdxBody(item.description);
+  }
+
+  return sections.join("\n\n");
+}
+
+async function fetchCatalogSkill(item: RegistryItem & { sourceType: "catalog" }): Promise<string | null> {
+  const repo = item.attribution.repo;
+  const skill = item.attribution.skill;
+  if (!repo.includes("/") || !skill) return null;
+
+  const candidates = [
+    `https://raw.githubusercontent.com/${repo}/main/skills/${skill}/SKILL.md`,
+    `https://raw.githubusercontent.com/${repo}/master/skills/${skill}/SKILL.md`,
+    `https://raw.githubusercontent.com/${repo}/main/${skill}/SKILL.md`,
+    `https://raw.githubusercontent.com/anthropics/skills/main/skills/${skill}/SKILL.md`,
+  ];
+
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) continue;
+      const text = await res.text();
+      if (!text.trim() || text.startsWith("404")) continue;
+      return text;
+    } catch {
+      // try next candidate
+    }
+  }
+
+  return null;
+}
+
+async function catalogBody(
+  repoRoot: string,
+  item: RegistryItem & { sourceType: "catalog" },
+  cmds: InstallCmds,
+): Promise<string> {
+  const localOverride = path.join(
+    repoRoot,
+    "registry",
+    "catalog",
+    `${safeSlug(item.slug)}.md`,
+  );
+  const local = readText(localOverride);
+  if (local) {
+    return renderMarkdownArtifact(local, { install: cmds });
+  }
+
+  const remote = await fetchCatalogSkill(item);
+  if (remote) {
+    return renderMarkdownArtifact(remote, { install: cmds });
+  }
+
+  // No MD body — still show install CTAs with description as code fallback
+  return renderMarkdownArtifact(item.description, { install: cmds });
+}
+
+async function itemBody(
+  repoRoot: string,
+  item: RegistryItem,
+  cmds: InstallCmds,
+): Promise<string> {
+  if (item.sourceType === "first-party") {
+    return firstPartyBody(repoRoot, item, cmds);
+  }
+  return catalogBody(repoRoot, item, cmds);
+}
+
+async function renderPage(repoRoot: string, item: RegistryItem): Promise<string> {
   const cmds = installCommands(item);
-  const pageSlug = safeSlug(item.slug);
+  const author = authorDisplay(item);
   const attribution =
     item.sourceType === "catalog"
       ? `
@@ -71,10 +282,7 @@ function renderPage(repoRoot: string, item: RegistryItem): string {
 `
       : "";
 
-  const body =
-    item.sourceType === "first-party"
-      ? skillBody(repoRoot, item)
-      : item.description;
+  const body = await itemBody(repoRoot, item, cmds);
 
   return `---
 title: ${JSON.stringify(item.name)}
@@ -83,16 +291,8 @@ description: ${JSON.stringify(item.description)}
 
 <div className="not-prose mb-6 flex flex-wrap items-center gap-3">
   <KindBadge kind="${item.kind}" />
-  <span className="text-sm text-fd-muted-foreground">${item.category} · ${item.sourceType}</span>
+  <span className="text-sm text-fd-muted-foreground">${escapeMdx(author)}</span>
 </div>
-
-<InstallPanel
-  slug="${pageSlug}"
-  cursorCommand={${JSON.stringify(cmds.cursor)}}
-  claudeCommand={${JSON.stringify(cmds.claude)}}
-  codexCommand={${JSON.stringify(cmds.codex)}}
-  ${item.sourceType === "catalog" ? `attributionLabel="${escapeMdx(item.attribution.repo)}"` : ""}
-/>
 
 ${attribution}
 
@@ -102,7 +302,7 @@ ${body}
 `;
 }
 
-export function generateDocs(repoRoot?: string): void {
+export async function generateDocs(repoRoot?: string): Promise<void> {
   const root = repoRoot ?? findRepoRoot();
   const indexPath = path.join(root, "registry", "index.json");
   if (!fs.existsSync(indexPath)) {
@@ -116,7 +316,6 @@ export function generateDocs(repoRoot?: string): void {
   const docsRoot = path.join(root, "apps", "web", "content", "docs");
   const generatedRoot = path.join(docsRoot, "registry");
 
-  // Clean generated registry docs (keep index.mdx at docs root)
   if (fs.existsSync(generatedRoot)) {
     fs.rmSync(generatedRoot, { recursive: true, force: true });
   }
@@ -138,7 +337,7 @@ export function generateDocs(repoRoot?: string): void {
     const pages: string[] = [];
     for (const item of items) {
       const file = path.join(catDir, `${safeSlug(item.slug)}.mdx`);
-      fs.writeFileSync(file, renderPage(root, item));
+      fs.writeFileSync(file, await renderPage(root, item));
       pages.push(safeSlug(item.slug));
     }
     fs.writeFileSync(
@@ -171,5 +370,5 @@ export function generateDocs(repoRoot?: string): void {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  generateDocs();
+  void generateDocs();
 }

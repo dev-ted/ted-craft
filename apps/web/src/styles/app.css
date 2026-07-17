@@ -17,11 +17,14 @@
   --tc-line: #c9d0da;
   --tc-muted: #5c6573;
   --tc-brass: #9a7b45;
+  /* Always-dark console surface (terminals stay dark in both themes) */
+  --tc-console: #14181f;
+  --tc-console-fg: #eef1f5;
   --font-display: 'Syne', sans-serif;
   --font-body: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: var(--tc-paper);
+  --foreground: var(--tc-ink);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -59,6 +62,11 @@ html {
   font-family: var(--font-body);
   background: var(--tc-paper);
   color: var(--tc-ink);
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 html > body[data-scroll-locked] {
@@ -78,10 +86,22 @@ html > body[data-scroll-locked] {
     linear-gradient(180deg, #e8ecf2 0%, var(--tc-paper) 42%, #e4e9f0 100%);
 }
 
+.dark .tc-landing {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(154, 123, 69, 0.14), transparent 55%),
+    radial-gradient(900px 500px at 90% 0%, rgba(238, 241, 245, 0.04), transparent 50%),
+    linear-gradient(180deg, #12151a 0%, var(--tc-paper) 42%, #0e1116 100%);
+}
+
 .tc-grain {
   opacity: 0.35;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
   mix-blend-mode: multiply;
+}
+
+.dark .tc-grain {
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
 }
 
 .tc-press {
@@ -155,8 +175,19 @@ html > body[data-scroll-locked] {
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
+  /* Brand surfaces — mirrored for dark; components use these via var(--tc-*) */
+  --tc-ink: #e8ecf2;
+  --tc-paper: #0f1217;
+  --tc-surface: #171b22;
+  --tc-panel: #1c222b;
+  --tc-panel-hover: #242b36;
+  --tc-line: #2e3642;
+  --tc-muted: #9aa3b2;
+  --tc-brass: #c4a46a;
+  --tc-console: #0a0c10;
+  --tc-console-fg: #e8ecf2;
+  --background: var(--tc-paper);
+  --foreground: var(--tc-ink);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
@@ -197,4 +228,17 @@ html > body[data-scroll-locked] {
     @apply text-[color:var(--tc-ink)];
     background: var(--tc-paper);
   }
+}
+
+/* Dual-theme Shiki tokens for RegistryInstallPreview */
+.tc-shiki-block [data-line] span {
+  color: var(--shiki-light);
+}
+
+.dark .tc-shiki-block [data-line] span {
+  color: var(--shiki-dark) !important;
+}
+
+.tc-shiki-pre {
+  background: transparent !important;
 }

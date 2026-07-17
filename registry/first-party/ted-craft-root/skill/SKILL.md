@@ -33,7 +33,8 @@ Use `-a claude` or `-a codex` when the user works in those agents.
 |----------|----------|
 | productivity | click-up-maintainer |
 | meta | ted-craft-root, create-skill, security-review |
-| ui | catalog: frontend-design, improve-animations |
+| ui | catalog: ui-skills-root, baseline-ui, improve-ui, frontend-design |
+| meta | docs-maintainer, create-skill, security-review, ted-craft-root |
 
 ## When blocked
 

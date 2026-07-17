@@ -1,6 +1,40 @@
 {
-  "generatedAt": "2026-07-17T09:47:10.896Z",
+  "generatedAt": "2026-07-17T12:32:07.473Z",
   "items": [
+    {
+      "slug": "anthropics/frontend-design",
+      "kind": "skill",
+      "name": "Frontend Design",
+      "description": "Distinctive, intentional UI design guidance — typography, palette, and anti-template aesthetics for web interfaces.",
+      "category": "ui",
+      "tags": [
+        "design",
+        "ui",
+        "frontend",
+        "typography"
+      ],
+      "attribution": {
+        "author": "anthropics",
+        "repo": "anthropics/skills",
+        "skill": "frontend-design",
+        "license": "Apache-2.0",
+        "catalogUrl": "https://github.com/anthropics/skills/tree/main/skills/frontend-design"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add anthropics/skills --skill frontend-design -g -y",
+        "cursor": "npx skills add anthropics/skills --skill frontend-design -a cursor -g -y",
+        "claude": "npx skills add anthropics/skills --skill frontend-design -a claude-code -g -y",
+        "codex": "npx skills add anthropics/skills --skill frontend-design -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/anthropics-frontend-design.json"
+    },
     {
       "slug": "click-up-maintainer",
       "kind": "bundle",
@@ -71,21 +105,59 @@
       "path": "first-party/create-skill"
     },
     {
-      "slug": "ibelick/frontend-design",
+      "slug": "docs-maintainer",
+      "kind": "bundle",
+      "name": "Docs Maintainer",
+      "description": "Keep ted-craft site docs and marketplace copy user-facing — tone, structure, and audience checks for people browsing and installing skills, not for repo maintainers.",
+      "category": "meta",
+      "tags": [
+        "docs",
+        "tone",
+        "copy",
+        "marketplace",
+        "writing"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "docs-maintainer"
+        },
+        "subagent": {
+          "file": "subagent/docs-maintainer.md",
+          "name": "docs-maintainer"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add docs-maintainer -a cursor -g -y",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/docs-maintainer"
+    },
+    {
+      "slug": "ibelick/baseline-ui",
       "kind": "skill",
-      "name": "Frontend Design",
-      "description": "Distinctive, intentional UI design guidance — typography, palette, and anti-template aesthetics for web interfaces.",
+      "name": "Baseline UI",
+      "description": "Quick UI cleanup — spacing, hierarchy, typography, and small layout fixes that remove AI interface slop.",
       "category": "ui",
       "tags": [
-        "design",
         "ui",
-        "frontend",
+        "polish",
+        "spacing",
         "typography"
       ],
       "attribution": {
         "author": "ibelick",
         "repo": "ibelick/ui-skills",
-        "skill": "frontend-design",
+        "skill": "baseline-ui",
         "license": "MIT",
         "catalogUrl": "https://www.ui-skills.com/"
       },
@@ -93,32 +165,33 @@
         "type": "catalog"
       },
       "install": {
-        "default": "npx skills add ibelick/ui-skills --skill frontend-design -g -y",
-        "cursor": "npx skills add ibelick/ui-skills --skill frontend-design -a cursor -g -y",
-        "claude": "npx skills add ibelick/ui-skills --skill frontend-design -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill frontend-design -a codex -g -y"
+        "default": "npx skills add ibelick/ui-skills --skill baseline-ui -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill baseline-ui -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill baseline-ui -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill baseline-ui -a codex -g -y"
       },
       "cli": {
         "featured": true
       },
       "sourceType": "catalog",
-      "path": "catalog/ibelick-frontend-design.json"
+      "path": "catalog/ibelick-baseline-ui.json"
     },
     {
-      "slug": "ibelick/improve-animations",
+      "slug": "ibelick/fixing-motion-performance",
       "kind": "skill",
-      "name": "Improve Animations",
-      "description": "Motion polish for UI — timing, easing, reduced-motion, and interaction feedback that feels intentional.",
+      "name": "Fixing Motion Performance",
+      "description": "Diagnose and fix animation performance issues — jank, layout thrash, and motion that fights the main thread.",
       "category": "ui",
       "tags": [
         "animation",
         "motion",
+        "performance",
         "ui"
       ],
       "attribution": {
         "author": "ibelick",
         "repo": "ibelick/ui-skills",
-        "skill": "improve-animations",
+        "skill": "fixing-motion-performance",
         "license": "MIT",
         "catalogUrl": "https://www.ui-skills.com/"
       },
@@ -126,32 +199,33 @@
         "type": "catalog"
       },
       "install": {
-        "default": "npx skills add ibelick/ui-skills --skill improve-animations -g -y",
-        "cursor": "npx skills add ibelick/ui-skills --skill improve-animations -a cursor -g -y",
-        "claude": "npx skills add ibelick/ui-skills --skill improve-animations -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill improve-animations -a codex -g -y"
+        "default": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a codex -g -y"
       },
       "cli": {
         "featured": false
       },
       "sourceType": "catalog",
-      "path": "catalog/ibelick-improve-animations.json"
+      "path": "catalog/ibelick-fixing-motion-performance.json"
     },
     {
-      "slug": "ibelick/polish-ui",
+      "slug": "ibelick/improve-ui",
       "kind": "skill",
-      "name": "Polish UI",
-      "description": "Detail-oriented UI polish — spacing, hierarchy, states, and finishing passes that raise interface quality.",
+      "name": "Improve UI",
+      "description": "Audit an existing product surface against its design evidence and write self-contained UI improvement plans.",
       "category": "ui",
       "tags": [
         "ui",
-        "polish",
-        "design"
+        "audit",
+        "design-system",
+        "polish"
       ],
       "attribution": {
         "author": "ibelick",
         "repo": "ibelick/ui-skills",
-        "skill": "polish-ui",
+        "skill": "improve-ui",
         "license": "MIT",
         "catalogUrl": "https://www.ui-skills.com/"
       },
@@ -159,43 +233,16 @@
         "type": "catalog"
       },
       "install": {
-        "default": "npx skills add ibelick/ui-skills --skill polish-ui -g -y",
-        "cursor": "npx skills add ibelick/ui-skills --skill polish-ui -a cursor -g -y",
-        "claude": "npx skills add ibelick/ui-skills --skill polish-ui -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill polish-ui -a codex -g -y"
+        "default": "npx skills add ibelick/ui-skills --skill improve-ui -g -y",
+        "cursor": "npx skills add ibelick/ui-skills --skill improve-ui -a cursor -g -y",
+        "claude": "npx skills add ibelick/ui-skills --skill improve-ui -a claude-code -g -y",
+        "codex": "npx skills add ibelick/ui-skills --skill improve-ui -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
       },
       "sourceType": "catalog",
-      "path": "catalog/ibelick-polish-ui.json"
-    },
-    {
-      "slug": "ibelick/responsive-design",
-      "kind": "skill",
-      "name": "Responsive Design",
-      "description": "Build layouts that work across breakpoints with intentional mobile and desktop behavior.",
-      "category": "ui",
-      "tags": [
-        "responsive",
-        "layout",
-        "mobile"
-      ],
-      "attribution": {
-        "author": "ibelick",
-        "repo": "ibelick/ui-skills",
-        "skill": "responsive-design",
-        "license": "MIT",
-        "catalogUrl": "https://www.ui-skills.com/"
-      },
-      "source": {
-        "type": "catalog"
-      },
-      "install": {
-        "default": "npx skills add ibelick/ui-skills --skill responsive-design -g -y",
-        "cursor": "npx skills add ibelick/ui-skills --skill responsive-design -a cursor -g -y",
-        "claude": "npx skills add ibelick/ui-skills --skill responsive-design -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill responsive-design -a codex -g -y"
-      },
-      "sourceType": "catalog",
-      "path": "catalog/ibelick-responsive-design.json"
+      "path": "catalog/ibelick-improve-ui.json"
     },
     {
       "slug": "ibelick/ui-skills-root",

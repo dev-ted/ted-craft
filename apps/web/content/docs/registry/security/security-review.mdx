@@ -5,21 +5,21 @@ description: "Pre-publish checklist: secrets, personal IDs, attribution, and val
 
 <div className="not-prose mb-6 flex flex-wrap items-center gap-3">
   <KindBadge kind="skill" />
-  <span className="text-sm text-fd-muted-foreground">security · first-party</span>
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
 </div>
-
-<InstallPanel
-  slug="security-review"
-  cursorCommand={"npx skills add dev-ted/ted-craft --skill security-review --path registry/first-party/security-review/skill -a cursor -g -y"}
-  claudeCommand={"npx skills add dev-ted/ted-craft --skill security-review --path registry/first-party/security-review/skill -a claude-code -g -y"}
-  codexCommand={"npx skills add dev-ted/ted-craft --skill security-review --path registry/first-party/security-review/skill -a codex -g -y"}
-  
-/>
 
 
 
 <CliCommand>npx ted-craft add security-review -a cursor -g -y</CliCommand>
 
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add security-review -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add security-review -a claude -g -y"}
+  codexCommand={"npx ted-craft add security-review -a codex -g -y"}
+  showInstall={true}>{
+"---\nname: security-review\ndescription: >-\n  Pre-publish security checklist for ted-craft registry artifacts: secret scanning,\n  no personal IDs, attribution for catalog entries, and validate-registry gates.\n  Use before merging registry PRs or publishing new skills.\n---\n\n# Security review (registry)\n\nBefore publishing or merging registry changes:\n\n## Must pass\n\n1. `npm run validate` — Zod manifests, frontmatter, hooks JSON, secret patterns, no absolute home-directory paths\n2. No API keys, tokens, private keys, or `.env` values in artifact files\n3. No personal workspace IDs, emails, or private ClickUp list IDs — placeholders only\n4. Catalog entries include `attribution.license` + `catalogUrl` + upstream install commands\n5. First-party items ship with `manifest.json` + validated artifacts\n\n## Review prompts\n\n- Could this skill cause destructive MCP actions without confirmation?\n- Are destructive ops documented as requiring user confirmation?\n- Does description over-claim access or hide side effects?\n\n## CI\n\nPRs touching `registry/` run `validate-registry`. Fix errors locally before push."
+}</RegistryInstallPreview>
 
 # Security review (registry)
 

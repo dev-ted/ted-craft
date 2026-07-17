@@ -1,30 +1,40 @@
 ---
 title: Getting started
-description: Install the CLI and add your first artifact.
+description: Add your first skill to Cursor, Claude, or Codex.
 ---
 
-## Install an artifact
+## Add a skill
+
+Pick your agent, then run:
 
 ```bash
 npx ted-craft add <slug> -a cursor -g -y
 ```
 
-Agents: `cursor`, `claude`, `codex`.
+Swap the agent flag as needed:
 
-## Discover
+| Agent | Flag |
+|-------|------|
+| Cursor | `-a cursor` |
+| Claude Code | `-a claude` |
+| Codex | `-a codex` |
+
+Find slugs on [Browse](/browse) or on each skill's docs page.
+
+## Find something useful
 
 ```bash
 npx ted-craft list
 npx ted-craft search clickup
-npx ted-craft get ted-craft-root
+npx ted-craft get click-up-maintainer
 npx ted-craft start
 ```
 
-## Author a first-party skill
+- **list** — see what is available  
+- **search** — filter by keyword  
+- **get** — print a skill's details  
+- **start** — let the router suggest what to install  
 
-1. Add `registry/first-party/<slug>/` with `manifest.json` + artifacts
-2. Run `npm run validate`
-3. Run `npm run generate`
-4. Open a PR — CI re-validates the registry
+## What you will see on a skill page
 
-See the **create-skill** and **security-review** skills for the full checklist.
+Each skill page explains what it is for, shows install commands for your agent, and includes the skill's own instructions so you can tell whether it matches what you need before you add it.

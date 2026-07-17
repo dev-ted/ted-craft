@@ -28,7 +28,7 @@ export function CodeBlock({ children, label = 'Terminal', className }: Props) {
   return (
     <div
       className={cn(
-        'not-prose my-4 overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-ink)]',
+        'not-prose my-4 overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-console)]',
         className,
       )}
     >
@@ -51,7 +51,7 @@ export function CodeBlock({ children, label = 'Terminal', className }: Props) {
           {copied ? 'Copied' : 'Copy'}
         </Button>
       </div>
-      <pre className="overflow-x-auto px-4 py-3 font-mono text-sm text-[color:var(--tc-paper)]">
+      <pre className="overflow-x-auto px-4 py-3 font-mono text-sm text-[color:var(--tc-console-fg)]">
         <code>{command}</code>
       </pre>
     </div>

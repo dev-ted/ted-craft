@@ -4,4 +4,4 @@ import { findRepoRoot } from "./load.js";
 
 const root = findRepoRoot();
 generateIndex(root);
-generateDocs(root);
+await generateDocs(root);

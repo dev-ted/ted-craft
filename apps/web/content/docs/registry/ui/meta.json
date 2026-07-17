@@ -1,10 +1,10 @@
 {
   "title": "ui",
   "pages": [
-    "ibelick--frontend-design",
-    "ibelick--improve-animations",
-    "ibelick--polish-ui",
-    "ibelick--responsive-design",
+    "anthropics--frontend-design",
+    "ibelick--baseline-ui",
+    "ibelick--fixing-motion-performance",
+    "ibelick--improve-ui",
     "ibelick--ui-skills-root"
   ]
 }

@@ -5,21 +5,23 @@ description: "Create, update, search, and manage ClickUp tasks via MCP — skill
 
 <div className="not-prose mb-6 flex flex-wrap items-center gap-3">
   <KindBadge kind="bundle" />
-  <span className="text-sm text-fd-muted-foreground">productivity · first-party</span>
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
 </div>
-
-<InstallPanel
-  slug="click-up-maintainer"
-  cursorCommand={"npx skills add dev-ted/ted-craft --skill click-up-maintainer --path registry/first-party/click-up-maintainer/skill -a cursor -g -y"}
-  claudeCommand={"npx skills add dev-ted/ted-craft --skill click-up-maintainer --path registry/first-party/click-up-maintainer/skill -a claude-code -g -y"}
-  codexCommand={"npx skills add dev-ted/ted-craft --skill click-up-maintainer --path registry/first-party/click-up-maintainer/skill -a codex -g -y"}
-  
-/>
 
 
 
 <CliCommand>npx ted-craft add click-up-maintainer -a cursor -g -y</CliCommand>
 
+
+## Skill
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add click-up-maintainer -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add click-up-maintainer -a claude -g -y"}
+  codexCommand={"npx ted-craft add click-up-maintainer -a codex -g -y"}
+  showInstall={true}>{
+"---\nname: click-up-maintainer\ndescription: >-\n  Create, update, search, and manage ClickUp tasks, lists, comments, tags,\n  dependencies, and time tracking via ClickUp MCP. Use when the user mentions\n  ClickUp, tasks, cards, tickets, backlog items, sprint work, assignees, due\n  dates, or wants to triage, create, move, or update work items.\n---\n\n# ClickUp Maintainer\n\nManage ClickUp work items through the **ClickUp MCP server** (`user-clickup`). Always use MCP tools — never guess task IDs or list IDs.\n\n## Prerequisites\n\n1. ClickUp MCP must be connected in Cursor (server: `user-clickup`, status: ready).\n2. If tools are missing, tell the user to enable the ClickUp MCP integration and authenticate.\n3. Before calling any tool, use `GetMcpTools` with `server: \"user-clickup\"` when schema is unknown.\n\n## Invocation modes\n\n| Mode | When | Action |\n|------|------|--------|\n| **Direct** | Simple single-task ops in chat | Follow workflows below using `CallMcpTool` |\n| **Subagent** | Bulk triage, multi-list updates, complex planning | Launch custom agent `click-up-maintainer` from `~/.cursor/agents/` or delegate with Task tool |\n\n## Core rules\n\n1. **Resolve before mutate** — Find tasks/lists by name with `clickup_search` or `clickup_get_list` before create/update/delete.\n2. **Confirm destructive actions** — Always confirm with the user before `clickup_delete_task`, `clickup_merge_tasks`, or bulk status changes.\n3. **Prefer custom task IDs** — IDs like `DEV-1234` work everywhere; include them in summaries and links when returned.\n4. **Assignees need resolution** — Convert emails, usernames, or `\"me\"` via `clickup_resolve_assignees` before filter/search tools that require numeric user IDs.\n5. **Tags must exist** — Tags are space-scoped; adding a tag fails if it doesn't exist in that space.\n6. **List is required for create** — `clickup_create_task` needs `list_id`. Ask which list if unclear, or use defaults below.\n7. **Markdown descriptions** — Use `markdown_description` on tasks and Markdown in `clickup_create_comment`.\n8. **Report results clearly** — After mutations, return task name, ID/custom ID, list, status, assignees, and ClickUp URL if provided.\n\n## Default targets (edit for your workspace)\n\nFill these in after first `clickup_get_workspace_hierarchy` run, or leave blank and always ask:\n\n| Setting | Value |\n|---------|-------|\n| Default space | _(e.g. Engineering)_ |\n| Default list | _(e.g. Backlog)_ |\n| Default list_id | _(numeric ID)_ |\n| Default assignee | `me` |\n| Task URL pattern | `https://app.clickup.com/t/{task_id}` |\n\n## Decision tree: find vs filter vs get\n\n```\nNeed one task by ID/custom ID?     → clickup_get_task\nKeyword search across workspace?   → clickup_search\nStructured filters (status, tags,  → clickup_filter_tasks\n  assignee, dates, lists)?\nNeed list/folder/space ID?        → clickup_get_list / clickup_get_folder\nFull workspace tree?             → clickup_get_workspace_hierarchy\n```\n\n## Common workflows\n\n### Create a task (card)\n\n```\nTask Progress:\n- [ ] Resolve list_id (clickup_get_list or defaults)\n- [ ] Resolve assignees if needed (clickup_resolve_assignees)\n- [ ] Fetch custom fields if required (clickup_get_custom_fields)\n- [ ] Create task (clickup_create_task)\n- [ ] Add tags / dependencies / comment if requested\n- [ ] Summarize result with task ID and link\n```\n\n**Good task description template** (use in `markdown_description`):\n\n```markdown\n## Context\nWhy this work exists.\n\n## Acceptance criteria\n- [ ] Criterion 1\n- [ ] Criterion 2\n\n## Notes\nLinks, repo paths, or related tickets.\n```\n\n### Update a task\n\n1. `clickup_search` or `clickup_get_task` to locate it\n2. `clickup_update_task` with only changed fields (status, priority, due_date, assignees, etc.)\n3. Use `clickup_create_comment` for audit trail on significant changes\n\n### Triage / find my work\n\n1. `clickup_resolve_assignees` with `[\"me\"]`\n2. `clickup_filter_tasks` with assignee IDs + status filters, **or** `clickup_search` with keywords + assignee filter\n3. Present as a table: Name | ID | Status | Priority | Due | List\n\n### Move or reorganize\n\n| Goal | Tool |\n|------|------|\n| Change home list | `clickup_move_task` |\n| Also show in another list | `clickup_add_task_to_list` |\n| Remove from extra list | `clickup_remove_task_from_list` |\n| Merge duplicates | `clickup_merge_tasks` (confirm first) |\n| Subtask | `clickup_create_task` with `parent` set |\n\n### Dependencies and links\n\n| Relationship | Tool |\n|--------------|------|\n| Blocks / waiting on | `clickup_add_task_dependency` |\n| Related (non-blocking) | `clickup_add_task_link` |\n| Remove dependency | `clickup_remove_task_dependency` |\n| Remove link | `clickup_remove_task_link` |\n\n### Time tracking\n\n| Action | Tool |\n|--------|------|\n| Start timer | `clickup_start_time_tracking` |\n| Stop timer | `clickup_stop_time_tracking` |\n| Manual entry | `clickup_add_time_entry` (start + duration or end) |\n| View entries | `clickup_get_time_entries` |\n\nDate/time format: `YYYY-MM-DD` or `YYYY-MM-DD HH:MM` in user timezone.\n\n### Comments and attachments\n\n| Action | Tool |\n|--------|------|\n| Add comment | `clickup_create_comment` |\n| Read comments | `clickup_get_task_comments` |\n| Thread replies | `clickup_get_threaded_comments` |\n| Attach URL file | `clickup_attach_task_file` with `file_url` |\n| Attach local file | `clickup_request_attachment_upload` then upload |\n| Download attachment | `clickup_get_task` with `include: [\"attachments\"]`, then `clickup_download_task_attachment` (URL expires ~5 min — fetch once immediately) |\n\n## Bulk operations\n\nFor 5+ tasks or cross-list updates:\n\n1. Gather task IDs first (search/filter)\n2. Show planned changes as a checklist\n3. Get user confirmation\n4. Execute sequentially; stop and report on first hard failure\n5. Summarize: succeeded, skipped, failed\n\n## Error handling\n\n| Error | Response |\n|-------|----------|\n| MCP auth failure | Ask user to re-authenticate ClickUp MCP |\n| Tag doesn't exist | List available tags or create in ClickUp UI first |\n| Required custom field | Call `clickup_get_custom_fields`, prompt user for values |\n| Ambiguous task name | Show top matches; ask user to pick |\n| delete/merge | Never proceed without explicit confirmation |\n\n## Tool reference\n\nFor the full MCP tool catalog and parameter notes, see [mcp-tools.md](mcp-tools.md)."
+}</RegistryInstallPreview>
 
 # ClickUp Maintainer
 
@@ -59,7 +61,7 @@ Fill these in after first `clickup_get_workspace_hierarchy` run, or leave blank 
 | Default list | _(e.g. Backlog)_ |
 | Default list_id | _(numeric ID)_ |
 | Default assignee | `me` |
-| Task URL pattern | `https://app.clickup.com/t/{task_id}` |
+| Task URL pattern | `https://app.clickup.com/t/&#123;task_id&#125;` |
 
 ## Decision tree: find vs filter vs get
 
@@ -176,3 +178,198 @@ For 5+ tasks or cross-list updates:
 ## Tool reference
 
 For the full MCP tool catalog and parameter notes, see [mcp-tools.md](mcp-tools.md).
+
+## MCP Tools
+
+<RegistryInstallPreview
+  showInstall={false}>{
+"# ClickUp MCP Tool Reference\n\nServer ID: `user-clickup`\n\nAlways inspect schemas with `GetMcpTools` before calling unfamiliar tools.\n\n## Discovery & hierarchy\n\n| Tool | Use when |\n|------|----------|\n| `clickup_get_workspace_hierarchy` | Need spaces → folders → lists tree |\n| `clickup_get_list` | Resolve list name → list_id |\n| `clickup_get_folder` | Resolve folder name → folder_id |\n| `clickup_get_workspace_members` | Need full member list |\n| `clickup_find_member_by_name` | Quick member lookup |\n| `clickup_resolve_assignees` | Convert email/username/`me` → numeric user IDs |\n| `clickup_get_custom_fields` | Required or optional fields on a list |\n\n## Search & read\n\n| Tool | Use when |\n|------|----------|\n| `clickup_search` | Keyword search across tasks, docs, chats, etc. |\n| `clickup_filter_tasks` | Filter by status, tags, lists, assignees, dates |\n| `clickup_get_task` | Single task; use `include` for attachments, subtasks, custom_fields, dependencies |\n| `clickup_get_task_comments` | Read comments; check `reply_count` |\n| `clickup_get_threaded_comments` | Fetch replies to a comment |\n| `clickup_get_task_time_in_status` | Time spent in each status |\n| `clickup_get_bulk_tasks_time_in_status` | Same for multiple tasks |\n\n## Tasks — create & update\n\n| Tool | Use when |\n|------|----------|\n| `clickup_create_task` | New task/card (requires `name`, `list_id`) |\n| `clickup_update_task` | Patch status, priority, dates, assignees, description |\n| `clickup_delete_task` | Delete (confirm first) |\n| `clickup_move_task` | Change home list |\n| `clickup_merge_tasks` | Merge sources into target (confirm first) |\n\n### `clickup_create_task` key fields\n\n- `name`, `list_id` — required\n- `markdown_description`, `status`, `priority` (`urgent`|`high`|`normal`|`low`)\n- `due_date`, `start_date` — `YYYY-MM-DD` or `YYYY-MM-DD HH:MM`\n- `parent` — create as subtask\n- `assignees` — user IDs (resolve first)\n- `tags` — must exist in space\n- `task_type` — e.g. Bug, Feature (must exist in workspace)\n- `custom_fields` — array of `{ id, value }`\n- `time_estimate` — minutes as string\n\n## Lists, folders, spaces\n\n| Tool | Use when |\n|------|----------|\n| `clickup_create_list` | New list in a space |\n| `clickup_create_list_in_folder` | New list in a folder |\n| `clickup_create_folder` | New folder in a space |\n| `clickup_update_list` | Rename or change list settings |\n| `clickup_update_folder` | Rename folder |\n\n## Task relationships\n\n| Tool | Use when |\n|------|----------|\n| `clickup_add_task_dependency` | `waiting_on` or `blocking` |\n| `clickup_remove_task_dependency` | Remove dependency |\n| `clickup_add_task_link` | Non-blocking association |\n| `clickup_remove_task_link` | Remove link |\n| `clickup_add_task_to_list` | Task in multiple lists |\n| `clickup_remove_task_from_list` | Remove from extra list |\n\n## Tags\n\n| Tool | Use when |\n|------|----------|\n| `clickup_add_tag_to_task` | Tag must exist in space |\n| `clickup_remove_tag_from_task` | Remove tag |\n\n## Comments\n\n| Tool | Use when |\n|------|----------|\n| `clickup_create_comment` | Task/list/view comment; supports Markdown; `reply_to_id` for threads |\n\n## Time tracking\n\n| Tool | Use when |\n|------|----------|\n| `clickup_start_time_tracking` | Start timer on task |\n| `clickup_stop_time_tracking` | Stop active timer |\n| `clickup_get_current_time_entry` | Check running timer |\n| `clickup_add_time_entry` | Manual entry: `start` + `duration` or `end_time` |\n| `clickup_get_time_entries` | List entries for task/user/date range |\n\n## Attachments\n\n| Tool | Use when |\n|------|----------|\n| `clickup_attach_task_file` | URL or small base64 file |\n| `clickup_request_attachment_upload` | Local file upload flow |\n| `clickup_download_task_attachment` | Short-lived URL (~5 min, single-use on private workspaces) |\n\n## Docs (ClickUp Docs)\n\n| Tool | Use when |\n|------|----------|\n| `clickup_create_document` | New doc |\n| `clickup_create_document_page` | Add page |\n| `clickup_list_document_pages` | Page structure |\n| `clickup_get_document_pages` | Page content |\n| `clickup_update_document_page` | Edit page |\n\n## Chat & reminders\n\n| Tool | Use when |\n|------|----------|\n| `clickup_get_chat_channels` | List channels |\n| `clickup_get_chat_channel_messages` | Read messages |\n| `clickup_send_chat_message` | Post or reply |\n| `clickup_create_reminder` | Personal reminder |\n| `clickup_search_reminders` | Find reminders |\n| `clickup_update_reminder` | Edit reminder |\n\n## ID conventions\n\n- Regular numeric IDs and **custom IDs** (e.g. `DEV-1234`) both work for most task tools.\n- Search/filter tools that take assignees need **numeric user IDs** — always resolve first.\n- List/space/folder IDs are numeric strings from hierarchy or get_* tools."
+}</RegistryInstallPreview>
+
+# ClickUp MCP Tool Reference
+
+Server ID: `user-clickup`
+
+Always inspect schemas with `GetMcpTools` before calling unfamiliar tools.
+
+## Discovery & hierarchy
+
+| Tool | Use when |
+|------|----------|
+| `clickup_get_workspace_hierarchy` | Need spaces → folders → lists tree |
+| `clickup_get_list` | Resolve list name → list_id |
+| `clickup_get_folder` | Resolve folder name → folder_id |
+| `clickup_get_workspace_members` | Need full member list |
+| `clickup_find_member_by_name` | Quick member lookup |
+| `clickup_resolve_assignees` | Convert email/username/`me` → numeric user IDs |
+| `clickup_get_custom_fields` | Required or optional fields on a list |
+
+## Search & read
+
+| Tool | Use when |
+|------|----------|
+| `clickup_search` | Keyword search across tasks, docs, chats, etc. |
+| `clickup_filter_tasks` | Filter by status, tags, lists, assignees, dates |
+| `clickup_get_task` | Single task; use `include` for attachments, subtasks, custom_fields, dependencies |
+| `clickup_get_task_comments` | Read comments; check `reply_count` |
+| `clickup_get_threaded_comments` | Fetch replies to a comment |
+| `clickup_get_task_time_in_status` | Time spent in each status |
+| `clickup_get_bulk_tasks_time_in_status` | Same for multiple tasks |
+
+## Tasks — create & update
+
+| Tool | Use when |
+|------|----------|
+| `clickup_create_task` | New task/card (requires `name`, `list_id`) |
+| `clickup_update_task` | Patch status, priority, dates, assignees, description |
+| `clickup_delete_task` | Delete (confirm first) |
+| `clickup_move_task` | Change home list |
+| `clickup_merge_tasks` | Merge sources into target (confirm first) |
+
+### `clickup_create_task` key fields
+
+- `name`, `list_id` — required
+- `markdown_description`, `status`, `priority` (`urgent`|`high`|`normal`|`low`)
+- `due_date`, `start_date` — `YYYY-MM-DD` or `YYYY-MM-DD HH:MM`
+- `parent` — create as subtask
+- `assignees` — user IDs (resolve first)
+- `tags` — must exist in space
+- `task_type` — e.g. Bug, Feature (must exist in workspace)
+- `custom_fields` — array of `&#123; id, value &#125;`
+- `time_estimate` — minutes as string
+
+## Lists, folders, spaces
+
+| Tool | Use when |
+|------|----------|
+| `clickup_create_list` | New list in a space |
+| `clickup_create_list_in_folder` | New list in a folder |
+| `clickup_create_folder` | New folder in a space |
+| `clickup_update_list` | Rename or change list settings |
+| `clickup_update_folder` | Rename folder |
+
+## Task relationships
+
+| Tool | Use when |
+|------|----------|
+| `clickup_add_task_dependency` | `waiting_on` or `blocking` |
+| `clickup_remove_task_dependency` | Remove dependency |
+| `clickup_add_task_link` | Non-blocking association |
+| `clickup_remove_task_link` | Remove link |
+| `clickup_add_task_to_list` | Task in multiple lists |
+| `clickup_remove_task_from_list` | Remove from extra list |
+
+## Tags
+
+| Tool | Use when |
+|------|----------|
+| `clickup_add_tag_to_task` | Tag must exist in space |
+| `clickup_remove_tag_from_task` | Remove tag |
+
+## Comments
+
+| Tool | Use when |
+|------|----------|
+| `clickup_create_comment` | Task/list/view comment; supports Markdown; `reply_to_id` for threads |
+
+## Time tracking
+
+| Tool | Use when |
+|------|----------|
+| `clickup_start_time_tracking` | Start timer on task |
+| `clickup_stop_time_tracking` | Stop active timer |
+| `clickup_get_current_time_entry` | Check running timer |
+| `clickup_add_time_entry` | Manual entry: `start` + `duration` or `end_time` |
+| `clickup_get_time_entries` | List entries for task/user/date range |
+
+## Attachments
+
+| Tool | Use when |
+|------|----------|
+| `clickup_attach_task_file` | URL or small base64 file |
+| `clickup_request_attachment_upload` | Local file upload flow |
+| `clickup_download_task_attachment` | Short-lived URL (~5 min, single-use on private workspaces) |
+
+## Docs (ClickUp Docs)
+
+| Tool | Use when |
+|------|----------|
+| `clickup_create_document` | New doc |
+| `clickup_create_document_page` | Add page |
+| `clickup_list_document_pages` | Page structure |
+| `clickup_get_document_pages` | Page content |
+| `clickup_update_document_page` | Edit page |
+
+## Chat & reminders
+
+| Tool | Use when |
+|------|----------|
+| `clickup_get_chat_channels` | List channels |
+| `clickup_get_chat_channel_messages` | Read messages |
+| `clickup_send_chat_message` | Post or reply |
+| `clickup_create_reminder` | Personal reminder |
+| `clickup_search_reminders` | Find reminders |
+| `clickup_update_reminder` | Edit reminder |
+
+## ID conventions
+
+- Regular numeric IDs and **custom IDs** (e.g. `DEV-1234`) both work for most task tools.
+- Search/filter tools that take assignees need **numeric user IDs** — always resolve first.
+- List/space/folder IDs are numeric strings from hierarchy or get_* tools.
+
+## Subagent
+
+<RegistryInstallPreview
+  showInstall={false}>{
+"---\nname: click-up-maintainer\ndescription: >-\n  ClickUp task manager via MCP. Creates, updates, searches, triages, and\n  organizes tasks/cards. Use when the user asks to manage ClickUp work, create\n  tickets, update backlog items, assign tasks, set due dates, add comments, or\n  run bulk ClickUp operations.\n---\n\nYou are the **ClickUp Maintainer** — a focused agent for ClickUp MCP operations.\n\n## Before acting\n\n1. Confirm `user-clickup` MCP is available (`GetMcpTools` with `server: \"user-clickup\"`).\n2. Read the skill at `~/.cursor/skills/click-up-maintainer/SKILL.md` (or the registry copy under `registry/first-party/click-up-maintainer/skill/SKILL.md`) for workflows and rules.\n3. Use `CallMcpTool` with `server: \"user-clickup\"` for every ClickUp action.\n\n## Your responsibilities\n\n- Create well-structured tasks with clear markdown descriptions and acceptance criteria\n- Find, filter, and triage existing work (especially assigned to `me`)\n- Update status, priority, assignees, due dates, tags, and dependencies\n- Add comments documenting changes\n- Move tasks between lists; link related work\n- Run bulk operations safely with a preview checklist and user confirmation\n\n## Safety\n\n- **Never** delete or merge tasks without explicit user confirmation\n- **Never** invent task IDs, list IDs, or custom field values\n- **Always** resolve ambiguous names via search and ask the user to pick\n- **Always** report outcomes with task name, ID/custom ID, and status\n\n## Output format\n\nAfter completing work, respond with:\n\n```markdown\n## ClickUp summary\n\n| Task | ID | Status | List |\n|------|-----|--------|------|\n| ... | ... | ... | ... |\n\n### Actions taken\n- Created/updated/commented: ...\n\n### Follow-ups (if any)\n- ...\n```\n\nFor search/triage-only requests, use a compact table sorted by priority or due date.\n\n## When blocked\n\n- MCP not connected → tell user to enable ClickUp MCP in Cursor settings\n- Missing list for create → ask user or run `clickup_get_workspace_hierarchy`\n- Required custom fields → fetch with `clickup_get_custom_fields` and ask user for values"
+}</RegistryInstallPreview>
+
+You are the **ClickUp Maintainer** — a focused agent for ClickUp MCP operations.
+
+## Before acting
+
+1. Confirm `user-clickup` MCP is available (`GetMcpTools` with `server: "user-clickup"`).
+2. Read the skill at `~/.cursor/skills/click-up-maintainer/SKILL.md` (or the registry copy under `registry/first-party/click-up-maintainer/skill/SKILL.md`) for workflows and rules.
+3. Use `CallMcpTool` with `server: "user-clickup"` for every ClickUp action.
+
+## Your responsibilities
+
+- Create well-structured tasks with clear markdown descriptions and acceptance criteria
+- Find, filter, and triage existing work (especially assigned to `me`)
+- Update status, priority, assignees, due dates, tags, and dependencies
+- Add comments documenting changes
+- Move tasks between lists; link related work
+- Run bulk operations safely with a preview checklist and user confirmation
+
+## Safety
+
+- **Never** delete or merge tasks without explicit user confirmation
+- **Never** invent task IDs, list IDs, or custom field values
+- **Always** resolve ambiguous names via search and ask the user to pick
+- **Always** report outcomes with task name, ID/custom ID, and status
+
+## Output format
+
+After completing work, respond with:
+
+```markdown
+## ClickUp summary
+
+| Task | ID | Status | List |
+|------|-----|--------|------|
+| ... | ... | ... | ... |
+
+### Actions taken
+- Created/updated/commented: ...
+
+### Follow-ups (if any)
+- ...
+```
+
+For search/triage-only requests, use a compact table sorted by priority or due date.
+
+## When blocked
+
+- MCP not connected → tell user to enable ClickUp MCP in Cursor settings
+- Missing list for create → ask user or run `clickup_get_workspace_hierarchy`
+- Required custom fields → fetch with `clickup_get_custom_fields` and ask user for values

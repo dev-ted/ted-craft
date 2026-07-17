@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { HomeLayout } from 'fumadocs-ui/layouts/home';
 import { baseOptions } from '@/lib/layout.shared';
 import { docsPathForItem, loadRegistryIndex, type RegistryItem } from '@/lib/registry';
+import { authorDisplay } from '@/lib/shared';
 import { KindBadge } from '@/components/KindBadge';
 import type { Kind } from '@/components/kind';
 import { Button } from '@/components/ui/button';
@@ -20,11 +21,11 @@ export const Route = createFileRoute('/')({
   component: Home,
   head: () => ({
     meta: [
-      { title: 'ted-craft — agent artifact marketplace' },
+      { title: 'ted-craft — skills for your AI agent' },
       {
         name: 'description',
         content:
-          'Install skills, subagents, rules, and hooks for Cursor, Claude, and Codex.',
+          'Browse skills for Cursor, Claude, and Codex — see what each one does and add it in one command.',
       },
     ],
   }),
@@ -70,7 +71,7 @@ function Home() {
             data-hero-el
             className="mb-4 font-mono text-[11px] uppercase tracking-[0.2em] text-[color:var(--tc-muted)]"
           >
-            Marketplace · {count} artifacts
+            Marketplace · {count} skills
           </p>
           <h1
             data-hero-el
@@ -82,8 +83,8 @@ function Home() {
             data-hero-el
             className="mt-5 max-w-xl text-lg text-[color:var(--tc-muted)] md:text-xl"
           >
-            A workbench for agent skills, subagents, rules, and hooks — first-party
-            craft plus attributed catalog installs.
+            Find skills for Cursor, Claude, and Codex — see what each one does,
+            then add it with one command.
           </p>
           <div data-hero-el className="mt-8 flex flex-wrap items-center gap-3">
             <Button
@@ -91,7 +92,7 @@ function Home() {
               className="tc-press rounded-lg bg-[color:var(--tc-ink)] text-[color:var(--tc-paper)] hover:bg-[color:var(--tc-ink)]/90"
               render={<Link to="/browse" />}
             >
-              Browse registry
+              Browse skills
             </Button>
             <Button
               variant="outline"
@@ -107,7 +108,7 @@ function Home() {
 
           <div
             data-hero-el
-            className="mt-12 overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-ink)] shadow-[0_24px_60px_-28px_rgba(20,24,31,0.55)]"
+            className="mt-12 overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-console)] shadow-[0_24px_60px_-28px_rgba(20,24,31,0.55)]"
           >
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
               <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/45">
@@ -117,7 +118,7 @@ function Home() {
                 npx ted-craft
               </span>
             </div>
-            <pre className="overflow-x-auto px-4 py-4 font-mono text-sm leading-relaxed text-[color:var(--tc-paper)] md:text-[15px]">
+            <pre className="overflow-x-auto px-4 py-4 font-mono text-sm leading-relaxed text-[color:var(--tc-console-fg)] md:text-[15px]">
               <code>
                 <span className="text-white/40">$ </span>
                 npx ted-craft start{'\n'}
@@ -162,7 +163,7 @@ function FeatureCard({ item }: { item: RegistryItem }) {
       <div className="mb-2 flex items-center gap-2">
         <KindBadge kind={item.kind as Kind} />
         <span className="font-mono text-[10px] uppercase tracking-wide text-[color:var(--tc-muted)]">
-          {item.sourceType}
+          {authorDisplay(item)}
         </span>
       </div>
       <h3 className="text-base font-semibold text-[color:var(--tc-ink)] group-hover:text-[color:var(--tc-ink)]">

@@ -4,7 +4,7 @@
   "description": "CLI for the ted-craft agent artifact marketplace",
   "type": "module",
   "bin": {
-    "ted-craft": "./dist/cli.js"
+    "ted-craft": "dist/cli.js"
   },
   "files": [
     "dist",
@@ -39,7 +39,7 @@
     "type": "git",
     "url": "https://github.com/dev-ted/ted-craft.git"
   },
-  "homepage": "https://github.com/dev-ted/ted-craft",
+  "homepage": "https://ted-craft.vercel.app",
   "bugs": {
     "url": "https://github.com/dev-ted/ted-craft/issues"
   }

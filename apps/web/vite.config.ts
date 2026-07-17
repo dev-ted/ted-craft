@@ -1,9 +1,12 @@
+import { createRequire } from 'node:module';
 import react from '@vitejs/plugin-react';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from 'fumadocs-mdx/vite';
 import { nitro } from 'nitro/vite';
+
+const require = createRequire(import.meta.url);
 
 export default defineConfig({
   server: {
@@ -26,7 +29,7 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
     alias: {
-      tslib: 'tslib/tslib.es6.js',
+      tslib: require.resolve('tslib/tslib.es6.js'),
     },
   },
 });
