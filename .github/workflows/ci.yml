@@ -18,10 +18,15 @@ jobs:
       - run: bun run generate
       - name: Check generated files are committed
         run: |
-          git diff --exit-code -- registry/index.json apps/web/src/data/registry.json apps/web/content/docs/registry || (
+          # -I ignores generatedAt-only churn if a timestamp ever slips through.
+          if ! git diff -I '"generatedAt"' --exit-code -- \
+            registry/index.json \
+            apps/web/src/data/registry.json \
+            apps/web/content/docs/registry
+          then
             echo "Generated registry outputs are stale. Run bun run generate and commit."
             exit 1
-          )
+          fi
 
   web:
     runs-on: ubuntu-latest
