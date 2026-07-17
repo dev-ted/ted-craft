@@ -1,0 +1,27 @@
+{
+  "slug": "emilkowalski/improve-animations",
+  "kind": "skill",
+  "name": "Improve Animations",
+  "description": "Survey animation and motion code as a senior motion advisor, then produce prioritized audits and self-contained implementation plans. Read-only — plans improvements, does not apply them.",
+  "category": "ui",
+  "tags": ["animation", "motion", "audit", "ui"],
+  "attribution": {
+    "author": "emilkowalski",
+    "repo": "emilkowalski/skills",
+    "skill": "improve-animations",
+    "license": "MIT",
+    "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/improve-animations"
+  },
+  "source": {
+    "type": "catalog"
+  },
+  "install": {
+    "default": "npx skills add emilkowalski/skills --skill improve-animations -g -y",
+    "cursor": "npx skills add emilkowalski/skills --skill improve-animations -a cursor -g -y",
+    "claude": "npx skills add emilkowalski/skills --skill improve-animations -a claude-code -g -y",
+    "codex": "npx skills add emilkowalski/skills --skill improve-animations -a codex -g -y"
+  },
+  "cli": {
+    "featured": true
+  }
+}
