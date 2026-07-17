@@ -7,6 +7,7 @@ import { docsPathForItem, loadRegistryIndex, type RegistryItem } from '@/lib/reg
 import { authorDisplay } from '@/lib/shared';
 import { KindBadge } from '@/components/KindBadge';
 import type { Kind } from '@/components/kind';
+import { SiteFooter } from '@/components/SiteFooter';
 import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute('/')({
@@ -147,6 +148,7 @@ function Home() {
             ))}
           </div>
         </section>
+        <SiteFooter />
       </div>
     </HomeLayout>
   );

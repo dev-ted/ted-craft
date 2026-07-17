@@ -21,10 +21,9 @@ export default defineConfig({
       },
     }),
     react(),
-    // please see https://tanstack.com/start/latest/docs/framework/react/guide/hosting#nitro for guides on hosting
-    nitro({
-      preset: 'vercel',
-    }),
+    // Vercel detects TanStack Start + Nitro and uses the Build Output API (.vercel/output).
+    // See https://tanstack.com/start/latest/docs/framework/react/guide/hosting#nitro
+    nitro(),
   ],
   resolve: {
     tsconfigPaths: true,
