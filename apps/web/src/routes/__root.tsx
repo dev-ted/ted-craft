@@ -1,4 +1,5 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
+import { Analytics } from '@vercel/analytics/react';
 import * as React from 'react';
 import appCss from '@/styles/app.css?url';
 import { RootProvider } from 'fumadocs-ui/provider/tanstack';
@@ -41,6 +42,7 @@ function RootComponent() {
             <Outlet />
           </TooltipProvider>
         </RootProvider>
+        <Analytics />
         <Scripts />
       </body>
     </html>
