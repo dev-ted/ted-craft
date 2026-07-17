@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T12:32:07.473Z",
+  "generatedAt": "2026-07-17T13:37:16.440Z",
   "items": [
     {
       "slug": "anthropics/frontend-design",
@@ -141,6 +141,211 @@
       },
       "sourceType": "first-party",
       "path": "first-party/docs-maintainer"
+    },
+    {
+      "slug": "emilkowalski/animation-vocabulary",
+      "kind": "skill",
+      "name": "Animation Vocabulary",
+      "description": "Reverse-lookup glossary that turns a vague motion description into the exact term — so you can prompt designers or agents with the right words.",
+      "category": "ui",
+      "tags": [
+        "animation",
+        "motion",
+        "vocabulary",
+        "ui"
+      ],
+      "attribution": {
+        "author": "emilkowalski",
+        "repo": "emilkowalski/skills",
+        "skill": "animation-vocabulary",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/animation-vocabulary"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add emilkowalski/skills --skill animation-vocabulary -g -y",
+        "cursor": "npx skills add emilkowalski/skills --skill animation-vocabulary -a cursor -g -y",
+        "claude": "npx skills add emilkowalski/skills --skill animation-vocabulary -a claude-code -g -y",
+        "codex": "npx skills add emilkowalski/skills --skill animation-vocabulary -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/emilkowalski-animation-vocabulary.json"
+    },
+    {
+      "slug": "emilkowalski/apple-design",
+      "kind": "skill",
+      "name": "Apple Design",
+      "description": "Apple's approach to fluid, physical interface design — springs, gestures, momentum, and interruptible motion — translated for the web.",
+      "category": "ui",
+      "tags": [
+        "animation",
+        "motion",
+        "gestures",
+        "apple",
+        "ui"
+      ],
+      "attribution": {
+        "author": "emilkowalski",
+        "repo": "emilkowalski/skills",
+        "skill": "apple-design",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/apple-design"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add emilkowalski/skills --skill apple-design -g -y",
+        "cursor": "npx skills add emilkowalski/skills --skill apple-design -a cursor -g -y",
+        "claude": "npx skills add emilkowalski/skills --skill apple-design -a claude-code -g -y",
+        "codex": "npx skills add emilkowalski/skills --skill apple-design -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/emilkowalski-apple-design.json"
+    },
+    {
+      "slug": "emilkowalski/emil-design-eng",
+      "kind": "skill",
+      "name": "Emil Design Eng",
+      "description": "Emil Kowalski's design-engineering philosophy for UI polish, components, animation decisions, and the invisible details that make software feel great.",
+      "category": "ui",
+      "tags": [
+        "design",
+        "ui",
+        "animation",
+        "polish"
+      ],
+      "attribution": {
+        "author": "emilkowalski",
+        "repo": "emilkowalski/skills",
+        "skill": "emil-design-eng",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/emil-design-eng"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add emilkowalski/skills --skill emil-design-eng -g -y",
+        "cursor": "npx skills add emilkowalski/skills --skill emil-design-eng -a cursor -g -y",
+        "claude": "npx skills add emilkowalski/skills --skill emil-design-eng -a claude-code -g -y",
+        "codex": "npx skills add emilkowalski/skills --skill emil-design-eng -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/emilkowalski-emil-design-eng.json"
+    },
+    {
+      "slug": "emilkowalski/find-animation-opportunities",
+      "kind": "skill",
+      "name": "Find Animation Opportunities",
+      "description": "Search a UI for places that don't animate but should — and reject everything that shouldn't. Read-only; proposes motion with exact values, does not implement.",
+      "category": "ui",
+      "tags": [
+        "animation",
+        "motion",
+        "discovery",
+        "ui"
+      ],
+      "attribution": {
+        "author": "emilkowalski",
+        "repo": "emilkowalski/skills",
+        "skill": "find-animation-opportunities",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/find-animation-opportunities"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add emilkowalski/skills --skill find-animation-opportunities -g -y",
+        "cursor": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a cursor -g -y",
+        "claude": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a claude-code -g -y",
+        "codex": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/emilkowalski-find-animation-opportunities.json"
+    },
+    {
+      "slug": "emilkowalski/improve-animations",
+      "kind": "skill",
+      "name": "Improve Animations",
+      "description": "Survey animation and motion code as a senior motion advisor, then produce prioritized audits and self-contained implementation plans. Read-only — plans improvements, does not apply them.",
+      "category": "ui",
+      "tags": [
+        "animation",
+        "motion",
+        "audit",
+        "ui"
+      ],
+      "attribution": {
+        "author": "emilkowalski",
+        "repo": "emilkowalski/skills",
+        "skill": "improve-animations",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/improve-animations"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add emilkowalski/skills --skill improve-animations -g -y",
+        "cursor": "npx skills add emilkowalski/skills --skill improve-animations -a cursor -g -y",
+        "claude": "npx skills add emilkowalski/skills --skill improve-animations -a claude-code -g -y",
+        "codex": "npx skills add emilkowalski/skills --skill improve-animations -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/emilkowalski-improve-animations.json"
+    },
+    {
+      "slug": "emilkowalski/review-animations",
+      "kind": "skill",
+      "name": "Review Animations",
+      "description": "Review animation and motion code against a high craft bar — timing, easing, origin, and consistency. Default to flagging; approval is earned.",
+      "category": "ui",
+      "tags": [
+        "animation",
+        "motion",
+        "review",
+        "ui"
+      ],
+      "attribution": {
+        "author": "emilkowalski",
+        "repo": "emilkowalski/skills",
+        "skill": "review-animations",
+        "license": "MIT",
+        "catalogUrl": "https://www.ui-skills.com/skills/emilkowalski/review-animations"
+      },
+      "source": {
+        "type": "catalog"
+      },
+      "install": {
+        "default": "npx skills add emilkowalski/skills --skill review-animations -g -y",
+        "cursor": "npx skills add emilkowalski/skills --skill review-animations -a cursor -g -y",
+        "claude": "npx skills add emilkowalski/skills --skill review-animations -a claude-code -g -y",
+        "codex": "npx skills add emilkowalski/skills --skill review-animations -a codex -g -y"
+      },
+      "cli": {
+        "featured": true
+      },
+      "sourceType": "catalog",
+      "path": "catalog/emilkowalski-review-animations.json"
     },
     {
       "slug": "ibelick/baseline-ui",

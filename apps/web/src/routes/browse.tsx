@@ -1,79 +1,161 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
-import { baseOptions } from '@/lib/layout.shared';
+import { IconX } from "@tabler/icons-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { useMemo, useState } from "react";
+import { FacetedFilter } from "@/components/FacetedFilter";
+import { KindBadge } from "@/components/KindBadge";
+import type { Kind } from "@/components/kind";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { baseOptions } from "@/lib/layout.shared";
 import {
   docsPathForItem,
   installCommands,
   loadRegistryIndex,
   type RegistryItem,
-} from '@/lib/registry';
-import { KindBadge } from '@/components/KindBadge';
-import type { Kind } from '@/components/kind';
-import { authorDisplay } from '@/lib/shared';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  NativeSelect,
-  NativeSelectOption,
-} from '@/components/ui/native-select';
+} from "@/lib/registry";
+import { authorDisplay } from "@/lib/shared";
 
 type Search = {
   q?: string;
-  kind?: string;
-  category?: string;
-  source?: string;
+  kind?: string[];
+  category?: string[];
+  source?: string[];
+  author?: string[];
 };
 
-export const Route = createFileRoute('/browse')({
+function parseList(value: unknown): string[] | undefined {
+  if (Array.isArray(value)) {
+    const list = value.filter(
+      (entry): entry is string => typeof entry === "string" && entry.length > 0,
+    );
+    return list.length > 0 ? list : undefined;
+  }
+  if (typeof value === "string" && value.length > 0) {
+    const list = value
+      .split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+    return list.length > 0 ? list : undefined;
+  }
+  return undefined;
+}
+
+function countBy<T>(items: T[], key: (item: T) => string): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const item of items) {
+    const value = key(item);
+    counts.set(value, (counts.get(value) ?? 0) + 1);
+  }
+  return counts;
+}
+
+export const Route = createFileRoute("/browse")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    q: typeof search.q === 'string' ? search.q : undefined,
-    kind: typeof search.kind === 'string' ? search.kind : undefined,
-    category: typeof search.category === 'string' ? search.category : undefined,
-    source: typeof search.source === 'string' ? search.source : undefined,
+    q: typeof search.q === "string" ? search.q : undefined,
+    kind: parseList(search.kind),
+    category: parseList(search.category),
+    source: parseList(search.source),
+    author: parseList(search.author),
   }),
   loader: async () => {
     const index = await loadRegistryIndex();
     const categories = [...new Set(index.items.map((i) => i.category))].sort();
     const kinds = [...new Set(index.items.map((i) => i.kind))].sort();
-    return { items: index.items, categories, kinds };
+    const authors = [...new Set(index.items.map((i) => authorDisplay(i)))].sort(
+      (a, b) => a.localeCompare(b),
+    );
+    return { items: index.items, categories, kinds, authors };
   },
   component: BrowsePage,
   head: () => ({
-    meta: [{ title: 'Browse — ted-craft' }],
+    meta: [{ title: "Browse — ted-craft" }],
   }),
 });
 
 function BrowsePage() {
-  const { items, categories, kinds } = Route.useLoaderData();
+  const { items, categories, kinds, authors } = Route.useLoaderData();
   const search = Route.useSearch();
   const navigate = Route.useNavigate();
   const [copied, setCopied] = useState<string | null>(null);
 
+  const kindCounts = useMemo(
+    () => countBy(items, (item) => item.kind),
+    [items],
+  );
+  const categoryCounts = useMemo(
+    () => countBy(items, (item) => item.category),
+    [items],
+  );
+  const sourceCounts = useMemo(
+    () => countBy(items, (item) => item.sourceType),
+    [items],
+  );
+  const authorCounts = useMemo(
+    () => countBy(items, (item) => authorDisplay(item)),
+    [items],
+  );
+
   const filtered = useMemo(() => {
     const q = search.q?.toLowerCase().trim();
     return items.filter((item) => {
-      if (search.kind && item.kind !== search.kind) return false;
-      if (search.category && item.category !== search.category) return false;
-      if (search.source && item.sourceType !== search.source) return false;
+      if (search.kind?.length && !search.kind.includes(item.kind)) return false;
+      if (search.category?.length && !search.category.includes(item.category)) {
+        return false;
+      }
+      if (search.source?.length && !search.source.includes(item.sourceType)) {
+        return false;
+      }
+      if (
+        search.author?.length &&
+        !search.author.includes(authorDisplay(item))
+      ) {
+        return false;
+      }
       if (!q) return true;
-      const hay = [item.slug, item.name, item.description, item.category, ...item.tags]
-        .join(' ')
+      const hay = [
+        item.slug,
+        item.name,
+        item.description,
+        item.category,
+        authorDisplay(item),
+        ...item.tags,
+      ]
+        .join(" ")
         .toLowerCase();
       return hay.includes(q);
     });
   }, [items, search]);
+
+  const hasFilters = Boolean(
+    search.q ||
+      search.kind?.length ||
+      search.category?.length ||
+      search.source?.length ||
+      search.author?.length,
+  );
 
   function update(partial: Search) {
     void navigate({
       search: (prev) => {
         const next = { ...prev, ...partial };
         for (const key of Object.keys(next) as (keyof Search)[]) {
-          if (!next[key]) delete next[key];
+          const value = next[key];
+          if (
+            value == null ||
+            value === "" ||
+            (Array.isArray(value) && value.length === 0)
+          ) {
+            delete next[key];
+          }
         }
         return next;
       },
     });
+  }
+
+  function resetFilters() {
+    void navigate({ search: {} });
   }
 
   async function copyInstall(item: RegistryItem) {
@@ -95,53 +177,82 @@ function BrowsePage() {
             Browse
           </h1>
           <p className="mt-2 max-w-2xl text-[color:var(--tc-muted)]">
-            Search skills by name or topic. Open a page to see what it does, then
-            copy an install command for your agent.
+            Search skills by name or topic. Open a page to see what it does,
+            then copy an install command for your agent.
           </p>
         </header>
 
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <Input
             type="search"
-            placeholder="Search slug, name, tags…"
-            value={search.q ?? ''}
+            placeholder="Filter skills…"
+            value={search.q ?? ""}
             onChange={(e) => update({ q: e.target.value || undefined })}
-            className="w-full border-[color:var(--tc-line)] bg-[color:var(--tc-surface)] sm:max-w-xs"
+            className="h-8 w-full border-[color:var(--tc-line)] bg-[color:var(--tc-surface)] sm:max-w-xs"
           />
-          <NativeSelect
-            value={search.kind ?? ''}
-            onChange={(e) => update({ kind: e.target.value || undefined })}
-          >
-            <NativeSelectOption value="">All kinds</NativeSelectOption>
-            {kinds.map((k) => (
-              <NativeSelectOption key={k} value={k}>
-                {k}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-          <NativeSelect
-            value={search.category ?? ''}
-            onChange={(e) => update({ category: e.target.value || undefined })}
-          >
-            <NativeSelectOption value="">All categories</NativeSelectOption>
-            {categories.map((c) => (
-              <NativeSelectOption key={c} value={c}>
-                {c}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-          <NativeSelect
-            value={search.source ?? ''}
-            onChange={(e) => update({ source: e.target.value || undefined })}
-          >
-            <NativeSelectOption value="">All sources</NativeSelectOption>
-            <NativeSelectOption value="first-party">dev-ted</NativeSelectOption>
-            <NativeSelectOption value="catalog">Other authors</NativeSelectOption>
-          </NativeSelect>
+          <FacetedFilter
+            title="Kind"
+            selected={search.kind ?? []}
+            onSelectedChange={(kind) => update({ kind })}
+            options={kinds.map((kind) => ({
+              label: kind,
+              value: kind,
+              count: kindCounts.get(kind),
+            }))}
+          />
+          <FacetedFilter
+            title="Category"
+            selected={search.category ?? []}
+            onSelectedChange={(category) => update({ category })}
+            options={categories.map((category) => ({
+              label: category,
+              value: category,
+              count: categoryCounts.get(category),
+            }))}
+          />
+          <FacetedFilter
+            title="Source"
+            selected={search.source ?? []}
+            onSelectedChange={(source) => update({ source })}
+            options={[
+              {
+                label: "dev-ted",
+                value: "first-party",
+                count: sourceCounts.get("first-party"),
+              },
+              {
+                label: "Catalog",
+                value: "catalog",
+                count: sourceCounts.get("catalog"),
+              },
+            ]}
+          />
+          <FacetedFilter
+            title="Author"
+            selected={search.author ?? []}
+            onSelectedChange={(author) => update({ author })}
+            options={authors.map((author) => ({
+              label: author,
+              value: author,
+              count: authorCounts.get(author),
+            }))}
+          />
+          {hasFilters ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={resetFilters}
+              className="h-8 px-2 text-[color:var(--tc-muted)] lg:px-3"
+            >
+              Reset
+              <IconX data-icon="inline-end" className="size-4" />
+            </Button>
+          ) : null}
         </div>
 
         <p className="mb-4 font-mono text-xs text-[color:var(--tc-muted)]">
-          {filtered.length} result{filtered.length === 1 ? '' : 's'}
+          {filtered.length} result{filtered.length === 1 ? "" : "s"}
         </p>
 
         <ul className="flex flex-col gap-3">
@@ -181,7 +292,7 @@ function BrowsePage() {
                     onClick={() => void copyInstall(item)}
                     className="tc-press border-[color:var(--tc-line)] bg-[color:var(--tc-panel)] hover:border-[color:var(--tc-brass)]"
                   >
-                    {copied === item.slug ? 'Copied' : 'Copy install'}
+                    {copied === item.slug ? "Copied" : "Copy install"}
                   </Button>
                   <Button
                     variant="default"
@@ -191,7 +302,7 @@ function BrowsePage() {
                       <Link
                         to="/docs/$"
                         params={{
-                          _splat: `registry/${item.category}/${item.slug.replace(/\//g, '--')}`,
+                          _splat: `registry/${item.category}/${item.slug.replace(/\//g, "--")}`,
                         }}
                       />
                     }
