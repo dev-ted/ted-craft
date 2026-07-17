@@ -1,4 +1,5 @@
 import { loader } from 'fumadocs-core/source';
+import type { DocMethods } from 'fumadocs-mdx/runtime/types';
 import { docs } from 'collections/server';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 import { docsRoute } from './shared';
@@ -33,7 +34,10 @@ export function slugsToMarkdownPath(slugs: string[]) {
 }
 
 export async function getLLMText(page: (typeof source)['$inferPage']) {
-  const processed = await page.data.getText('processed');
+  // Generated collections are @ts-nocheck, so loader page data falls back to
+  // PageData without DocMethods — narrow for includeProcessedMarkdown.
+  const data = page.data as typeof page.data & DocMethods;
+  const processed = await data.getText('processed');
 
   return `# ${page.data.title} (${page.url})
 
