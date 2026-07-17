@@ -15,3 +15,5 @@ apps/web/dist
 
 # Local Cursor hooks state
 .cursor/hooks/state/
+.vercel
+.env*
