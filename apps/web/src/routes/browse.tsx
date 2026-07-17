@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { FacetedFilter } from "@/components/FacetedFilter";
 import { KindBadge } from "@/components/KindBadge";
 import type { Kind } from "@/components/kind";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { baseOptions } from "@/lib/layout.shared";
@@ -315,6 +316,7 @@ function BrowsePage() {
           ))}
         </ul>
       </div>
+      <SiteFooter />
     </HomeLayout>
   );
 }
