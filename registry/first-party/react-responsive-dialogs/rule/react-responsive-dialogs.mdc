@@ -1,0 +1,112 @@
+---
+description: Responsive dialogs — Dialog on desktop, bottom Drawer on mobile, with a11y requirements
+globs:
+  - "**/*dialog*.{tsx,jsx}"
+  - "**/*modal*.{tsx,jsx}"
+  - "**/*drawer*.{tsx,jsx}"
+alwaysApply: false
+---
+
+# Responsive Dialogs & Drawers
+
+**Assumes:** shadcn/ui (or equivalent) `Dialog` + `Drawer` (Vaul) primitives, and a mobile detection hook. Cross-refs: `react-accessibility`, `react-shadcn-components`, `react-responsive-design`.
+
+## When This Applies
+
+Use for **form dialogs**, **detail/view modals**, and **multi-field overlays**. Simple **AlertDialog** confirmations (yes/no, delete) may stay centered on all breakpoints unless design specifies otherwise.
+
+## Desktop vs Mobile
+
+| Viewport | Shell | Primitives |
+|----------|-------|------------|
+| **Desktop** (mobile hook → `false`) | Centered modal | Project `Dialog` component |
+| **Mobile** (mobile hook → `true`) | Bottom sheet drawer | Project `Drawer` with `direction="bottom"` |
+
+Detect viewport with the project’s mobile hook (commonly ≤768px or ≤820px—match existing usage). Prefer CSS for pure layout; use the hook when the **component tree** must branch.
+
+## Structure
+
+1. **Extract shared body** (form, content, actions) into a child component or render function.
+2. **One `open` / `onOpenChange` state** — branch the shell, do not mount Dialog and Drawer both open.
+3. **Conditional render** — return either `<Dialog>…</Dialog>` or `<Drawer direction="bottom">…</Drawer>`, not both overlays at once.
+
+```tsx
+const isMobile = useIsMobile();
+
+if (isMobile) {
+  return (
+    <Drawer open={open} onOpenChange={onOpenChange} direction="bottom">
+      <DrawerContent className="bg-card">
+        <DrawerHeader>
+          <DrawerTitle>{title}</DrawerTitle>
+          <DrawerDescription className="sr-only">{description}</DrawerDescription>
+        </DrawerHeader>
+        <SharedBody />
+      </DrawerContent>
+    </Drawer>
+  );
+}
+
+return (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription className="sr-only">{description}</DialogDescription>
+      </DialogHeader>
+      <SharedBody />
+    </DialogContent>
+  </Dialog>
+);
+```
+
+## Required Accessibility (No Console Warnings)
+
+### Title + description (mandatory)
+
+Every **`DialogContent`** and **`DrawerContent`** must include a matching **`Title`** and **`Description`** primitive:
+
+- Visible copy when the design shows helper text.
+- **`className="sr-only"`** on `DialogDescription` / `DrawerDescription` when there is no visible subtitle.
+
+If there is truly no description, pass **`aria-describedby={undefined}`** on `DialogContent` explicitly when the project wrapper supports it.
+
+Never ship a dialog with only `DialogTitle` and no description or `aria-describedby={undefined}`.
+
+### Close controls
+
+- Icon-only close: **`DrawerClose` / `DialogClose`** with **`<span className="sr-only">Close …</span>`**.
+- Decorative icons: **`aria-hidden`** on the icon SVG.
+
+### Focus & `aria-hidden` (avoid blocked-focus warnings)
+
+Radix/Vaul set **`aria-hidden`** on page content when an overlay opens. A focused element **behind** the overlay causes: *"Blocked aria-hidden on an element because its descendant retained focus"*.
+
+Prevent it:
+
+- **Close sibling overlays** before opening another (e.g. close nav **Drawer** or **Popover** before opening a confirm **Dialog**).
+- Use **controlled** `open` / `onOpenChange`; set `open={false}` on parent drawer when launching a nested dialog.
+- **Do not** leave a **Popover** or **DropdownMenu** open when a **Dialog** opens from the same trigger tree.
+- **Never** mount two modal roots (Dialog + Drawer) as open simultaneously.
+- Prefer opening nested confirms **after** `onOpenChange(false)` on the parent, or from a trigger outside the hidden subtree.
+
+### Keyboard & focus
+
+- Keep Radix/Vaul defaults: focus trap, **Escape** to close, focus restore to trigger.
+- Do not set positive **`tabIndex`** or strip focus rings on dialog controls.
+
+## Drawer Layout (Mobile)
+
+- **`direction="bottom"`** on `Drawer` root.
+- **`max-h-[80vh]`** (or similar) on scrollable inner wrapper.
+- **`DrawerFooter`** for primary actions when the design has a sticky footer.
+- Drag handle is provided by `DrawerContent` — do not duplicate.
+
+## Checklist
+
+- [ ] Mobile hook branches Dialog vs bottom Drawer
+- [ ] Shared body; single `open` state; only one overlay open
+- [ ] `Title` + `Description` (or `aria-describedby={undefined}`) on every shell
+- [ ] sr-only close labels on icon buttons
+- [ ] Parent drawer/popover closed before nested dialog
+- [ ] No simultaneous open Dialog + Drawer

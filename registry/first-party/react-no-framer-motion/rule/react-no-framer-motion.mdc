@@ -1,0 +1,40 @@
+---
+description: Do not use Framer Motion motion.* JSX unless the user explicitly requests it
+globs:
+  - "**/*.{tsx,ts,jsx,js}"
+alwaysApply: true
+---
+
+# No Framer Motion / `motion.*` components
+
+**Assumes:** React + CSS/Tailwind (and optionally shadcn/ui). See `react-styling`, `react-accessibility`, and `react-shadcn-components` when installed.
+
+Do NOT generate `<motion.div>`, `<motion.span>`, `<motion.*>` or `import { motion }`.
+
+Unless the **user explicitly asks** for Framer Motion or `motion` components in the **current** task:
+
+- **Do not** use `<motion.div>`, `<motion.span>`, `<motion.button>`, `<motion.section>`, or any other **`motion.*`** element.
+- **Do not** use **`AnimatePresence`**, **`LazyMotion`**, **`MotionConfig`**, or other Framer Motion / Motion APIs.
+- **Do not** add or import from **`framer-motion`** or **`motion`** (the `motion` package).
+- **Do not** refactor existing UI to Framer Motion for polish or animation.
+
+## Use instead
+
+- **Semantic HTML** and the project’s **UI primitives** (e.g. shadcn/ui components).
+- **CSS / Tailwind**: `transition-*`, `animate-in` / `animate-out`, and existing animation utilities already in the project theme CSS.
+- **Radix / shadcn** built-in enter/exit classes on dialogs, sheets, dropdowns, etc.
+- **`motion-safe:`** / **`motion-reduce:`** for **`prefers-reduced-motion`** — these are **Tailwind** modifiers, not Framer Motion (see `react-accessibility`).
+
+```tsx
+// ❌ Do not add without explicit user request
+import { motion } from "framer-motion";
+
+<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} />
+
+// ✅ Prefer semantic elements + Tailwind / existing primitives
+<div className="animate-in fade-in duration-200">...</div>
+```
+
+## When allowed
+
+Only when the user **explicitly** requests Framer Motion, the **`motion`** package, or named **`motion.*`** usage in their message for that task. If animation requirements are unclear and not in Figma/spec, **ask** before introducing any motion library (see `react-ui-decisions`).

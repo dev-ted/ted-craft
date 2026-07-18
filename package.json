@@ -17,7 +17,7 @@
     "cli:build": "node scripts/ws.mjs ted-craft build",
     "cli:pack": "node scripts/ws.mjs ted-craft pack",
     "cli:publish:dry": "node scripts/ws.mjs ted-craft publish:dry",
-    "cli:publish": "node scripts/ws.mjs ted-craft publish",
+    "cli:publish": "node scripts/ws.mjs ted-craft publish:npm",
     "cli:version:patch": "node scripts/cli-version.mjs patch",
     "cli:version:minor": "node scripts/cli-version.mjs minor",
     "cli:version:major": "node scripts/cli-version.mjs major",

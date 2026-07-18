@@ -1,0 +1,72 @@
+---
+title: "React Figma Fidelity"
+description: "Build UI to match Figma or an agreed written spec—ask when designs are missing, ambiguous, or conflict with accessibility."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="rule" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-figma-fidelity -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-figma-fidelity -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-figma-fidelity -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-figma-fidelity -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-figma-fidelity -a vscode -g -y"}
+  showInstall={true}>{
+"---\ndescription: Figma design fidelity and design-to-code workflow\nglobs:\n  - \"**/*.{tsx,jsx}\"\n  - \"**/*.{css,scss}\"\nalwaysApply: true\n---\n\n# Figma Design Fidelity\n\n**Assumes:** Design handoff via Figma or an equivalent written spec. Works with `react-styling`, `react-shadcn-components`, `react-ui-decisions`, and `react-responsive-design` when installed.\n\n## The rule\n\n**Build what the Figma (or agreed written spec) shows—not more, not less—unless the user explicitly approves a deviation.**\n\nEvery **new** screen or component should trace to a **named frame / component** in Figma or an equivalent spec. If it is not specified, it is **out of scope** until clarified (see **exceptions** below).\n\n## What this means in practice\n\n- Do **not** add UI (decorative or functional) that is **absent** from the design.\n- Do **not** remove or **reposition** elements because they seem redundant—**follow the design**.\n- Do **not** change **spacing, sizing, colours, typography, or layout** unless the design (or an explicit written override) shows a different treatment.\n- Do **not** assume **hover, empty, error, loading (beyond skeleton), or disabled** states—if they are missing in Figma, **ask**.\n- Do **not** change **copy**: button labels, headings, table columns, nav items, etc., vs the design without approval.\n\n## Permitted without Figma links\n\n| Element | Implementation |\n|--------|----------------|\n| **Toast messages** | Use the project’s **existing** toast system only—do not add a parallel toast library for standard cases. |\n| **Loading / skeleton** | Use the project’s **Skeleton** (or equivalent) primitive, or the **existing** feature-specific skeleton used in that area. |\n\nDo **not** invent alternate toast or loading UX for standard cases.\n\n## Working with Figma links\n\nWhen a link (or file + node) is provided:\n\n1. **Inspect the design** (Figma UI or MCP / design context) **before** coding; note frames, **variants**, and **states** shown.\n2. **Map** each Figma component to existing UI primitives or feature components; flag gaps before inventing new primitives (see `react-shadcn-components`).\n3. **Translate** spacing and sizing from Figma to **Tailwind** using the **nearest** theme tokens (see `react-styling`).\n4. If a Figma value has **no** matching token or scale in the theme CSS, **stop and flag it**—extend the theme with agreement, rather than hardcoding arbitrary literals in JSX.\n\n## Missing or ambiguous designs\n\n**Stop and ask** when:\n\n- No Figma (or equivalent spec) exists for a **new** screen or component.\n- The file is **incomplete**, **ambiguous**, or **contradicts** existing product UI.\n- **Responsive** behaviour is required but **no** mobile/tablet frame (and no written breakpoint spec) exists (see `react-responsive-design`).\n- The design shows a pattern **not** representable with current primitives and this was **not** discussed—do not silently ship a one-off.\n\n## Accessibility and Figma\n\nVisual specs must still meet `react-accessibility` (contrast, labels, keyboard). If the design conflicts with WCAG, **flag it** and resolve with design/product before shipping inaccessible UI."
+}</RegistryInstallPreview>
+
+# Figma Design Fidelity
+
+**Assumes:** Design handoff via Figma or an equivalent written spec. Works with `react-styling`, `react-shadcn-components`, `react-ui-decisions`, and `react-responsive-design` when installed.
+
+## The rule
+
+**Build what the Figma (or agreed written spec) shows—not more, not less—unless the user explicitly approves a deviation.**
+
+Every **new** screen or component should trace to a **named frame / component** in Figma or an equivalent spec. If it is not specified, it is **out of scope** until clarified (see **exceptions** below).
+
+## What this means in practice
+
+- Do **not** add UI (decorative or functional) that is **absent** from the design.
+- Do **not** remove or **reposition** elements because they seem redundant—**follow the design**.
+- Do **not** change **spacing, sizing, colours, typography, or layout** unless the design (or an explicit written override) shows a different treatment.
+- Do **not** assume **hover, empty, error, loading (beyond skeleton), or disabled** states—if they are missing in Figma, **ask**.
+- Do **not** change **copy**: button labels, headings, table columns, nav items, etc., vs the design without approval.
+
+## Permitted without Figma links
+
+| Element | Implementation |
+|--------|----------------|
+| **Toast messages** | Use the project’s **existing** toast system only—do not add a parallel toast library for standard cases. |
+| **Loading / skeleton** | Use the project’s **Skeleton** (or equivalent) primitive, or the **existing** feature-specific skeleton used in that area. |
+
+Do **not** invent alternate toast or loading UX for standard cases.
+
+## Working with Figma links
+
+When a link (or file + node) is provided:
+
+1. **Inspect the design** (Figma UI or MCP / design context) **before** coding; note frames, **variants**, and **states** shown.
+2. **Map** each Figma component to existing UI primitives or feature components; flag gaps before inventing new primitives (see `react-shadcn-components`).
+3. **Translate** spacing and sizing from Figma to **Tailwind** using the **nearest** theme tokens (see `react-styling`).
+4. If a Figma value has **no** matching token or scale in the theme CSS, **stop and flag it**—extend the theme with agreement, rather than hardcoding arbitrary literals in JSX.
+
+## Missing or ambiguous designs
+
+**Stop and ask** when:
+
+- No Figma (or equivalent spec) exists for a **new** screen or component.
+- The file is **incomplete**, **ambiguous**, or **contradicts** existing product UI.
+- **Responsive** behaviour is required but **no** mobile/tablet frame (and no written breakpoint spec) exists (see `react-responsive-design`).
+- The design shows a pattern **not** representable with current primitives and this was **not** discussed—do not silently ship a one-off.
+
+## Accessibility and Figma
+
+Visual specs must still meet `react-accessibility` (contrast, labels, keyboard). If the design conflicts with WCAG, **flag it** and resolve with design/product before shipping inaccessible UI.

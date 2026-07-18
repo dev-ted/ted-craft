@@ -1,0 +1,25 @@
+{
+  "slug": "react-nextjs-patterns",
+  "kind": "rule",
+  "name": "React Next.js Patterns",
+  "description": "Next.js App Router patterns: Server Components by default, push \"use client\" down, thin pages, and React Compiler-first memoization.",
+  "category": "rules",
+  "tags": ["react", "nextjs", "app-router", "rsc", "react-compiler"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-nextjs-patterns.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-nextjs-patterns -a cursor -g -y",
+    "featured": false
+  }
+}

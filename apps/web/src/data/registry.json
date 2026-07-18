@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T07:06:32.223Z",
+  "generatedAt": "2026-07-18T08:04:12.405Z",
   "items": [
     {
       "slug": "anthropics/frontend-design",
@@ -494,6 +494,170 @@
       "path": "catalog/ibelick-ui-skills-root.json"
     },
     {
+      "slug": "react-accessibility",
+      "kind": "rule",
+      "name": "React Accessibility",
+      "description": "Enforce WCAG 2.1 AA for React UI: semantic HTML, keyboard support, ARIA, contrast, and accessible shadcn/Radix patterns.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "a11y",
+        "accessibility",
+        "wcag",
+        "shadcn"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-accessibility.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-accessibility -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-accessibility"
+    },
+    {
+      "slug": "react-figma-fidelity",
+      "kind": "rule",
+      "name": "React Figma Fidelity",
+      "description": "Build UI to match Figma or an agreed written spec—ask when designs are missing, ambiguous, or conflict with accessibility.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "figma",
+        "design",
+        "ui"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-figma-fidelity.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-figma-fidelity -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-figma-fidelity"
+    },
+    {
+      "slug": "react-forms",
+      "kind": "rule",
+      "name": "React Forms",
+      "description": "Require react-hook-form + Zod for create/edit forms, with sentence-case labels, placeholders, and submit-time sanitization.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "forms",
+        "zod",
+        "react-hook-form",
+        "validation"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-forms.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-forms -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-forms"
+    },
+    {
+      "slug": "react-nextjs-patterns",
+      "kind": "rule",
+      "name": "React Next.js Patterns",
+      "description": "Next.js App Router patterns: Server Components by default, push \"use client\" down, thin pages, and React Compiler-first memoization.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "nextjs",
+        "app-router",
+        "rsc",
+        "react-compiler"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-nextjs-patterns.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-nextjs-patterns -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-nextjs-patterns"
+    },
+    {
+      "slug": "react-no-framer-motion",
+      "kind": "rule",
+      "name": "React No Framer Motion",
+      "description": "Prefer CSS and Tailwind animation over Framer Motion motion.* components unless the user explicitly requests Framer Motion.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "animation",
+        "css",
+        "tailwind",
+        "framer-motion"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-no-framer-motion.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-no-framer-motion -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-no-framer-motion"
+    },
+    {
       "slug": "react-performance",
       "kind": "skill",
       "name": "React Performance",
@@ -525,6 +689,105 @@
       },
       "sourceType": "first-party",
       "path": "first-party/react-performance"
+    },
+    {
+      "slug": "react-project-structure",
+      "kind": "rule",
+      "name": "React Project Structure",
+      "description": "Advisory conventions for React/Next apps: stack defaults, folder responsibilities, and where to place routes, UI, hooks, and services.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "nextjs",
+        "structure",
+        "architecture",
+        "shadcn"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-project-structure.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-project-structure -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-project-structure"
+    },
+    {
+      "slug": "react-responsive-design",
+      "kind": "rule",
+      "name": "React Responsive Design",
+      "description": "Mobile-first responsive UI with Tailwind breakpoints, touch targets, and no inventing layouts without a mobile spec.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "responsive",
+        "mobile",
+        "tailwind"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-responsive-design.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-responsive-design -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-responsive-design"
+    },
+    {
+      "slug": "react-responsive-dialogs",
+      "kind": "rule",
+      "name": "React Responsive Dialogs",
+      "description": "Use centered Dialog on desktop and a bottom Drawer on mobile, with required title/description and focus-safe overlay patterns.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "dialog",
+        "drawer",
+        "responsive",
+        "a11y",
+        "shadcn"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-responsive-dialogs.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-responsive-dialogs -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-responsive-dialogs"
     },
     {
       "slug": "react-security",
@@ -559,6 +822,172 @@
       },
       "sourceType": "first-party",
       "path": "first-party/react-security"
+    },
+    {
+      "slug": "react-shadcn-components",
+      "kind": "rule",
+      "name": "React shadcn Components",
+      "description": "shadcn/ui hierarchy: reuse shared primitives, extend via composition, and build feature components only when primitives cannot cover the UI.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "shadcn",
+        "radix",
+        "ui",
+        "components"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-shadcn-components.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-shadcn-components -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-shadcn-components"
+    },
+    {
+      "slug": "react-styling",
+      "kind": "rule",
+      "name": "React Styling",
+      "description": "Tailwind-first styling with theme tokens, gap over space-*, and no one-off hex colours in JSX.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "tailwind",
+        "css",
+        "theming",
+        "design-tokens"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-styling.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-styling -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-styling"
+    },
+    {
+      "slug": "react-tanstack-query",
+      "kind": "rule",
+      "name": "React TanStack Query",
+      "description": "TanStack Query patterns for client server-state: key factories, cache tuning, mutations, and thin queryFns backed by a service layer.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "tanstack",
+        "react-query",
+        "data-fetching"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-tanstack-query.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-tanstack-query -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-tanstack-query"
+    },
+    {
+      "slug": "react-ui-decisions",
+      "kind": "rule",
+      "name": "React UI Decisions",
+      "description": "Decision gates for when to ask, reuse, extend, or build UI—prefer existing primitives and stop when Figma or mapping is unclear.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "ui",
+        "shadcn",
+        "figma",
+        "decisions"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/react-ui-decisions.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-ui-decisions -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-ui-decisions"
+    },
+    {
+      "slug": "react-ui-rules",
+      "kind": "skill",
+      "name": "React UI Rules",
+      "description": "Index of installable React/Next UI Cursor rules—accessibility, shadcn, forms, TanStack Query, Figma fidelity, and recommended combos.",
+      "category": "rules",
+      "tags": [
+        "react",
+        "rules",
+        "ui",
+        "nextjs",
+        "shadcn",
+        "index"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "react-ui-rules"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-ui-rules -a cursor -g -y",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-ui-rules"
     },
     {
       "slug": "security-review",

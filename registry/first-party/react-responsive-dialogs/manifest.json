@@ -1,0 +1,25 @@
+{
+  "slug": "react-responsive-dialogs",
+  "kind": "rule",
+  "name": "React Responsive Dialogs",
+  "description": "Use centered Dialog on desktop and a bottom Drawer on mobile, with required title/description and focus-safe overlay patterns.",
+  "category": "rules",
+  "tags": ["react", "dialog", "drawer", "responsive", "a11y", "shadcn"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-responsive-dialogs.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-responsive-dialogs -a cursor -g -y",
+    "featured": false
+  }
+}

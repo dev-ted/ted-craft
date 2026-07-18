@@ -1,0 +1,49 @@
+---
+description: Tooling, project structure, and technology stack conventions for React/Next apps
+alwaysApply: true
+---
+
+# Tooling & Project Structure
+
+**Assumes:** A React app, commonly **Next.js App Router** + **shadcn/ui** + **Tailwind**. These conventions are **advisory**—follow the target repo’s existing layout when it already differs. Pattern details live in sibling rules (`react-nextjs-patterns`, `react-shadcn-components`, `react-tanstack-query`, etc.).
+
+## Technology Stack (typical)
+
+- **Application framework**: Next.js (App Router) or equivalent React meta-framework. Prefer Server Components by default; add `"use client"` only when the boundary needs client-side state, browser APIs, or event handlers (see `react-nextjs-patterns`).
+- **Path alias**: Prefer a root alias such as `@/*` → `./src/*` (or project equivalent). Keep imports consistent with that alias.
+- **CSS**: Tailwind CSS via the project’s PostCSS / Vite / Next setup. Tokens and layers live in the central theme CSS entry.
+- **UI components**: **shadcn/ui** (`components.json`) when present. Primitives install to the configured UI path; broader UI lives under feature folders (see `react-shadcn-components`).
+- **Data fetching (client)**: **TanStack React Query** when the project uses it—see `react-tanstack-query`.
+- **Icons**: Prefer the icon library already configured (often **lucide-react** via `components.json`).
+
+## Recommended Concerns
+
+Use these as a mental model. Map them onto the folders the project already uses—do not invent parallel trees when an existing convention is clear.
+
+| Concern | Responsibility |
+|----------|----------------|
+| **Routes** | App Router routes, layouts, `loading`/`error`, route groups, and Route Handlers |
+| **Shared UI** | shadcn/Radix primitives and reusable atoms (configured UI path) |
+| **Feature UI** | Domain/feature components composed from shared primitives |
+| **Services / API** | HTTP clients, DTO mapping, orchestration without React |
+| **Hooks** | Shared hooks; API/query hooks grouped together when present |
+| **Lib / utils** | Pure helpers, validation, shared utilities |
+| **Providers** | React context providers (auth, query client, theme, etc.) |
+| **Client state** | Zustand/Redux/context stores—use **one** established pattern and location in the repo |
+| **Types** | Shared TypeScript types when not colocated with a feature |
+| **Public assets** | Static images, icons, illustrations |
+| **Docs** | Product/engineering documentation outside runtime code |
+
+## File Placement Checklist
+
+1. New routes and API Route Handlers live under the app router tree (correct route group when applicable).
+2. Reusable UI uses the configured shared UI path and path alias.
+3. New API client logic goes in the existing services/API layer—prefer established clients over ad hoc `fetch` URLs.
+4. New global client state: follow the **existing** store location and library already used for that concern.
+5. Prefer thin route files; lift reusable UI into components (see `react-nextjs-patterns`).
+
+## What Not to Prescribe
+
+- Do not force a second store directory, dual naming schemes, or org-specific registries unless the target project already uses them.
+- Do not invent proxy/rewrite paths—follow `next.config` / framework config already in the repo.
+- When structure is ambiguous, **match neighbouring files** in the same feature area or ask.

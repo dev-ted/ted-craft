@@ -1,0 +1,25 @@
+{
+  "slug": "react-figma-fidelity",
+  "kind": "rule",
+  "name": "React Figma Fidelity",
+  "description": "Build UI to match Figma or an agreed written spec—ask when designs are missing, ambiguous, or conflict with accessibility.",
+  "category": "rules",
+  "tags": ["react", "figma", "design", "ui"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-figma-fidelity.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-figma-fidelity -a cursor -g -y",
+    "featured": false
+  }
+}

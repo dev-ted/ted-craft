@@ -1,0 +1,57 @@
+---
+title: "React No Framer Motion"
+description: "Prefer CSS and Tailwind animation over Framer Motion motion.* components unless the user explicitly requests Framer Motion."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="rule" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-no-framer-motion -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-no-framer-motion -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-no-framer-motion -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-no-framer-motion -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-no-framer-motion -a vscode -g -y"}
+  showInstall={true}>{
+"---\ndescription: Do not use Framer Motion motion.* JSX unless the user explicitly requests it\nglobs:\n  - \"**/*.{tsx,ts,jsx,js}\"\nalwaysApply: true\n---\n\n# No Framer Motion / `motion.*` components\n\n**Assumes:** React + CSS/Tailwind (and optionally shadcn/ui). See `react-styling`, `react-accessibility`, and `react-shadcn-components` when installed.\n\nDo NOT generate `<motion.div>`, `<motion.span>`, `<motion.*>` or `import { motion }`.\n\nUnless the **user explicitly asks** for Framer Motion or `motion` components in the **current** task:\n\n- **Do not** use `<motion.div>`, `<motion.span>`, `<motion.button>`, `<motion.section>`, or any other **`motion.*`** element.\n- **Do not** use **`AnimatePresence`**, **`LazyMotion`**, **`MotionConfig`**, or other Framer Motion / Motion APIs.\n- **Do not** add or import from **`framer-motion`** or **`motion`** (the `motion` package).\n- **Do not** refactor existing UI to Framer Motion for polish or animation.\n\n## Use instead\n\n- **Semantic HTML** and the project’s **UI primitives** (e.g. shadcn/ui components).\n- **CSS / Tailwind**: `transition-*`, `animate-in` / `animate-out`, and existing animation utilities already in the project theme CSS.\n- **Radix / shadcn** built-in enter/exit classes on dialogs, sheets, dropdowns, etc.\n- **`motion-safe:`** / **`motion-reduce:`** for **`prefers-reduced-motion`** — these are **Tailwind** modifiers, not Framer Motion (see `react-accessibility`).\n\n```tsx\n// ❌ Do not add without explicit user request\nimport { motion } from \"framer-motion\";\n\n<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} />\n\n// ✅ Prefer semantic elements + Tailwind / existing primitives\n<div className=\"animate-in fade-in duration-200\">...</div>\n```\n\n## When allowed\n\nOnly when the user **explicitly** requests Framer Motion, the **`motion`** package, or named **`motion.*`** usage in their message for that task. If animation requirements are unclear and not in Figma/spec, **ask** before introducing any motion library (see `react-ui-decisions`)."
+}</RegistryInstallPreview>
+
+# No Framer Motion / `motion.*` components
+
+**Assumes:** React + CSS/Tailwind (and optionally shadcn/ui). See `react-styling`, `react-accessibility`, and `react-shadcn-components` when installed.
+
+Do NOT generate `&lt;motion.div&gt;`, `&lt;motion.span&gt;`, `&lt;motion.*&gt;` or `import &#123; motion &#125;`.
+
+Unless the **user explicitly asks** for Framer Motion or `motion` components in the **current** task:
+
+- **Do not** use `&lt;motion.div&gt;`, `&lt;motion.span&gt;`, `&lt;motion.button&gt;`, `&lt;motion.section&gt;`, or any other **`motion.*`** element.
+- **Do not** use **`AnimatePresence`**, **`LazyMotion`**, **`MotionConfig`**, or other Framer Motion / Motion APIs.
+- **Do not** add or import from **`framer-motion`** or **`motion`** (the `motion` package).
+- **Do not** refactor existing UI to Framer Motion for polish or animation.
+
+## Use instead
+
+- **Semantic HTML** and the project’s **UI primitives** (e.g. shadcn/ui components).
+- **CSS / Tailwind**: `transition-*`, `animate-in` / `animate-out`, and existing animation utilities already in the project theme CSS.
+- **Radix / shadcn** built-in enter/exit classes on dialogs, sheets, dropdowns, etc.
+- **`motion-safe:`** / **`motion-reduce:`** for **`prefers-reduced-motion`** — these are **Tailwind** modifiers, not Framer Motion (see `react-accessibility`).
+
+```tsx
+// ❌ Do not add without explicit user request
+import &#123; motion &#125; from "framer-motion";
+
+&lt;motion.div initial=&#123;&#123; opacity: 0 &#125;&#125; animate=&#123;&#123; opacity: 1 &#125;&#125; /&gt;
+
+// ✅ Prefer semantic elements + Tailwind / existing primitives
+&lt;div className="animate-in fade-in duration-200"&gt;...&lt;/div&gt;
+```
+
+## When allowed
+
+Only when the user **explicitly** requests Framer Motion, the **`motion`** package, or named **`motion.*`** usage in their message for that task. If animation requirements are unclear and not in Figma/spec, **ask** before introducing any motion library (see `react-ui-decisions`).

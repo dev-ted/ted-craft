@@ -1,0 +1,76 @@
+---
+description: Data fetching with TanStack Query — patterns, cache keys, performance
+globs:
+  - "**/hooks/**/*.{ts,tsx,js,jsx}"
+  - "**/services/**/*.{ts,tsx,js,jsx}"
+  - "**/*query*.{ts,tsx,js,jsx}"
+  - "**/*.{tsx,jsx}"
+alwaysApply: true
+---
+
+# Data Fetching — TanStack Query (React Query)
+
+**Assumes:** TanStack Query (`@tanstack/react-query`) for **client-side** server state, with a root `QueryClientProvider`. Pair with `react-nextjs-patterns` on Next.js apps.
+
+Use Query for interactive client data, refetching, and cache across routes. Keep defaults intentional—do not fight provider defaults without reason. Typical starting points: `staleTime` on the order of tens of seconds, finite `gcTime`, limited `retry`, and often `refetchOnWindowFocus: false`. Override per query when a resource needs different behaviour.
+
+## Where Code Lives
+
+| Concern | Location |
+|--------|----------|
+| `useQuery` / `useMutation` / `useInfiniteQuery` hooks | Dedicated API hooks folder (e.g. `src/hooks/api/` or `src/features/*/api/`) |
+| HTTP calls, DTO mapping, no React | Service / API module layer — called from `queryFn` / `mutationFn` |
+| Shared HTTP client | Existing client instance (fetch wrapper, Axios, etc.) — reuse it |
+
+Keep **`queryFn` thin**: call a service function; avoid embedding large transformation logic inside the hook file when it belongs in the service layer.
+
+## Query Keys (Caching & Invalidation)
+
+- Use a **key factory** per domain so invalidation stays correct and types stay stable:
+
+```ts
+export const employeeKeys = {
+  all: ["employees"] as const,
+  list: (filters?: object) => [...employeeKeys.all, "list", filters] as const,
+  detail: (id: string | number) => [...employeeKeys.all, "detail", id] as const,
+};
+```
+
+- Keys must **include every variable** that changes the response (ids, filters, tenant scope, dates). Same key → same cached data → automatic **request deduplication** for concurrent mounts.
+- Invalidate **narrowly** when possible (`{ queryKey: employeeKeys.detail(id) }`); use broader keys (`employeeKeys.all`) when many lists depend on the mutation.
+
+## Performance & Caching
+
+- **`staleTime`**: Raise for **slow-changing** data; lower for **volatile** data. Align with product expectations.
+- **`gcTime`**: Longer helps **instant back-navigation**; very large caches can hold stale memory—balance per feature.
+- **`enabled`**: Set `enabled: !!id` (or similar) so queries **do not run** until required params exist.
+- **`refetchOnWindowFocus`**: Enable **per query** only when freshness on tab focus matters.
+- **`refetchInterval`**: Use only for data that must **poll**; prefer invalidation when possible.
+- **`placeholderData` / `initialData`**: Use to avoid layout shift or to seed from parent data when acceptable; keep keys consistent with the real fetch.
+- **Prefetch**: For predictable navigation, `queryClient.prefetchQuery` with the **same `queryKey` and `queryFn`** as the destination hook.
+
+## Mutations
+
+- After writes, prefer **`invalidateQueries`** for the smallest key set that must reflect the new server truth, or **`setQueryData`** when you can update the cache **exactly** without a round trip.
+- **Optimistic updates** (`onMutate` / rollback / `onSettled` invalidate): use for high-latency UX where the pattern is already established; always **cancel** in-flight queries for affected keys before patching cache.
+- **`onSuccess`**: Invalidate or update related lists **and** detail keys when both exist.
+- Avoid **`queryClient.invalidateQueries()`** with **no filter** except for **auth/session** changes where the whole tree must refetch.
+
+## Errors & Retries
+
+- **Do not assume a global retry count is right for every endpoint.** For **4xx** client errors, failing fast avoids hammering the API—use a **`retry` function** that returns `false` for 401/403/404 when appropriate.
+- Surface errors in UI with existing patterns; do not swallow `queryFn` failures silently.
+
+## React / framework notes
+
+- TanStack Query runs in **client components** (`"use client"` where applicable). Do not use `useQuery` in a Server Component.
+- For **initial HTML** from the server, use server data fetching where appropriate and pass stable props down; use Query for **interactive client** data.
+- Derive **`enabled`** from route/modal state so idle features do not subscribe unnecessarily.
+
+## Checklist (New Hook or Mutation)
+
+- [ ] Key factory covers **all** inputs that affect the response.
+- [ ] `enabled` guards missing params.
+- [ ] Mutation invalidates or updates the **minimal** correct keys.
+- [ ] `staleTime` / `refetchInterval` / `refetchOnWindowFocus` chosen **on purpose**.
+- [ ] Service layer holds HTTP details; hook wires Query only.

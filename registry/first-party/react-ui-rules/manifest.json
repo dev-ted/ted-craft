@@ -1,0 +1,26 @@
+{
+  "slug": "react-ui-rules",
+  "kind": "skill",
+  "name": "React UI Rules",
+  "description": "Index of installable React/Next UI Cursor rules—accessibility, shadcn, forms, TanStack Query, Figma fidelity, and recommended combos.",
+  "category": "rules",
+  "tags": ["react", "rules", "ui", "nextjs", "shadcn", "index"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "react-ui-rules"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-ui-rules -a cursor -g -y",
+    "featured": true
+  }
+}

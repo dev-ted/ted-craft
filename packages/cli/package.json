@@ -17,7 +17,7 @@
     "prepublishOnly": "npm run build",
     "pack": "npm pack",
     "publish:dry": "npm publish --dry-run --access public",
-    "publish": "npm publish --access public",
+    "publish:npm": "npm publish --access public",
     "version:patch": "node ../../scripts/cli-version.mjs patch",
     "version:minor": "node ../../scripts/cli-version.mjs minor",
     "version:major": "node ../../scripts/cli-version.mjs major"

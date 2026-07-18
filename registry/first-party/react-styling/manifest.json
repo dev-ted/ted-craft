@@ -1,0 +1,25 @@
+{
+  "slug": "react-styling",
+  "kind": "rule",
+  "name": "React Styling",
+  "description": "Tailwind-first styling with theme tokens, gap over space-*, and no one-off hex colours in JSX.",
+  "category": "rules",
+  "tags": ["react", "tailwind", "css", "theming", "design-tokens"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-styling.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-styling -a cursor -g -y",
+    "featured": false
+  }
+}

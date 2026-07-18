@@ -1,0 +1,25 @@
+{
+  "slug": "react-shadcn-components",
+  "kind": "rule",
+  "name": "React shadcn Components",
+  "description": "shadcn/ui hierarchy: reuse shared primitives, extend via composition, and build feature components only when primitives cannot cover the UI.",
+  "category": "rules",
+  "tags": ["react", "shadcn", "radix", "ui", "components"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-shadcn-components.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-shadcn-components -a cursor -g -y",
+    "featured": false
+  }
+}
