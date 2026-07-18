@@ -1,0 +1,34 @@
+{
+  "slug": "0xdesign/design-lab",
+  "kind": "skill",
+  "name": "Design Lab",
+  "description": "Interactive design exploration — interview, generate five UI variants in a temporary design lab, collect feedback, refine, and produce an implementation plan.",
+  "category": "ui",
+  "tags": [
+    "design",
+    "ui",
+    "exploration",
+    "variants",
+    "feedback"
+  ],
+  "attribution": {
+    "author": "0xdesign",
+    "repo": "0xdesign/design-plugin",
+    "skill": "design-lab",
+    "license": "check upstream",
+    "catalogUrl": "https://www.ui-skills.com/skills/0xdesign/design-lab"
+  },
+  "source": {
+    "type": "catalog"
+  },
+  "install": {
+    "default": "npx skills add 0xdesign/design-plugin --skill design-lab -g -y",
+    "cursor": "npx skills add 0xdesign/design-plugin --skill design-lab -a cursor -g -y",
+    "claude": "npx skills add 0xdesign/design-plugin --skill design-lab -a claude-code -g -y",
+    "codex": "npx skills add 0xdesign/design-plugin --skill design-lab -a codex -g -y",
+    "vscode": "npx skills add 0xdesign/design-plugin --skill design-lab -a github-copilot -g -y"
+  },
+  "cli": {
+    "featured": true
+  }
+}
