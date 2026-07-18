@@ -1,0 +1,113 @@
+---
+title: "React shadcn Components"
+description: "shadcn/ui hierarchy: reuse shared primitives, extend via composition, and build feature components only when primitives cannot cover the UI."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="rule" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-shadcn-components -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-shadcn-components -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-shadcn-components -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-shadcn-components -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-shadcn-components -a vscode -g -y"}
+  showInstall={true}>{
+"---\ndescription: UI component hierarchy — shadcn/Radix usage, extension, and custom components\nglobs:\n  - \"**/*.{tsx,jsx}\"\nalwaysApply: true\n---\n\n# UI Components — shadcn/ui & Custom Components\n\n**Assumes:** shadcn/ui (Radix + Tailwind) with a configured components path (often `src/components/ui` or `src/components/common`). Works with `react-ui-decisions`, `react-accessibility`, and `react-styling`.\n\n## Component Hierarchy\n\nFollow this order. Do not skip steps.\n\n```\n1. Does shadcn/Radix (or an existing shared primitive) cover this?\n   ├── Yes, fully     → Import from the project’s shared UI path. Add via CLI if missing.\n   ├── Partially      → Extend inside the existing shared primitive, or compose primitives in a feature component.\n   └── No             → Build a custom component under a feature/domain folder using primitives + tokens + Figma/spec.\n```\n\nDo **not** hand-roll a duplicate dialog/button/select if the shared UI folder already exposes one. Do **not** import **`@radix-ui/react-*`** directly from pages—keep Radix as an implementation detail inside the shared primitives folder (or add the primitive there first).\n\n---\n\n## Approved UI Stack\n\n- **shadcn/ui** (Radix primitives, Tailwind, `components.json`) is the default UI layer. Styling stays **Tailwind + theme tokens**.\n- Optional org/registry components are allowed **only** when the project already uses them or the user explicitly instructs it.\n- **No new** general-purpose UI libraries (Chakra, Mantine, Material UI, additional kits) without explicit approval.\n\n---\n\n## Shared Primitives Folder\n\nshadcn-generated files under the configured UI path are the shared wrappers: they centralise variants, `cn()`, focus rings, and Radix wiring.\n\n**Pages and feature modules** should import from that shared path, not from raw Radix packages.\n\n| Pattern | Import from (examples) |\n|--------|-------------------------|\n| Button | `@/components/ui/button` (or `@/components/common/button`) |\n| Dialog / alert | `dialog`, `alert-dialog` |\n| Dropdown / menu | `dropdown-menu` |\n| Tabs | `tabs` |\n| Inputs | `input`, `textarea`, `select`, `checkbox`, `switch` |\n| Card / sheet / drawer | `card`, `sheet`, `drawer` |\n\nIf a wrapper file already exists, **reuse it** — do not add a second parallel primitive for the same Radix pattern.\n\n**Why:** one place to update behaviour, tokens, and a11y; Radix stays an implementation detail.\n\n---\n\n## Extending shadcn / Radix Components\n\n- Prefer **composition** in **feature components** using shared exports (`asChild`, slots, extra `className`, children).\n- If the **primitive itself** must change (new variant, default size, shared behaviour): extend the **single** file under the shared UI folder (CVA variants, props). Avoid copying the whole component into a feature folder.\n- Do **not** patch **`node_modules`** or fork Radix internals. If the official API cannot do it, build a **small custom** piece in the right feature folder using semantic HTML + tokens, or ask for design/product input.\n- Non-obvious deviations from default shadcn behaviour: short comment at the top of the shared file or next to the variant.\n\n---\n\n## Building Custom Components\n\nBuild **custom** UI when no suitable shared primitive composition exists **and** you have **Figma/spec** (see `react-ui-decisions`).\n\nCustom components must:\n\n- Live under a **feature / domain** folder (e.g. `src/components/<domain>/` or `src/features/<domain>/components/`) — match neighbouring naming.\n- Use **Tailwind + theme tokens** only; no ad hoc global CSS (see `react-styling`).\n- Take **props** for labels, data, and callbacks — avoid hardcoded copy unless truly static.\n- Meet `react-accessibility` (labels, focus, keyboard, contrast).\n\n---\n\n## Before Creating a New Component\n\n- [ ] Searched the shared UI folder and **`npx shadcn@latest add`** list — nothing fits.\n- [ ] Searched feature/components folders — no existing component to extend.\n- [ ] **Figma/spec** exists for genuinely new UI (or user explicitly waived per `react-ui-decisions`).\n- [ ] Not a **minor variant** of an existing component (then add variant/props instead).\n\nIf anything is unclear, **stop and ask**.\n\n---\n\n## Location Reference\n\n| Kind | Location |\n|------|----------|\n| shadcn/Radix primitives & shared UI atoms | Configured UI path (`components/ui` or `components/common`) |\n| Layout chrome (header, sidebar, footer) | Layout / shell feature folders |\n| Feature / domain UI | Feature or domain component folders |\n| Route-only glue | App Router `page.tsx` / `layout.tsx` — keep thin; lift reusable UI into components |"
+}</RegistryInstallPreview>
+
+# UI Components — shadcn/ui & Custom Components
+
+**Assumes:** shadcn/ui (Radix + Tailwind) with a configured components path (often `src/components/ui` or `src/components/common`). Works with `react-ui-decisions`, `react-accessibility`, and `react-styling`.
+
+## Component Hierarchy
+
+Follow this order. Do not skip steps.
+
+```
+1. Does shadcn/Radix (or an existing shared primitive) cover this?
+   ├── Yes, fully     → Import from the project’s shared UI path. Add via CLI if missing.
+   ├── Partially      → Extend inside the existing shared primitive, or compose primitives in a feature component.
+   └── No             → Build a custom component under a feature/domain folder using primitives + tokens + Figma/spec.
+```
+
+Do **not** hand-roll a duplicate dialog/button/select if the shared UI folder already exposes one. Do **not** import **`@radix-ui/react-*`** directly from pages—keep Radix as an implementation detail inside the shared primitives folder (or add the primitive there first).
+
+---
+
+## Approved UI Stack
+
+- **shadcn/ui** (Radix primitives, Tailwind, `components.json`) is the default UI layer. Styling stays **Tailwind + theme tokens**.
+- Optional org/registry components are allowed **only** when the project already uses them or the user explicitly instructs it.
+- **No new** general-purpose UI libraries (Chakra, Mantine, Material UI, additional kits) without explicit approval.
+
+---
+
+## Shared Primitives Folder
+
+shadcn-generated files under the configured UI path are the shared wrappers: they centralise variants, `cn()`, focus rings, and Radix wiring.
+
+**Pages and feature modules** should import from that shared path, not from raw Radix packages.
+
+| Pattern | Import from (examples) |
+|--------|-------------------------|
+| Button | `@/components/ui/button` (or `@/components/common/button`) |
+| Dialog / alert | `dialog`, `alert-dialog` |
+| Dropdown / menu | `dropdown-menu` |
+| Tabs | `tabs` |
+| Inputs | `input`, `textarea`, `select`, `checkbox`, `switch` |
+| Card / sheet / drawer | `card`, `sheet`, `drawer` |
+
+If a wrapper file already exists, **reuse it** — do not add a second parallel primitive for the same Radix pattern.
+
+**Why:** one place to update behaviour, tokens, and a11y; Radix stays an implementation detail.
+
+---
+
+## Extending shadcn / Radix Components
+
+- Prefer **composition** in **feature components** using shared exports (`asChild`, slots, extra `className`, children).
+- If the **primitive itself** must change (new variant, default size, shared behaviour): extend the **single** file under the shared UI folder (CVA variants, props). Avoid copying the whole component into a feature folder.
+- Do **not** patch **`node_modules`** or fork Radix internals. If the official API cannot do it, build a **small custom** piece in the right feature folder using semantic HTML + tokens, or ask for design/product input.
+- Non-obvious deviations from default shadcn behaviour: short comment at the top of the shared file or next to the variant.
+
+---
+
+## Building Custom Components
+
+Build **custom** UI when no suitable shared primitive composition exists **and** you have **Figma/spec** (see `react-ui-decisions`).
+
+Custom components must:
+
+- Live under a **feature / domain** folder (e.g. `src/components/&lt;domain&gt;/` or `src/features/&lt;domain&gt;/components/`) — match neighbouring naming.
+- Use **Tailwind + theme tokens** only; no ad hoc global CSS (see `react-styling`).
+- Take **props** for labels, data, and callbacks — avoid hardcoded copy unless truly static.
+- Meet `react-accessibility` (labels, focus, keyboard, contrast).
+
+---
+
+## Before Creating a New Component
+
+- [ ] Searched the shared UI folder and **`npx shadcn@latest add`** list — nothing fits.
+- [ ] Searched feature/components folders — no existing component to extend.
+- [ ] **Figma/spec** exists for genuinely new UI (or user explicitly waived per `react-ui-decisions`).
+- [ ] Not a **minor variant** of an existing component (then add variant/props instead).
+
+If anything is unclear, **stop and ask**.
+
+---
+
+## Location Reference
+
+| Kind | Location |
+|------|----------|
+| shadcn/Radix primitives & shared UI atoms | Configured UI path (`components/ui` or `components/common`) |
+| Layout chrome (header, sidebar, footer) | Layout / shell feature folders |
+| Feature / domain UI | Feature or domain component folders |
+| Route-only glue | App Router `page.tsx` / `layout.tsx` — keep thin; lift reusable UI into components |

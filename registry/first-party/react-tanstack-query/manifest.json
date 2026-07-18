@@ -1,0 +1,25 @@
+{
+  "slug": "react-tanstack-query",
+  "kind": "rule",
+  "name": "React TanStack Query",
+  "description": "TanStack Query patterns for client server-state: key factories, cache tuning, mutations, and thin queryFns backed by a service layer.",
+  "category": "rules",
+  "tags": ["react", "tanstack", "react-query", "data-fetching"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-tanstack-query.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-tanstack-query -a cursor -g -y",
+    "featured": false
+  }
+}

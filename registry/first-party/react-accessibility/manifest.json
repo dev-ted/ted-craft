@@ -1,0 +1,25 @@
+{
+  "slug": "react-accessibility",
+  "kind": "rule",
+  "name": "React Accessibility",
+  "description": "Enforce WCAG 2.1 AA for React UI: semantic HTML, keyboard support, ARIA, contrast, and accessible shadcn/Radix patterns.",
+  "category": "rules",
+  "tags": ["react", "a11y", "accessibility", "wcag", "shadcn"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-accessibility.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-accessibility -a cursor -g -y",
+    "featured": false
+  }
+}

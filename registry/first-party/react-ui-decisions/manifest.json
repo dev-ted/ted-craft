@@ -1,0 +1,25 @@
+{
+  "slug": "react-ui-decisions",
+  "kind": "rule",
+  "name": "React UI Decisions",
+  "description": "Decision gates for when to ask, reuse, extend, or build UI—prefer existing primitives and stop when Figma or mapping is unclear.",
+  "category": "rules",
+  "tags": ["react", "ui", "shadcn", "figma", "decisions"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-ui-decisions.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-ui-decisions -a cursor -g -y",
+    "featured": false
+  }
+}

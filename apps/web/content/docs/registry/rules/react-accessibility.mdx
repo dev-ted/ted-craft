@@ -1,0 +1,88 @@
+---
+title: "React Accessibility"
+description: "Enforce WCAG 2.1 AA for React UI: semantic HTML, keyboard support, ARIA, contrast, and accessible shadcn/Radix patterns."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="rule" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-accessibility -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-accessibility -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-accessibility -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-accessibility -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-accessibility -a vscode -g -y"}
+  showInstall={true}>{
+"---\ndescription: Accessibility — WCAG 2.1 AA for React UI\nglobs:\n  - \"**/*.{tsx,jsx}\"\nalwaysApply: true\n---\n\n# Accessibility — WCAG 2.1 AA\n\n**Assumes:** React UI; works best with shadcn/ui (Radix) primitives. Pair with `react-styling` and `react-shadcn-components` when those are installed.\n\nNew and updated UI should target **WCAG 2.1 Level AA**. Prefer patterns that work with keyboard, screen readers, and system settings.\n\n## Stack-Specific Defaults\n\n- Prefer **accessible primitives** (e.g. shadcn/ui / Radix) for `Dialog`, `AlertDialog`, `DropdownMenu`, `Select`, `Tabs`, etc. **Do not** remove or fight their built-in **focus trap**, **focus restoration**, `aria-*`, or keyboard behaviour unless replacing it with an equally accessible pattern.\n- Treat **ESLint** accessibility rules (e.g. **jsx-a11y**, framework eslint configs) as required fixes for new code, not noise to disable.\n- Use the framework’s **Link** component with a real `href` for in-app navigation (not `<button>` pretending to be navigation).\n- Use optimized **Image** components with a correct **`alt`**: descriptive for meaningful images, **`alt=\"\"`** for decorative. Do not omit alt on meaningful images.\n\n## Semantic HTML\n\n- Use the correct element for its purpose: **`nav`**, **`main`**, **`header`**, **`footer`**, **`article`**, **`section`** (with heading where it groups content), **`h1`–`h6`** in order (no skipped levels), **`ul` / `ol` / `li`**, **`table`** with **`th scope`**, **`button`** for actions, **`a`** for links.\n- Do not use **`div` / `span`** as interactive controls unless you supply an appropriate **`role`**, keyboard support (**Enter/Space** as needed), and visible focus—default is to use **`<button>`** or Radix/shadcn triggers instead.\n\n## ARIA\n\n- **`aria-label`** or **`aria-labelledby`** on controls with no visible text (e.g. icon-only buttons).\n- **`aria-describedby`** linking inputs to hints and **error text**; use **`aria-invalid`** when validation fails.\n- Use **`role`** only when native HTML cannot express the control. Avoid redundant ARIA (e.g. **`role=\"button\"`** on **`button`**).\n- **`aria-live=\"polite\"`** (or **`assertive`** for urgent errors) on regions for **dynamic updates** (e.g. toast stack, inline search results).\n- **`aria-busy=\"true\"`** on regions that are loading when skeleton/spinner content is shown and no better pattern exists.\n\n## Keyboard\n\n- Every interactive control must be **focusable and operable** with keyboard alone.\n- **Tab order** follows visual order; use **`tabIndex={0}`** only when necessary; **never** positive **`tabIndex`**.\n- **Modals / dialogs**: trap focus while open; return focus to the trigger on close (Radix/shadcn handle this when used as documented).\n- **Menus / comboboxes**: support **arrow keys** / **Escape** where the pattern expects it (follow Radix/shadcn behaviour).\n\n## Colour & Contrast\n\n- Normal text: **≥ 4.5:1**; large text / important UI graphics: **≥ 3:1** against adjacent colours. Prefer **theme tokens** over ad hoc colours; avoid low-contrast **muted-on-muted** pairings for body text.\n- Do not rely on **colour alone** for state (success/error)—add text, icons, or labels.\n- **Focus rings** must be visible (`outline`, `ring`, or component defaults). Do not use **`outline-none`** without an accessible replacement.\n\n## Images & Icons\n\n- **`<img>`**: always **`alt`** (descriptive or **`\"\"`** if decorative).\n- **SVG / icon libraries** inside buttons or links: **`aria-hidden`** on decorative icons; the **control** carries **`aria-label`** or visible text. If the icon is the only content, **`aria-label`** on the **`button`** / **`Link`**.\n\n## Forms\n\n- Every control has an **associated label** (`Label` + `htmlFor` / `id`, or wrapping pattern used in the codebase).\n- Errors are **programmatically associated** (`aria-describedby`, **`aria-invalid`**).\n- **Required** fields: clear visually and with **`required`** / **`aria-required`**.\n\n## Motion\n\n- Respect **`prefers-reduced-motion`**: use Tailwind **`motion-safe:`** / **`motion-reduce:`** (or CSS media query) for non-essential animation.\n\n## Checklist Before Completing UI Work\n\n- [ ] Keyboard: all actions reachable and usable without a pointer\n- [ ] Headings and landmarks make sense in order\n- [ ] Images have correct **`alt`**\n- [ ] Form fields have labels and linked error text\n- [ ] Contrast sufficient for text and critical UI; focus visible\n- [ ] Dynamic status content uses a live region where appropriate\n- [ ] Dialogs/menus use accessible primitives (focus trap, Escape)\n- [ ] No positive **`tabIndex`**"
+}</RegistryInstallPreview>
+
+# Accessibility — WCAG 2.1 AA
+
+**Assumes:** React UI; works best with shadcn/ui (Radix) primitives. Pair with `react-styling` and `react-shadcn-components` when those are installed.
+
+New and updated UI should target **WCAG 2.1 Level AA**. Prefer patterns that work with keyboard, screen readers, and system settings.
+
+## Stack-Specific Defaults
+
+- Prefer **accessible primitives** (e.g. shadcn/ui / Radix) for `Dialog`, `AlertDialog`, `DropdownMenu`, `Select`, `Tabs`, etc. **Do not** remove or fight their built-in **focus trap**, **focus restoration**, `aria-*`, or keyboard behaviour unless replacing it with an equally accessible pattern.
+- Treat **ESLint** accessibility rules (e.g. **jsx-a11y**, framework eslint configs) as required fixes for new code, not noise to disable.
+- Use the framework’s **Link** component with a real `href` for in-app navigation (not `&lt;button&gt;` pretending to be navigation).
+- Use optimized **Image** components with a correct **`alt`**: descriptive for meaningful images, **`alt=""`** for decorative. Do not omit alt on meaningful images.
+
+## Semantic HTML
+
+- Use the correct element for its purpose: **`nav`**, **`main`**, **`header`**, **`footer`**, **`article`**, **`section`** (with heading where it groups content), **`h1`–`h6`** in order (no skipped levels), **`ul` / `ol` / `li`**, **`table`** with **`th scope`**, **`button`** for actions, **`a`** for links.
+- Do not use **`div` / `span`** as interactive controls unless you supply an appropriate **`role`**, keyboard support (**Enter/Space** as needed), and visible focus—default is to use **`&lt;button&gt;`** or Radix/shadcn triggers instead.
+
+## ARIA
+
+- **`aria-label`** or **`aria-labelledby`** on controls with no visible text (e.g. icon-only buttons).
+- **`aria-describedby`** linking inputs to hints and **error text**; use **`aria-invalid`** when validation fails.
+- Use **`role`** only when native HTML cannot express the control. Avoid redundant ARIA (e.g. **`role="button"`** on **`button`**).
+- **`aria-live="polite"`** (or **`assertive`** for urgent errors) on regions for **dynamic updates** (e.g. toast stack, inline search results).
+- **`aria-busy="true"`** on regions that are loading when skeleton/spinner content is shown and no better pattern exists.
+
+## Keyboard
+
+- Every interactive control must be **focusable and operable** with keyboard alone.
+- **Tab order** follows visual order; use **`tabIndex=&#123;0&#125;`** only when necessary; **never** positive **`tabIndex`**.
+- **Modals / dialogs**: trap focus while open; return focus to the trigger on close (Radix/shadcn handle this when used as documented).
+- **Menus / comboboxes**: support **arrow keys** / **Escape** where the pattern expects it (follow Radix/shadcn behaviour).
+
+## Colour & Contrast
+
+- Normal text: **≥ 4.5:1**; large text / important UI graphics: **≥ 3:1** against adjacent colours. Prefer **theme tokens** over ad hoc colours; avoid low-contrast **muted-on-muted** pairings for body text.
+- Do not rely on **colour alone** for state (success/error)—add text, icons, or labels.
+- **Focus rings** must be visible (`outline`, `ring`, or component defaults). Do not use **`outline-none`** without an accessible replacement.
+
+## Images & Icons
+
+- **`&lt;img&gt;`**: always **`alt`** (descriptive or **`""`** if decorative).
+- **SVG / icon libraries** inside buttons or links: **`aria-hidden`** on decorative icons; the **control** carries **`aria-label`** or visible text. If the icon is the only content, **`aria-label`** on the **`button`** / **`Link`**.
+
+## Forms
+
+- Every control has an **associated label** (`Label` + `htmlFor` / `id`, or wrapping pattern used in the codebase).
+- Errors are **programmatically associated** (`aria-describedby`, **`aria-invalid`**).
+- **Required** fields: clear visually and with **`required`** / **`aria-required`**.
+
+## Motion
+
+- Respect **`prefers-reduced-motion`**: use Tailwind **`motion-safe:`** / **`motion-reduce:`** (or CSS media query) for non-essential animation.
+
+## Checklist Before Completing UI Work
+
+- [ ] Keyboard: all actions reachable and usable without a pointer
+- [ ] Headings and landmarks make sense in order
+- [ ] Images have correct **`alt`**
+- [ ] Form fields have labels and linked error text
+- [ ] Contrast sufficient for text and critical UI; focus visible
+- [ ] Dynamic status content uses a live region where appropriate
+- [ ] Dialogs/menus use accessible primitives (focus trap, Escape)
+- [ ] No positive **`tabIndex`**

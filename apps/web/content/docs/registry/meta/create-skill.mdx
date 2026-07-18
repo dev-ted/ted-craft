@@ -19,12 +19,12 @@ description: "Author and publish first-party ted-craft skills with manifests, va
   codexCommand={"npx ted-craft add create-skill -a codex -g -y"}
   vscodeCommand={"npx ted-craft add create-skill -a vscode -g -y"}
   showInstall={true}>{
-"---\nname: create-skill\ndescription: >-\n  Guide for authoring a new first-party ted-craft skill or bundle with manifest,\n  SKILL.md frontmatter, validation, and docs generation. Use when creating or\n  publishing a new registry artifact.\n---\n\n# Create a ted-craft skill\n\n## Layout\n\n```text\nregistry/first-party/<slug>/\n├── manifest.json\n├── skill/\n│   └── SKILL.md\n└── subagent/          # optional\n    └── <name>.md\n```\n\n## Checklist\n\n1. Pick a kebab-case `slug` matching the folder name.\n2. Write `SKILL.md` with YAML frontmatter: `name`, `description` (name must match folder / manifest artifact name).\n3. Fill `manifest.json` (`kind`, `category`, `tags`, `artifacts`, `source.type: first-party`).\n4. Run `npm run validate` — must pass secret scan, frontmatter, and path checks.\n5. Run `npm run generate` to refresh `registry/index.json` and docs.\n6. Never commit secrets, personal emails, workspace IDs, or absolute home-directory paths — use placeholders.\n\n## Frontmatter template\n\n```yaml\n---\nname: my-skill\ndescription: >-\n  One or two sentences. Include trigger phrases for when agents should load this.\n---\n```\n\n## Manifest essentials\n\n- `kind`: `skill` | `subagent` | `rule` | `hook` | `bundle`\n- `cli.featured`: only for high-signal starter items\n- `cli.promptExample`: the install or start command users should copy"
+"---\nname: create-skill\ndescription: >-\n  Guide for authoring a new first-party ted-craft skill, rule, or bundle with\n  manifest, frontmatter, validation, and docs generation. Use when creating or\n  publishing a new registry artifact.\n---\n\n# Create a ted-craft skill\n\n## Skill layout\n\n```text\nregistry/first-party/<slug>/\n├── manifest.json\n├── skill/\n│   └── SKILL.md\n└── subagent/          # optional\n    └── <name>.md\n```\n\n## Rule layout\n\nEach package installs **one** rule file (`artifacts.rule.file`). Prefer Cursor `.mdc` with `description`, optional `globs`, and `alwaysApply`.\n\n```text\nregistry/first-party/<slug>/\n├── manifest.json          # kind: \"rule\"\n└── rule/\n    └── <slug>.mdc\n```\n\n### Rule checklist\n\n1. Pick a kebab-case `slug` matching the folder name.\n2. Write portable rule body — no single-project names, private paths, or org-only registries unless the rule’s assumptions say so.\n3. Fill `manifest.json` with `kind: \"rule\"` and `artifacts.rule.file` pointing at the `.mdc`.\n4. Set installer-facing `description` (what the rule enforces for users browsing the marketplace).\n5. Run `npm run validate` then `npm run generate`.\n6. Cross-reference sibling rules by **marketplace slug**, not local filenames, so partial installs still make sense.\n\n### Rule manifest essentials\n\n```json\n{\n  \"slug\": \"my-rule\",\n  \"kind\": \"rule\",\n  \"name\": \"My Rule\",\n  \"description\": \"What this rule enforces for installers.\",\n  \"category\": \"rules\",\n  \"tags\": [\"react\"],\n  \"author\": { \"name\": \"ted\", \"url\": \"https://github.com/dev-ted\" },\n  \"license\": \"MIT\",\n  \"artifacts\": {\n    \"rule\": { \"file\": \"rule/my-rule.mdc\" }\n  },\n  \"source\": { \"type\": \"first-party\" },\n  \"cli\": {\n    \"promptExample\": \"npx ted-craft add my-rule -a cursor -g -y\",\n    \"featured\": false\n  }\n}\n```\n\n### Rule frontmatter template\n\n```yaml\n---\ndescription: Short summary of what the rule enforces\nglobs:\n  - \"**/*.{tsx,jsx}\"\nalwaysApply: true\n---\n\n# Title\n\n**Assumes:** stack prerequisites so users know when to skip this rule.\n```\n\n## Skill checklist\n\n1. Pick a kebab-case `slug` matching the folder name.\n2. Write `SKILL.md` with YAML frontmatter: `name`, `description` (name must match folder / manifest artifact name).\n3. Fill `manifest.json` (`kind`, `category`, `tags`, `artifacts`, `source.type: first-party`).\n4. Run `npm run validate` — must pass secret scan, frontmatter, and path checks.\n5. Run `npm run generate` to refresh `registry/index.json` and docs.\n6. Never commit secrets, personal emails, workspace IDs, or absolute home-directory paths — use placeholders.\n\n## Skill frontmatter template\n\n```yaml\n---\nname: my-skill\ndescription: >-\n  One or two sentences. Include trigger phrases for when agents should load this.\n---\n```\n\n## Manifest essentials\n\n- `kind`: `skill` | `subagent` | `rule` | `hook` | `bundle`\n- `cli.featured`: only for high-signal starter items\n- `cli.promptExample`: the install or start command users should copy"
 }</RegistryInstallPreview>
 
 # Create a ted-craft skill
 
-## Layout
+## Skill layout
 
 ```text
 registry/first-party/&lt;slug&gt;/
@@ -35,7 +35,65 @@ registry/first-party/&lt;slug&gt;/
     └── &lt;name&gt;.md
 ```
 
-## Checklist
+## Rule layout
+
+Each package installs **one** rule file (`artifacts.rule.file`). Prefer Cursor `.mdc` with `description`, optional `globs`, and `alwaysApply`.
+
+```text
+registry/first-party/&lt;slug&gt;/
+├── manifest.json          # kind: "rule"
+└── rule/
+    └── &lt;slug&gt;.mdc
+```
+
+### Rule checklist
+
+1. Pick a kebab-case `slug` matching the folder name.
+2. Write portable rule body — no single-project names, private paths, or org-only registries unless the rule’s assumptions say so.
+3. Fill `manifest.json` with `kind: "rule"` and `artifacts.rule.file` pointing at the `.mdc`.
+4. Set installer-facing `description` (what the rule enforces for users browsing the marketplace).
+5. Run `npm run validate` then `npm run generate`.
+6. Cross-reference sibling rules by **marketplace slug**, not local filenames, so partial installs still make sense.
+
+### Rule manifest essentials
+
+```json
+&#123;
+  "slug": "my-rule",
+  "kind": "rule",
+  "name": "My Rule",
+  "description": "What this rule enforces for installers.",
+  "category": "rules",
+  "tags": ["react"],
+  "author": &#123; "name": "ted", "url": "https://github.com/dev-ted" &#125;,
+  "license": "MIT",
+  "artifacts": &#123;
+    "rule": &#123; "file": "rule/my-rule.mdc" &#125;
+  &#125;,
+  "source": &#123; "type": "first-party" &#125;,
+  "cli": &#123;
+    "promptExample": "npx ted-craft add my-rule -a cursor -g -y",
+    "featured": false
+  &#125;
+&#125;
+```
+
+### Rule frontmatter template
+
+```yaml
+---
+description: Short summary of what the rule enforces
+globs:
+  - "**/*.&#123;tsx,jsx&#125;"
+alwaysApply: true
+---
+
+# Title
+
+**Assumes:** stack prerequisites so users know when to skip this rule.
+```
+
+## Skill checklist
 
 1. Pick a kebab-case `slug` matching the folder name.
 2. Write `SKILL.md` with YAML frontmatter: `name`, `description` (name must match folder / manifest artifact name).
@@ -44,7 +102,7 @@ registry/first-party/&lt;slug&gt;/
 5. Run `npm run generate` to refresh `registry/index.json` and docs.
 6. Never commit secrets, personal emails, workspace IDs, or absolute home-directory paths — use placeholders.
 
-## Frontmatter template
+## Skill frontmatter template
 
 ```yaml
 ---

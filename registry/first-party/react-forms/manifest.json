@@ -1,0 +1,25 @@
+{
+  "slug": "react-forms",
+  "kind": "rule",
+  "name": "React Forms",
+  "description": "Require react-hook-form + Zod for create/edit forms, with sentence-case labels, placeholders, and submit-time sanitization.",
+  "category": "rules",
+  "tags": ["react", "forms", "zod", "react-hook-form", "validation"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-forms.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-forms -a cursor -g -y",
+    "featured": false
+  }
+}

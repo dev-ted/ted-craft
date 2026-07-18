@@ -1,0 +1,25 @@
+{
+  "slug": "react-responsive-design",
+  "kind": "rule",
+  "name": "React Responsive Design",
+  "description": "Mobile-first responsive UI with Tailwind breakpoints, touch targets, and no inventing layouts without a mobile spec.",
+  "category": "rules",
+  "tags": ["react", "responsive", "mobile", "tailwind"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-responsive-design.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-responsive-design -a cursor -g -y",
+    "featured": false
+  }
+}

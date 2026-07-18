@@ -1,0 +1,63 @@
+---
+title: "React Styling"
+description: "Tailwind-first styling with theme tokens, gap over space-*, and no one-off hex colours in JSX."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="rule" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-styling -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-styling -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-styling -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-styling -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-styling -a vscode -g -y"}
+  showInstall={true}>{
+"---\ndescription: Styling, theming, and Tailwind usage for UI work\nglobs:\n  - \"**/*.{tsx,jsx}\"\n  - \"**/*.{css,scss}\"\nalwaysApply: true\n---\n\n# Styling & Theming\n\n**Assumes:** Tailwind CSS (v3 or v4) with a central theme/CSS variables entry. Pair with `react-figma-fidelity` and `react-shadcn-components` when installed.\n\n## Tailwind\n\n- Prefer **Tailwind utility classes** for layout, spacing, typography, and colours. Avoid inline `style={}` except for values that cannot be expressed as utilities (e.g. dynamic chart dimensions).\n- **Global theme CSS** lives in the project’s theme entry (often `globals.css`, `app.css`, or similar) for app-wide concerns: Tailwind import, `:root` / `.dark` variables, `@theme` / theme config, and base layers.\n- Do not add separate global `.css` entry points for feature UI; colocate **CSS Modules** only if the codebase already uses them for that feature.\n- Prefer modern opacity/modifier syntax (e.g. `bg-black/50`) over legacy patterns where the project’s Tailwind version supports it.\n- Do **not** use `space-x-*` or `space-y-*`. Use **`gap-*`** on flex/grid containers, or explicit **`margin`** utilities on children (`mt-*`, `ml-*`, etc.), so spacing stays predictable with wraps and conditional children.\n\n```tsx\n// ❌ Avoid one-off literals in JSX\n<div className=\"text-[#0f2643] bg-[#f5f5f5]\" />\n\n// ✅ Prefer semantic / theme-mapped utilities\n<div className=\"text-foreground bg-muted\" />\n<div className=\"text-primary bg-secondary\" />\n```\n\n## Theme & Colours\n\n- Prefer **semantic theme utilities** (`bg-background`, `text-foreground`, `border-border`, `text-muted-foreground`, `bg-primary`, …) and any mapped scales already defined in the theme over raw hex/RGB in new code.\n- Runtime or branded theming should use existing theme hooks / CSS variables—align new UI with those rather than hardcoding colours in components.\n- Do **not** introduce new palette names or ad hoc spacing scales without extending the theme CSS / Tailwind theme where utilities are required.\n- When unsure, **read the theme CSS first**, then check any runtime theme helpers if the screen depends on dynamic theming.\n\n> Scoped overrides for third-party markup should keep using **CSS variables** from the theme—do not duplicate literals across modules.\n\n## Design Fidelity\n\n- Full workflow: `react-figma-fidelity` (what to build from Figma, mapping, exceptions, when to stop and ask).\n- **Toasts** / **skeleton** exceptions: use the project’s existing toast and skeleton primitives—do not invent parallel systems.\n\n## Responsive / Mobile\n\n- Mirror responsive patterns from **nearby pages and components** in the same feature (breakpoints, stacking, hidden/visible regions).\n- Do not introduce new breakpoint behaviour or mobile layouts unless a mobile design is provided **or** the user has given explicit written requirements (see `react-responsive-design`)."
+}</RegistryInstallPreview>
+
+# Styling & Theming
+
+**Assumes:** Tailwind CSS (v3 or v4) with a central theme/CSS variables entry. Pair with `react-figma-fidelity` and `react-shadcn-components` when installed.
+
+## Tailwind
+
+- Prefer **Tailwind utility classes** for layout, spacing, typography, and colours. Avoid inline `style=&#123;&#125;` except for values that cannot be expressed as utilities (e.g. dynamic chart dimensions).
+- **Global theme CSS** lives in the project’s theme entry (often `globals.css`, `app.css`, or similar) for app-wide concerns: Tailwind import, `:root` / `.dark` variables, `@theme` / theme config, and base layers.
+- Do not add separate global `.css` entry points for feature UI; colocate **CSS Modules** only if the codebase already uses them for that feature.
+- Prefer modern opacity/modifier syntax (e.g. `bg-black/50`) over legacy patterns where the project’s Tailwind version supports it.
+- Do **not** use `space-x-*` or `space-y-*`. Use **`gap-*`** on flex/grid containers, or explicit **`margin`** utilities on children (`mt-*`, `ml-*`, etc.), so spacing stays predictable with wraps and conditional children.
+
+```tsx
+// ❌ Avoid one-off literals in JSX
+&lt;div className="text-[#0f2643] bg-[#f5f5f5]" /&gt;
+
+// ✅ Prefer semantic / theme-mapped utilities
+&lt;div className="text-foreground bg-muted" /&gt;
+&lt;div className="text-primary bg-secondary" /&gt;
+```
+
+## Theme & Colours
+
+- Prefer **semantic theme utilities** (`bg-background`, `text-foreground`, `border-border`, `text-muted-foreground`, `bg-primary`, …) and any mapped scales already defined in the theme over raw hex/RGB in new code.
+- Runtime or branded theming should use existing theme hooks / CSS variables—align new UI with those rather than hardcoding colours in components.
+- Do **not** introduce new palette names or ad hoc spacing scales without extending the theme CSS / Tailwind theme where utilities are required.
+- When unsure, **read the theme CSS first**, then check any runtime theme helpers if the screen depends on dynamic theming.
+
+&gt; Scoped overrides for third-party markup should keep using **CSS variables** from the theme—do not duplicate literals across modules.
+
+## Design Fidelity
+
+- Full workflow: `react-figma-fidelity` (what to build from Figma, mapping, exceptions, when to stop and ask).
+- **Toasts** / **skeleton** exceptions: use the project’s existing toast and skeleton primitives—do not invent parallel systems.
+
+## Responsive / Mobile
+
+- Mirror responsive patterns from **nearby pages and components** in the same feature (breakpoints, stacking, hidden/visible regions).
+- Do not introduce new breakpoint behaviour or mobile layouts unless a mobile design is provided **or** the user has given explicit written requirements (see `react-responsive-design`).

@@ -1,0 +1,56 @@
+---
+description: React and Next.js App Router patterns for components, pages, and composition
+globs:
+  - "**/*.{tsx,jsx}"
+  - "**/app/**/*.{ts,tsx,js,jsx}"
+alwaysApply: true
+---
+
+# React & Next.js — Components & Pages
+
+**Assumes:** Next.js App Router. Cross-refs: `react-project-structure`, `react-shadcn-components`, `react-ui-decisions`, `react-tanstack-query`, `react-accessibility`, `react-no-framer-motion`.
+
+## Server vs Client
+
+- **`page.tsx`**, **`layout.tsx`**, and **`route.ts`** are **Server Components by default** (no `"use client"` at the top). Keep them that way unless they need hooks, browser APIs, or event handlers.
+- Add **`"use client"`** at the **first line** of a module when it uses **`useState`**, **`useEffect`**, **`useRef`**, event handlers (`onClick`, `onChange`), **TanStack Query** (`useQuery`, `useMutation`), client-only context, or **`window` / `document` / `localStorage`**.
+- **Push `"use client"` down the tree**: prefer a small client **leaf** (form, table, modal) imported into a server page rather than marking the whole page client-only without reason.
+- **Providers** (query, theme, auth) are client components wrapping the app from a root layout—do not nest duplicate providers without a clear need.
+
+## Creating Components
+
+- Use **function components** only; type **`props`** with a **`interface`** or **`type`** at the top of the file or next to the component.
+- **Primitives** live in the project’s shared UI folder (often `src/components/ui` or `src/components/common`). **Feature UI** lives under domain/feature folders—see `react-shadcn-components`.
+- Prefer **composition** (children, slots, small subcomponents) over props drilling deep trees; extract hooks when logic is reused.
+- Match **existing naming** in the folder you add to.
+- Preserve **`ref`** forwarding when wrapping primitives (`React.ComponentProps`, `forwardRef` patterns already used).
+
+## React Compiler & Memoization
+
+- If the app enables the **React Compiler** (`reactCompiler` in Next config or equivalent), treat automatic memoization as the default optimisation story.
+- **Do not** add **`useCallback`**, **`useMemo`**, or **`React.memo`** “just in case” for performance. Use normal inline functions and derived values unless you have a **concrete** reason.
+- **Rare exceptions:** keep **`useMemo` / `useCallback`** only when something **requires a stable identity** that the compiler cannot infer (e.g. a third-party API that compares references). Prefer fixing the underlying pattern first; add a **one-line comment** if you must keep the hook.
+- If the compiler is **not** enabled, still avoid gratuitous memoization—measure first.
+
+## Creating Pages (`app/`)
+
+- **`page.tsx`**: **`export default`** the page component. Export **`metadata`** / **`generateMetadata`** from **server** page modules when SEO/titles are needed (not from client components).
+- Keep **pages thin**: assemble layout sections and pass data or callbacks into **components**. Avoid thousand-line **`page.tsx`** files—lift UI into named components.
+- Use **route groups** when the project already does; do not break URL structure when adding routes.
+- **`layout.tsx`** wraps **`children`** only; shared chrome (sidebar, nav) belongs in the **group layout**, not duplicated per page.
+
+## Using Components on Pages
+
+- Import with the project’s path alias (commonly **`@/`**).
+- **Server page → client child** is normal: the page can fetch or pass serialisable **props** into a client component. Do not pass **functions** from server to client except **Server Actions** where that pattern is established.
+- For **client data**, use TanStack Query (or equivalent) inside **`"use client"`** components, not inside server **`page.tsx`** (see `react-tanstack-query`).
+- **Loading UX**: use **`Suspense`** boundaries and/or the project **`Skeleton`** primitive. Route-level **`loading.tsx`** / **`error.tsx`** when a route needs a dedicated shell.
+
+## Quick Checklist
+
+- [ ] **`"use client"`** only where required; boundary as low as possible.
+- [ ] **Page** orchestrates; **components** implement UI and client state.
+- [ ] **Data**: server fetch in RSC when appropriate; **React Query** only in client modules.
+- [ ] Shared primitives from the configured UI folder; feature UI in feature folders.
+- [ ] **Accessibility** and **responsive** rules respected (`react-accessibility`, `react-responsive-design`).
+- [ ] No **gratuitous** **`useMemo` / `useCallback` / `memo`** when the React Compiler is enabled.

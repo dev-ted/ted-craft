@@ -1,0 +1,25 @@
+{
+  "slug": "react-project-structure",
+  "kind": "rule",
+  "name": "React Project Structure",
+  "description": "Advisory conventions for React/Next apps: stack defaults, folder responsibilities, and where to place routes, UI, hooks, and services.",
+  "category": "rules",
+  "tags": ["react", "nextjs", "structure", "architecture", "shadcn"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/react-project-structure.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-project-structure -a cursor -g -y",
+    "featured": false
+  }
+}

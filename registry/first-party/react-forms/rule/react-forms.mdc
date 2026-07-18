@@ -1,0 +1,105 @@
+---
+description: Forms, inputs, validation (react-hook-form + Zod), and input sanitization
+globs:
+  - "**/*form*.{tsx,jsx}"
+  - "**/forms/**/*.{tsx,jsx,ts,js}"
+  - "**/use-*-form*.{ts,tsx,js,jsx}"
+  - "**/*schema*.{ts,js}"
+alwaysApply: true
+---
+
+# Forms & Inputs — Validation & Sanitization
+
+**Assumes:** `react-hook-form`, `zod`, and `@hookform/resolvers/zod`. Cross-refs: `react-accessibility`, `react-shadcn-components`.
+
+## Required stack
+
+Every **create / edit / submit** form MUST use:
+
+1. **`react-hook-form`** — `useForm`, `register` or `Controller`, `handleSubmit`
+2. **`zod`** — co-located schema (export schema + inferred type)
+3. **`zodResolver`** from `@hookform/resolvers/zod`
+
+Do **not** hand-roll validation with scattered `useState` + `onChange` checks, or submit unvalidated raw DOM values.
+
+## UI primitives
+
+- Text fields → project **`Input`** / **`Textarea`** (shadcn/ui or equivalent)
+- Selects / multi-select → existing **`Select`**, multi-select, etc. from the shared UI layer
+- Wire **`formState.errors`** to the project’s error/helper props on inputs
+- Use **`noValidate`** on `<form>`; rely on Zod + RHF (browser validation fights custom messages)
+- Disable inputs and show **loading** on submit while `isSubmitting`
+
+## Labels
+
+Every visible field label must follow **sentence case** when the label is **more than one word**:
+
+- Capitalize only the **first** word (and proper nouns / acronyms that are always uppercase in product copy).
+- Do **not** use title case on multi-word labels.
+
+| ✅ Correct | ❌ Avoid |
+|-----------|---------|
+| Job title | Job Title |
+| Business unit | Business Unit |
+| Phone number | Phone Number |
+| Start date | Start Date |
+
+Single-word labels stay as written (e.g. `Email`, `Name`, `Role`). Match existing copy in the same screen when a field already has an established label.
+
+## Placeholders
+
+Every **`Input`**, **`Textarea`**, and select trigger in create/edit forms MUST include an **appropriate `placeholder`** that hints at the expected value or format.
+
+- Use concise, field-specific examples (e.g. `e.g. view_users`, `e.g. Website Redesign`) — not generic text like "Enter value"
+- Match placeholders to validation rules (snake_case codes, email format, optional vs required)
+- **`Select`** / combobox: use `placeholder` on the value slot when no value is selected
+- Read-only or pre-filled fields in edit mode may omit placeholders when the value is always visible
+- Do not rely on placeholder alone for labels — every control still needs a visible **`label`** per `react-accessibility`
+
+## Sanitization & security
+
+Validate and normalize **before** calling services, mutations, or parent `onSubmit` handlers.
+
+### In the Zod schema
+
+- **`.trim()`** on all user-entered strings; **`.min()` / `.max()`** for length bounds
+- **`.email()`**, **`.regex()`**, **`.enum()`**, **`.refine()`** for format and business rules
+- IDs and foreign keys → validate as numeric / UUID strings; reject `"undefined"`, `"null"`, empty strings
+- Optional strings → `z.string().optional()` or `.default("")`; coerce with `.transform()` only when the output type is intentional
+- Passwords → length + complexity in schema or a shared validation helper; never log or echo password values
+
+### On submit
+
+In `handleSubmit`, map values to a **clean payload** (trim strings, filter ID arrays, drop unknown keys). Do not pass `event` or raw `FormData` to API layers without schema parsing.
+
+```tsx
+const submitHandler = handleSubmit((values) => {
+  onSubmit({
+    name: values.name.trim(),
+    description: (values.description ?? "").trim(),
+  });
+});
+```
+
+### XSS
+
+- React escapes text in JSX by default — render user input as **text nodes**, not HTML
+- **Never** use `dangerouslySetInnerHTML` with user-controlled strings
+- Do not bypass React to inject markup from form values; if rich text is ever required, stop and agree on a vetted sanitizer first
+
+### Injection (SQL / command / path)
+
+- The frontend does **not** execute SQL; still **validate types and allowed shapes** so bad payloads never reach the API
+- Use typed service functions — no string-concatenated query/command construction from form fields
+- Server handlers that accept JSON should reuse **Zod schemas** where the project already validates request bodies
+
+## Checklist (new or updated form)
+
+- [ ] `useForm` + `zodResolver(schema)` with exported form values type
+- [ ] All fields registered; complex controls use `Controller`
+- [ ] Text inputs, textareas, and selects have appropriate **placeholders**
+- [ ] Schema enforces trim, length, format, and ID rules
+- [ ] Submit handler outputs normalized data only
+- [ ] Errors surfaced on inputs; labels linked per `react-accessibility`
+- [ ] Multi-word labels use **sentence case**
+- [ ] No `dangerouslySetInnerHTML`; no unvalidated submit path

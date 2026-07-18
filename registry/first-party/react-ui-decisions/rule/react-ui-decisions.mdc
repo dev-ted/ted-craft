@@ -1,0 +1,67 @@
+---
+description: Component creation, UI decision gates, and when to ask before building
+globs:
+  - "**/*.{tsx,jsx}"
+alwaysApply: true
+---
+
+# Component Creation & UI Decisions
+
+**Assumes:** A shared UI layer (typically shadcn/ui). Related: `react-figma-fidelity`, `react-shadcn-components`, `react-project-structure`, `react-styling`, `react-accessibility`.
+
+## When to Ask Before Building
+
+Stop and confirm with the developer or designer before proceeding when:
+
+- No **Figma** (or equivalent spec) exists for a **new** screen or component.
+- It is unclear which **existing** component to use or extend.
+- A new component would **duplicate** (or nearly duplicate) something already in the repo.
+- A Figma element has **no clear mapping** to an existing primitive or feature component.
+- **Responsive / mobile** behaviour is required but no mobile frame or written spec exists.
+- An **interaction** (hover, focus, open/close, validation) is ambiguous or not shown in design.
+
+> **Rule:** When in doubt, ask. Do not improvise layout, new controls, or interaction patterns.
+
+## Where to Look First
+
+1. **Shared UI primitives** — shadcn/ui-style components (`button`, `dialog`, `input`, `select`, `tabs`, …) under the path configured in `components.json`.
+2. **Feature / layout UI** — search for a matching component or domain folder before adding a parallel file.
+3. **`npx shadcn@latest add <component>`** — when Radix/shadcn provides the pattern but the file is **missing**; install into the project’s configured path.
+4. **Optional org/registry components** — only when matching existing usage or explicit instruction.
+
+## Using Existing Components
+
+- **Prefer composition:** extend behaviour via **props**, **`className`**, or **variants** instead of copying markup into a new file.
+- **New visual variant** of an existing component → add the variant **on that component** (or shared subcomponent), not a second near-identical file.
+- **Buttons** → use the project **`Button`** primitive (or wrappers that already use it). Do not use raw `<button>` with one-off styles for standard actions unless the design system already does so for that pattern.
+
+## Component Source Hierarchy (Summary)
+
+1. **Primitive exists in the shared UI folder** → import and compose; adjust via props/variants/`className` within token rules.
+2. **Radix/shadcn covers the pattern but primitive missing** → add via **shadcn CLI**, then use it (do not hand-roll an inaccessible duplicate).
+3. **Org / registry component** → use only when it matches project conventions and existing usage.
+4. **No suitable primitive** → build a **feature component** using tokens, shared primitives, and Figma/spec alignment.
+5. **Full custom (rare)** → only when design cannot be built from primitives; still use semantic HTML, labels, and `react-accessibility`.
+
+## Permitted Without Figma Links
+
+| Element | How to build |
+|--------|----------------|
+| Toast messages | Project’s existing toast system only — do not add alternate toast libraries. |
+| Loading / skeleton | Project **`Skeleton`** (or equivalent), or the **existing** feature-specific skeleton used in that screen. |
+
+Do not invent parallel toast, spinner-only loading chrome, or skeleton patterns for standard cases.
+
+## Decision Flow
+
+```
+Figma/spec for this UI?
+├── No → STOP. Ask before building (except allowed rows above).
+└── Yes → Matching component under shared UI or feature folders?
+          ├── Yes → Reuse or extend (variants/props), do not duplicate.
+          └── No → Covered by shadcn/Radix via CLI add?
+                    ├── Yes → Add primitive, then compose in feature folder.
+                    └── No → Explicit registry or custom feature component?
+                              ├── Registry instructed → Add per registry + compose.
+                              └── Else → Custom under feature folder using shared primitives + tokens.
+```

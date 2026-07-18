@@ -1,0 +1,69 @@
+---
+title: "React Responsive Design"
+description: "Mobile-first responsive UI with Tailwind breakpoints, touch targets, and no inventing layouts without a mobile spec."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="rule" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-responsive-design -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-responsive-design -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-responsive-design -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-responsive-design -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-responsive-design -a vscode -g -y"}
+  showInstall={true}>{
+"---\ndescription: Responsive and mobile design rules (Tailwind, layouts, testing)\nglobs:\n  - \"**/*.{tsx,jsx}\"\n  - \"**/*.{css,scss}\"\nalwaysApply: true\n---\n\n# Responsive Design\n\n**Assumes:** Tailwind CSS. Aligns with `react-figma-fidelity`, `react-styling`, and `react-ui-decisions` when those are installed.\n\n## Core Rules\n\n- Treat **all** UI as responsive: avoid desktop-only layouts unless an explicit exception is documented.\n- Prefer **Tailwind** responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`) for layout, spacing, typography, and visibility.\n- **Mobile-first:** default classes target the smallest viewport; add larger breakpoints only where the design or existing patterns require it.\n- Do **not** use `space-x-*` / `space-y-*` for responsive spacing — use **`gap-*`** / margins per `react-styling`.\n\n## Reference Implementation\n\n- Existing components and pages in the repo are the **authoritative reference** for breakpoints, stacking, hidden/visible regions, and chrome vs main content behaviour.\n- Before adding responsive behaviour to a new surface, skim **2–3 similar** components or pages and mirror their approach.\n- Do **not** invent new breakpoint strategies unless:\n  - a **mobile/tablet Figma frame** (or written spec) defines them, **or**\n  - the user gives **explicit written** requirements.\n\n## Tailwind Breakpoints\n\nDefault **min-width** scales (Tailwind) unless overridden in the project theme CSS inside `@theme` — **check the theme CSS first** if custom `--breakpoint-*` or screen tokens appear.\n\n| Prefix | Min-width |\n|--------|-----------|\n| `sm:` | 640px |\n| `md:` | 768px |\n| `lg:` | 1024px |\n| `xl:` | 1280px |\n| `2xl:` | 1536px |\n\n## JS-Side Branching\n\n- Prefer **CSS/Tailwind** for responsive layout. Use a project **mobile detection hook** (e.g. `useIsMobile` / `useMediaQuery`) only when behaviour must **differ by component tree** (e.g. different widgets). Align the hook’s breakpoint with Tailwind’s **`md`** (768px) unless the project documents otherwise.\n\n## Responsive Checklist\n\nBefore treating UI work as done:\n\n- [ ] Checked at roughly **375px**, **768px**, and **1280px** viewport widths (or matching Figma frames if provided).\n- [ ] No unintended **horizontal scroll** at common widths.\n- [ ] **Touch targets** on small viewports are at least **44×44px** where tappable (icons-only controls need adequate padding or `min-h` / `min-w`).\n- [ ] Text stays **readable** (avoid unreadable truncation; use **`line-clamp`** / reflow where appropriate).\n- [ ] **Images and media** scale without breaking layout (`max-w-full`, object-fit, or framework image sizing patterns consistent with nearby code).\n- [ ] Behaviour matches **Figma** when mobile/tablet frames exist; otherwise matches **existing** patterns in the same feature area."
+}</RegistryInstallPreview>
+
+# Responsive Design
+
+**Assumes:** Tailwind CSS. Aligns with `react-figma-fidelity`, `react-styling`, and `react-ui-decisions` when those are installed.
+
+## Core Rules
+
+- Treat **all** UI as responsive: avoid desktop-only layouts unless an explicit exception is documented.
+- Prefer **Tailwind** responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`) for layout, spacing, typography, and visibility.
+- **Mobile-first:** default classes target the smallest viewport; add larger breakpoints only where the design or existing patterns require it.
+- Do **not** use `space-x-*` / `space-y-*` for responsive spacing — use **`gap-*`** / margins per `react-styling`.
+
+## Reference Implementation
+
+- Existing components and pages in the repo are the **authoritative reference** for breakpoints, stacking, hidden/visible regions, and chrome vs main content behaviour.
+- Before adding responsive behaviour to a new surface, skim **2–3 similar** components or pages and mirror their approach.
+- Do **not** invent new breakpoint strategies unless:
+  - a **mobile/tablet Figma frame** (or written spec) defines them, **or**
+  - the user gives **explicit written** requirements.
+
+## Tailwind Breakpoints
+
+Default **min-width** scales (Tailwind) unless overridden in the project theme CSS inside `@theme` — **check the theme CSS first** if custom `--breakpoint-*` or screen tokens appear.
+
+| Prefix | Min-width |
+|--------|-----------|
+| `sm:` | 640px |
+| `md:` | 768px |
+| `lg:` | 1024px |
+| `xl:` | 1280px |
+| `2xl:` | 1536px |
+
+## JS-Side Branching
+
+- Prefer **CSS/Tailwind** for responsive layout. Use a project **mobile detection hook** (e.g. `useIsMobile` / `useMediaQuery`) only when behaviour must **differ by component tree** (e.g. different widgets). Align the hook’s breakpoint with Tailwind’s **`md`** (768px) unless the project documents otherwise.
+
+## Responsive Checklist
+
+Before treating UI work as done:
+
+- [ ] Checked at roughly **375px**, **768px**, and **1280px** viewport widths (or matching Figma frames if provided).
+- [ ] No unintended **horizontal scroll** at common widths.
+- [ ] **Touch targets** on small viewports are at least **44×44px** where tappable (icons-only controls need adequate padding or `min-h` / `min-w`).
+- [ ] Text stays **readable** (avoid unreadable truncation; use **`line-clamp`** / reflow where appropriate).
+- [ ] **Images and media** scale without breaking layout (`max-w-full`, object-fit, or framework image sizing patterns consistent with nearby code).
+- [ ] Behaviour matches **Figma** when mobile/tablet frames exist; otherwise matches **existing** patterns in the same feature area.
