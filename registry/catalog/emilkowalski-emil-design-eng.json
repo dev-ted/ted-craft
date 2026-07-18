@@ -4,7 +4,12 @@
   "name": "Emil Design Eng",
   "description": "Emil Kowalski's design-engineering philosophy for UI polish, components, animation decisions, and the invisible details that make software feel great.",
   "category": "ui",
-  "tags": ["design", "ui", "animation", "polish"],
+  "tags": [
+    "design",
+    "ui",
+    "animation",
+    "polish"
+  ],
   "attribution": {
     "author": "emilkowalski",
     "repo": "emilkowalski/skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add emilkowalski/skills --skill emil-design-eng -g -y",
     "cursor": "npx skills add emilkowalski/skills --skill emil-design-eng -a cursor -g -y",
     "claude": "npx skills add emilkowalski/skills --skill emil-design-eng -a claude-code -g -y",
-    "codex": "npx skills add emilkowalski/skills --skill emil-design-eng -a codex -g -y"
+    "codex": "npx skills add emilkowalski/skills --skill emil-design-eng -a codex -g -y",
+    "vscode": "npx skills add emilkowalski/skills --skill emil-design-eng -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

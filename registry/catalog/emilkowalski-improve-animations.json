@@ -4,7 +4,12 @@
   "name": "Improve Animations",
   "description": "Survey animation and motion code as a senior motion advisor, then produce prioritized audits and self-contained implementation plans. Read-only — plans improvements, does not apply them.",
   "category": "ui",
-  "tags": ["animation", "motion", "audit", "ui"],
+  "tags": [
+    "animation",
+    "motion",
+    "audit",
+    "ui"
+  ],
   "attribution": {
     "author": "emilkowalski",
     "repo": "emilkowalski/skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add emilkowalski/skills --skill improve-animations -g -y",
     "cursor": "npx skills add emilkowalski/skills --skill improve-animations -a cursor -g -y",
     "claude": "npx skills add emilkowalski/skills --skill improve-animations -a claude-code -g -y",
-    "codex": "npx skills add emilkowalski/skills --skill improve-animations -a codex -g -y"
+    "codex": "npx skills add emilkowalski/skills --skill improve-animations -a codex -g -y",
+    "vscode": "npx skills add emilkowalski/skills --skill improve-animations -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

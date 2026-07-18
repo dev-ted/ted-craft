@@ -4,7 +4,12 @@
   "name": "Baseline UI",
   "description": "Quick UI cleanup — spacing, hierarchy, typography, and small layout fixes that remove AI interface slop.",
   "category": "ui",
-  "tags": ["ui", "polish", "spacing", "typography"],
+  "tags": [
+    "ui",
+    "polish",
+    "spacing",
+    "typography"
+  ],
   "attribution": {
     "author": "ibelick",
     "repo": "ibelick/ui-skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add ibelick/ui-skills --skill baseline-ui -g -y",
     "cursor": "npx skills add ibelick/ui-skills --skill baseline-ui -a cursor -g -y",
     "claude": "npx skills add ibelick/ui-skills --skill baseline-ui -a claude-code -g -y",
-    "codex": "npx skills add ibelick/ui-skills --skill baseline-ui -a codex -g -y"
+    "codex": "npx skills add ibelick/ui-skills --skill baseline-ui -a codex -g -y",
+    "vscode": "npx skills add ibelick/ui-skills --skill baseline-ui -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

@@ -4,7 +4,11 @@
   "name": "UI Skills Root",
   "description": "Routing skill for the ui-skills catalog — discover and install the smallest useful UI skill.",
   "category": "ui",
-  "tags": ["routing", "ui", "discovery"],
+  "tags": [
+    "routing",
+    "ui",
+    "discovery"
+  ],
   "attribution": {
     "author": "ibelick",
     "repo": "ibelick/ui-skills",
@@ -19,7 +23,8 @@
     "default": "npx skills add ibelick/ui-skills --skill ui-skills-root -g -y",
     "cursor": "npx skills add ibelick/ui-skills --skill ui-skills-root -a cursor -g -y",
     "claude": "npx skills add ibelick/ui-skills --skill ui-skills-root -a claude-code -g -y",
-    "codex": "npx skills add ibelick/ui-skills --skill ui-skills-root -a codex -g -y"
+    "codex": "npx skills add ibelick/ui-skills --skill ui-skills-root -a codex -g -y",
+    "vscode": "npx skills add ibelick/ui-skills --skill ui-skills-root -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

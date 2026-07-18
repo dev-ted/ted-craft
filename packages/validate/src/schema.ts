@@ -77,6 +77,7 @@ export const catalogEntrySchema = z.object({
     cursor: z.string().optional(),
     claude: z.string().optional(),
     codex: z.string().optional(),
+    vscode: z.string().optional(),
   }),
   cli: z
     .object({

@@ -1,0 +1,26 @@
+{
+  "slug": "react-security",
+  "kind": "skill",
+  "name": "React Security",
+  "description": "Harden React/Next.js apps: HttpOnly auth cookies, CSP, XSS-safe HTML, security headers, env separation, BotID, and Snyk SAST/SCA gates.",
+  "category": "security",
+  "tags": ["react", "security", "xss", "nextjs", "snyk"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "react-security"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-security -a cursor -g -y",
+    "featured": false
+  }
+}

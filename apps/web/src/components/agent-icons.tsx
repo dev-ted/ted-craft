@@ -1,6 +1,14 @@
-import type { SVGProps } from "react";
+import type { ImgHTMLAttributes, SVGProps } from "react";
+import { cn } from "@/lib/utils";
 
 type IconProps = SVGProps<SVGSVGElement>;
+
+type BrandImgProps = Omit<
+  ImgHTMLAttributes<HTMLImageElement>,
+  "src" | "alt"
+> & {
+  className?: string;
+};
 
 /** Brand marks matching fumadocs ViewOptionsPopover (page-actions.js). */
 export function CursorIcon(props: IconProps) {
@@ -18,34 +26,56 @@ export function CursorIcon(props: IconProps) {
   );
 }
 
-export function ClaudeIcon(props: IconProps) {
+function BrandImg({
+  src,
+  alt,
+  className,
+  ...props
+}: BrandImgProps & { src: string; alt: string }) {
   return (
-    <svg
-      fill="currentColor"
-      role="img"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
+    <img
+      src={src}
+      alt={alt}
+      width={14}
+      height={14}
+      className={cn("size-3.5 shrink-0 rounded-[3px] object-cover", className)}
       {...props}
-    >
-      <title>Anthropic</title>
-      <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" />
-    </svg>
+    />
   );
 }
 
-/** Codex mark — not in fumadocs Open menu; matching currentColor 24×24 style. */
-export function CodexIcon(props: IconProps) {
+/** Official Claude / Anthropic starburst mark. */
+export function ClaudeIcon({ className, ...props }: BrandImgProps) {
   return (
-    <svg
-      fill="currentColor"
-      role="img"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
+    <BrandImg
+      src="/brands/claude.png"
+      alt="Claude"
+      className={className}
       {...props}
-    >
-      <title>Codex</title>
-      <path d="M12 1.5A10.5 10.5 0 1 0 22.5 12 10.51 10.51 0 0 0 12 1.5Zm0 19A8.5 8.5 0 1 1 20.5 12 8.51 8.51 0 0 1 12 20.5Z" />
-      <path d="M8.2 8.35h2.05l1.75 4.55 1.75-4.55H15.8l-2.95 7.3h-1.7Zm7.15 0h1.9v7.3h-1.9Z" />
-    </svg>
+    />
+  );
+}
+
+/** Official OpenAI Codex mark. */
+export function CodexIcon({ className, ...props }: BrandImgProps) {
+  return (
+    <BrandImg
+      src="/brands/codex.png"
+      alt="Codex"
+      className={className}
+      {...props}
+    />
+  );
+}
+
+/** Official Visual Studio Code mark. */
+export function VsCodeIcon({ className, ...props }: BrandImgProps) {
+  return (
+    <BrandImg
+      src="/brands/vscode.png"
+      alt="VS Code"
+      className={className}
+      {...props}
+    />
   );
 }

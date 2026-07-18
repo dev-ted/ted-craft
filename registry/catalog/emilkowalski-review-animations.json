@@ -4,7 +4,12 @@
   "name": "Review Animations",
   "description": "Review animation and motion code against a high craft bar — timing, easing, origin, and consistency. Default to flagging; approval is earned.",
   "category": "ui",
-  "tags": ["animation", "motion", "review", "ui"],
+  "tags": [
+    "animation",
+    "motion",
+    "review",
+    "ui"
+  ],
   "attribution": {
     "author": "emilkowalski",
     "repo": "emilkowalski/skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add emilkowalski/skills --skill review-animations -g -y",
     "cursor": "npx skills add emilkowalski/skills --skill review-animations -a cursor -g -y",
     "claude": "npx skills add emilkowalski/skills --skill review-animations -a claude-code -g -y",
-    "codex": "npx skills add emilkowalski/skills --skill review-animations -a codex -g -y"
+    "codex": "npx skills add emilkowalski/skills --skill review-animations -a codex -g -y",
+    "vscode": "npx skills add emilkowalski/skills --skill review-animations -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

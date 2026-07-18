@@ -11,6 +11,7 @@
     "ibelick--baseline-ui",
     "ibelick--fixing-motion-performance",
     "ibelick--improve-ui",
-    "ibelick--ui-skills-root"
+    "ibelick--ui-skills-root",
+    "svg-current-color"
   ]
 }

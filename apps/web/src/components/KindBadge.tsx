@@ -1,13 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import type { Kind } from './kind';
-
-const LABELS: Record<Kind, string> = {
-  skill: 'skill',
-  subagent: 'subagent',
-  rule: 'rule',
-  hook: 'hook',
-  bundle: 'bundle',
-};
+import { kindLabel, type Kind } from './kind';
 
 export function KindBadge({ kind }: { kind: Kind }) {
   return (
@@ -15,7 +7,7 @@ export function KindBadge({ kind }: { kind: Kind }) {
       variant="outline"
       className="rounded-md font-mono text-[11px] uppercase tracking-wide text-[color:var(--tc-muted)]"
     >
-      {LABELS[kind]}
+      {kindLabel(kind)}
     </Badge>
   );
 }

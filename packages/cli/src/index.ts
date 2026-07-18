@@ -9,7 +9,7 @@ import {
   type RegistryItem,
 } from "./schema.js";
 
-type AgentTarget = "cursor" | "claude" | "codex";
+type AgentTarget = "cursor" | "claude" | "codex" | "vscode";
 
 const GITHUB_REPO = "dev-ted/ted-craft";
 const INDEX_URL =
@@ -40,7 +40,7 @@ Usage:
   ted-craft list [--category <name>] [--kind <kind>]
   ted-craft search <query>
   ted-craft get <slug>
-  ted-craft add <slug> [-a cursor|claude|codex] [-g] [-y]
+  ted-craft add <slug> [-a cursor|claude|codex|vscode] [-g] [-y]
   ted-craft help
 
 Examples:
@@ -91,6 +91,25 @@ function agentHome(agent: AgentTarget): string {
       return path.join(home, ".claude");
     case "codex":
       return path.join(home, ".codex");
+    case "vscode":
+      return path.join(home, ".copilot");
+    default: {
+      const _exhaustive: never = agent;
+      return _exhaustive;
+    }
+  }
+}
+
+function agentProjectDir(agent: AgentTarget): string {
+  switch (agent) {
+    case "cursor":
+      return ".cursor";
+    case "claude":
+      return ".claude";
+    case "codex":
+      return ".codex";
+    case "vscode":
+      return ".agents";
     default: {
       const _exhaustive: never = agent;
       return _exhaustive;
@@ -106,6 +125,8 @@ function skillsAgentFlag(agent: AgentTarget): string {
       return "claude-code";
     case "codex":
       return "codex";
+    case "vscode":
+      return "github-copilot";
     default: {
       const _exhaustive: never = agent;
       return _exhaustive;
@@ -134,6 +155,68 @@ function copyDir(src: string, dest: string): void {
   }
 }
 
+type HookEntry = {
+  command?: string;
+  matcher?: string;
+  [key: string]: unknown;
+};
+
+type HooksConfig = {
+  version?: number;
+  hooks?: Record<string, HookEntry[]>;
+};
+
+/** Merge incoming hooks into an existing hooks.json without dropping user entries. */
+function mergeHooksConfig(existingRaw: string | null, incomingRaw: string): {
+  json: string;
+  merged: boolean;
+} {
+  const incoming = JSON.parse(incomingRaw) as HooksConfig;
+  if (!existingRaw) {
+    return {
+      json: `${JSON.stringify(incoming, null, 2)}\n`,
+      merged: false,
+    };
+  }
+
+  let existing: HooksConfig;
+  try {
+    existing = JSON.parse(existingRaw) as HooksConfig;
+  } catch {
+    return {
+      json: `${JSON.stringify(incoming, null, 2)}\n`,
+      merged: false,
+    };
+  }
+
+  const merged: HooksConfig = {
+    version: existing.version ?? incoming.version ?? 1,
+    hooks: { ...(existing.hooks ?? {}) },
+  };
+
+  for (const [event, entries] of Object.entries(incoming.hooks ?? {})) {
+    const current = [...(merged.hooks?.[event] ?? [])];
+    const commands = new Set(
+      current
+        .map((e) => (typeof e.command === "string" ? e.command : ""))
+        .filter(Boolean),
+    );
+    for (const entry of entries) {
+      if (typeof entry.command !== "string" || !entry.command) continue;
+      if (commands.has(entry.command)) continue;
+      current.push(entry);
+      commands.add(entry.command);
+    }
+    merged.hooks = merged.hooks ?? {};
+    merged.hooks[event] = current;
+  }
+
+  return {
+    json: `${JSON.stringify(merged, null, 2)}\n`,
+    merged: true,
+  };
+}
+
 async function installFirstParty(
   item: RegistryItem & { sourceType: "first-party" },
   agent: AgentTarget,
@@ -148,10 +231,7 @@ async function installFirstParty(
 
   const destBase = global
     ? agentHome(agent)
-    : path.join(
-        process.cwd(),
-        `.${agent === "claude" ? "claude" : agent}`,
-      );
+    : path.join(process.cwd(), agentProjectDir(agent));
 
   if (item.artifacts.skill) {
     const skillName = item.artifacts.skill.name;
@@ -233,7 +313,13 @@ async function installFirstParty(
       item.artifacts.hook.config,
     );
     const hooksDest = path.join(destBase, "hooks.json");
-    fs.copyFileSync(srcConfig, hooksDest);
+    const incomingRaw = fs.readFileSync(srcConfig, "utf8");
+    const existingRaw = fs.existsSync(hooksDest)
+      ? fs.readFileSync(hooksDest, "utf8")
+      : null;
+    const { json, merged } = mergeHooksConfig(existingRaw, incomingRaw);
+    fs.mkdirSync(destBase, { recursive: true });
+    fs.writeFileSync(hooksDest, json, "utf8");
     if (item.artifacts.hook.scriptsDir) {
       const srcScripts = path.join(
         repoRoot,
@@ -242,9 +328,15 @@ async function installFirstParty(
         item.artifacts.hook.scriptsDir,
       );
       const destScripts = path.join(destBase, "hooks");
+      // Non-destructive: copy/overwrite packaged scripts only; keep user scripts.
       copyDir(srcScripts, destScripts);
+      console.log(`Installed hook scripts → ${destScripts}`);
     }
-    console.log(`Installed hooks → ${hooksDest}`);
+    console.log(
+      merged
+        ? `Merged hooks → ${hooksDest}`
+        : `Installed hooks → ${hooksDest}`,
+    );
   }
 }
 
@@ -262,6 +354,17 @@ async function installCatalog(
       break;
     case "codex":
       command = item.install.codex ?? item.install.default;
+      break;
+    case "vscode":
+      command =
+        item.install.vscode ??
+        (item.install.cursor ?? item.install.default).replace(
+          /-a\s+\S+/,
+          "-a github-copilot",
+        );
+      if (!/-a\s+/.test(command)) {
+        command = command.replace(/\s-g\s+-y\s*$/, " -a github-copilot -g -y");
+      }
       break;
     default: {
       const _exhaustive: never = agent;
@@ -462,23 +565,29 @@ You are routing through the ted-craft marketplace.
       const slug = positional[0];
       if (!slug) {
         throw new Error(
-          "Usage: ted-craft add <slug> [-a cursor|claude|codex]",
+          "Usage: ted-craft add <slug> [-a cursor|claude|codex|vscode]",
         );
       }
       const agentRaw = (flags.agent as string | undefined) ?? "cursor";
       if (
         agentRaw !== "cursor" &&
         agentRaw !== "claude" &&
-        agentRaw !== "codex"
+        agentRaw !== "codex" &&
+        agentRaw !== "vscode"
       ) {
         throw new Error(
-          `Unsupported agent "${agentRaw}". Use cursor|claude|codex.`,
+          `Unsupported agent "${agentRaw}". Use cursor|claude|codex|vscode.`,
         );
       }
       const agent: AgentTarget = agentRaw;
-      const global = Boolean(flags.global ?? true);
       const index = await loadIndex();
       const item = findItem(index, slug);
+      // Skills historically default to global; hooks use project-relative
+      // command paths (e.g. `.cursor/hooks/...`) so they default to local.
+      const global =
+        item.kind === "hook"
+          ? Boolean(flags.global)
+          : Boolean(flags.global ?? true);
 
       if (item.sourceType === "catalog") {
         await installCatalog(item, agent);

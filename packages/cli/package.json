@@ -1,6 +1,6 @@
 {
   "name": "ted-craft",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "CLI for the ted-craft agent artifact marketplace",
   "type": "module",
   "bin": {
@@ -14,7 +14,16 @@
     "build": "tsc && node -e \"const fs=require('fs');const p='dist/cli.js';fs.writeFileSync(p,'#!/usr/bin/env node\\n'+fs.readFileSync(p,'utf8').replace(/^#!.*\\n/,''))\"",
     "start": "tsx src/cli.ts",
     "dev": "tsx src/cli.ts",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "pack": "npm pack",
+    "publish:dry": "npm publish --dry-run --access public",
+    "publish": "npm publish --access public",
+    "version:patch": "node ../../scripts/cli-version.mjs patch",
+    "version:minor": "node ../../scripts/cli-version.mjs minor",
+    "version:major": "node ../../scripts/cli-version.mjs major"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "zod": "^3.25.76"
@@ -37,7 +46,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dev-ted/ted-craft.git"
+    "url": "git+https://github.com/dev-ted/ted-craft.git"
   },
   "homepage": "https://ted-craft.vercel.app",
   "bugs": {

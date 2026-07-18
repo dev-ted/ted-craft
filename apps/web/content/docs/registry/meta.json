@@ -2,6 +2,7 @@
   "title": "Registry",
   "pages": [
     "meta",
+    "performance",
     "productivity",
     "security",
     "ui"

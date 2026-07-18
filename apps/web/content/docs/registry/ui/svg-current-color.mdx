@@ -1,0 +1,109 @@
+---
+title: "SVG currentColor"
+description: "After an agent writes an SVG, normalize hardcoded stroke and fill colors to currentColor so icons inherit theme text color."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="hook" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add svg-current-color -a cursor -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add svg-current-color -a cursor -y"}
+  claudeCommand={"npx ted-craft add svg-current-color -a claude -y"}
+  codexCommand={"npx ted-craft add svg-current-color -a codex -y"}
+  vscodeCommand={"npx ted-craft add svg-current-color -a vscode -y"}
+  showInstall={true}>{
+"# SVG currentColor\n\nAfter an agent writes an SVG file, this hook rewrites hardcoded `stroke` and `fill` colors to `currentColor` so icons pick up your theme text color.\n\n## Why use it\n\nAgents often emit SVGs with fixed hex colors. Those icons ignore dark mode and parent text color. With `currentColor`, the SVG follows CSS `color` like the rest of your UI.\n\n## Install\n\nThis is a **hook**, not a skill — you still add it with `ted-craft add` (same CLI). Run the command in the **app project** where you want the hook (the folder that should get `.cursor/`), not as a global skill install.\n\n```bash\nnpx ted-craft add svg-current-color -a cursor -y\n```\n\nThat writes into the current project:\n\n- `.cursor/hooks.json` — registers the `afterFileEdit` hook (merged with any hooks you already have)\n- `.cursor/hooks/svg-current-color.mjs` — the normalizer script\n\nPass `-g` only if you intentionally want Cursor’s user-level hooks directory. The packaged command path is project-relative (`.cursor/hooks/...`), so project install is the usual choice.\n\n### Manual install\n\nIf the CLI is unavailable, copy from the registry package:\n\n1. Create `.cursor/hooks/` in your project\n2. Copy `svg-current-color.mjs` into `.cursor/hooks/`\n3. Merge this entry into `.cursor/hooks.json` (keep any hooks you already have):\n\n```json\n{\n  \"version\": 1,\n  \"hooks\": {\n    \"afterFileEdit\": [\n      {\n        \"command\": \"node .cursor/hooks/svg-current-color.mjs\",\n        \"matcher\": \"Write\"\n      }\n    ]\n  }\n}\n```\n\n## What it does\n\nOn Cursor `afterFileEdit` when the edit matcher is `Write`:\n\n1. Reads the edited path from the hook payload\n2. Skips anything that is not a `.svg` under a workspace root\n3. Replaces hardcoded `stroke` / `fill` attributes and simple inline styles with `currentColor`\n4. Leaves `none` and existing `currentColor` values alone\n\n## Safety\n\nThis hook is local-only by design:\n\n- No network, no shell, no downloads\n- Writes only the edited SVG, and only if it resolves inside a workspace root\n- Skips symlinks that point outside the workspace\n- Skips files larger than 2 MiB\n- Exits quietly on errors so it never blocks the agent\n\nReview the script on this page before you install — hooks run on your machine.\n\n## Caveats\n\n- Runs on `Write` via `afterFileEdit` only\n- If you need brand-specific SVG colors, keep them out of agent-generated icons or re-apply them after the hook runs\n- `fill=\"none\"` is preserved so hollow icons stay hollow"
+}</RegistryInstallPreview>
+
+# SVG currentColor
+
+After an agent writes an SVG file, this hook rewrites hardcoded `stroke` and `fill` colors to `currentColor` so icons pick up your theme text color.
+
+## Why use it
+
+Agents often emit SVGs with fixed hex colors. Those icons ignore dark mode and parent text color. With `currentColor`, the SVG follows CSS `color` like the rest of your UI.
+
+## Install
+
+This is a **hook**, not a skill — you still add it with `ted-craft add` (same CLI). Run the command in the **app project** where you want the hook (the folder that should get `.cursor/`), not as a global skill install.
+
+```bash
+npx ted-craft add svg-current-color -a cursor -y
+```
+
+That writes into the current project:
+
+- `.cursor/hooks.json` — registers the `afterFileEdit` hook (merged with any hooks you already have)
+- `.cursor/hooks/svg-current-color.mjs` — the normalizer script
+
+Pass `-g` only if you intentionally want Cursor’s user-level hooks directory. The packaged command path is project-relative (`.cursor/hooks/...`), so project install is the usual choice.
+
+### Manual install
+
+If the CLI is unavailable, copy from the registry package:
+
+1. Create `.cursor/hooks/` in your project
+2. Copy `svg-current-color.mjs` into `.cursor/hooks/`
+3. Merge this entry into `.cursor/hooks.json` (keep any hooks you already have):
+
+```json
+&#123;
+  "version": 1,
+  "hooks": &#123;
+    "afterFileEdit": [
+      &#123;
+        "command": "node .cursor/hooks/svg-current-color.mjs",
+        "matcher": "Write"
+      &#125;
+    ]
+  &#125;
+&#125;
+```
+
+## What it does
+
+On Cursor `afterFileEdit` when the edit matcher is `Write`:
+
+1. Reads the edited path from the hook payload
+2. Skips anything that is not a `.svg` under a workspace root
+3. Replaces hardcoded `stroke` / `fill` attributes and simple inline styles with `currentColor`
+4. Leaves `none` and existing `currentColor` values alone
+
+## Safety
+
+This hook is local-only by design:
+
+- No network, no shell, no downloads
+- Writes only the edited SVG, and only if it resolves inside a workspace root
+- Skips symlinks that point outside the workspace
+- Skips files larger than 2 MiB
+- Exits quietly on errors so it never blocks the agent
+
+Review the script on this page before you install — hooks run on your machine.
+
+## Caveats
+
+- Runs on `Write` via `afterFileEdit` only
+- If you need brand-specific SVG colors, keep them out of agent-generated icons or re-apply them after the hook runs
+- `fill="none"` is preserved so hollow icons stay hollow
+
+## Hook config
+
+<CodeBlock label="hooks.json">{
+"{\n  \"version\": 1,\n  \"hooks\": {\n    \"afterFileEdit\": [\n      {\n        \"command\": \"node .cursor/hooks/svg-current-color.mjs\",\n        \"matcher\": \"Write\"\n      }\n    ]\n  }\n}"
+}</CodeBlock>
+
+
+## Hook script: svg-current-color.mjs
+
+<CodeBlock label="svg-current-color.mjs">{
+"#!/usr/bin/env node\n/**\n * SVG currentColor normalizer (Cursor afterFileEdit hook).\n *\n * Threat model: local-only. Reads stdin JSON from Cursor, and may rewrite a\n * single .svg file under a workspace root. No network, no shell, no eval.\n * Preserves fill=\"none\" and values already set to currentColor.\n */\nimport { readFileSync, realpathSync, statSync, writeFileSync } from \"node:fs\";\nimport { isAbsolute, join, resolve, sep } from \"node:path\";\n\nconst RESERVED = new Set([\"none\", \"currentcolor\", \"currentColor\"]);\nconst MAX_BYTES = 2 * 1024 * 1024;\n\n/**\n * @param {unknown} input\n * @returns {string | null}\n */\nfunction resolveFilePath(input) {\n  if (!input || typeof input !== \"object\") return null;\n  const raw = /** @type {{ file_path?: unknown }} */ (input).file_path;\n  if (typeof raw !== \"string\" || !raw.trim()) return null;\n  if (isAbsolute(raw)) return resolve(raw);\n  const roots = /** @type {{ workspace_roots?: unknown }} */ (input).workspace_roots;\n  const root = Array.isArray(roots) && typeof roots[0] === \"string\" ? roots[0] : null;\n  return root ? resolve(join(root, raw)) : resolve(raw);\n}\n\n/**\n * @param {string} filePath\n * @param {unknown} input\n * @returns {boolean}\n */\nfunction isInsideWorkspace(filePath, input) {\n  const roots = /** @type {{ workspace_roots?: unknown }} */ (input).workspace_roots;\n  if (!Array.isArray(roots) || roots.length === 0) return false;\n\n  let realFile;\n  try {\n    // Follows symlinks — rejects targets outside the workspace.\n    realFile = realpathSync(filePath);\n  } catch {\n    // Missing path: jail on the lexical absolute path.\n    realFile = resolve(filePath);\n  }\n\n  for (const root of roots) {\n    if (typeof root !== \"string\" || !root.trim()) continue;\n    let realRoot;\n    try {\n      realRoot = realpathSync(root);\n    } catch {\n      realRoot = resolve(root);\n    }\n    const prefix = realRoot.endsWith(sep) ? realRoot : realRoot + sep;\n    if (realFile === realRoot || realFile.startsWith(prefix)) {\n      return true;\n    }\n  }\n  return false;\n}\n\n/**\n * @param {string} value\n */\nfunction isReserved(value) {\n  return RESERVED.has(value.trim());\n}\n\n/**\n * @param {string} svg\n */\nfunction normalizeSvgColors(svg) {\n  let result = svg;\n\n  result = result.replace(\n    /\\bstroke=([\"'])([^\"']*)\\1/gi,\n    (_, quote, value) =>\n      isReserved(value) ? `stroke=${quote}${value}${quote}` : 'stroke=\"currentColor\"',\n  );\n\n  result = result.replace(\n    /\\bfill=([\"'])([^\"']*)\\1/gi,\n    (_, quote, value) =>\n      isReserved(value) ? `fill=${quote}${value}${quote}` : 'fill=\"currentColor\"',\n  );\n\n  result = result.replace(\n    /\\bstroke:\\s*(#[0-9a-fA-F]{3,8}|rgb\\([^)]+\\)|[a-z]+)\\s*(;|(?=\\s|\"))/gi,\n    (match, color, tail) =>\n      isReserved(color) ? match : `stroke:currentColor${tail}`,\n  );\n\n  result = result.replace(\n    /\\bfill:\\s*(#[0-9a-fA-F]{3,8}|rgb\\([^)]+\\)|[a-z]+)\\s*(;|(?=\\s|\"))/gi,\n    (match, color, tail) =>\n      isReserved(color) ? match : `fill:currentColor${tail}`,\n  );\n\n  return result;\n}\n\nfunction main() {\n  try {\n    const input = JSON.parse(readFileSync(0, \"utf8\"));\n    const filePath = resolveFilePath(input);\n\n    if (!filePath || !filePath.toLowerCase().endsWith(\".svg\")) {\n      process.exit(0);\n    }\n\n    if (!isInsideWorkspace(filePath, input)) {\n      process.exit(0);\n    }\n\n    let st;\n    try {\n      st = statSync(filePath);\n    } catch {\n      process.exit(0);\n    }\n\n    if (!st.isFile() || st.size > MAX_BYTES) {\n      process.exit(0);\n    }\n\n    const before = readFileSync(filePath, \"utf8\");\n    const after = normalizeSvgColors(before);\n\n    if (after !== before) {\n      writeFileSync(filePath, after, \"utf8\");\n    }\n  } catch {\n    // Fail closed: never break the agent loop.\n  }\n\n  process.exit(0);\n}\n\nmain();"
+}</CodeBlock>
+

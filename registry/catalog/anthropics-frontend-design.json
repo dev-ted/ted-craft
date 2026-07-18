@@ -4,7 +4,12 @@
   "name": "Frontend Design",
   "description": "Distinctive, intentional UI design guidance — typography, palette, and anti-template aesthetics for web interfaces.",
   "category": "ui",
-  "tags": ["design", "ui", "frontend", "typography"],
+  "tags": [
+    "design",
+    "ui",
+    "frontend",
+    "typography"
+  ],
   "attribution": {
     "author": "anthropics",
     "repo": "anthropics/skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add anthropics/skills --skill frontend-design -g -y",
     "cursor": "npx skills add anthropics/skills --skill frontend-design -a cursor -g -y",
     "claude": "npx skills add anthropics/skills --skill frontend-design -a claude-code -g -y",
-    "codex": "npx skills add anthropics/skills --skill frontend-design -a codex -g -y"
+    "codex": "npx skills add anthropics/skills --skill frontend-design -a codex -g -y",
+    "vscode": "npx skills add anthropics/skills --skill frontend-design -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

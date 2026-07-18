@@ -4,7 +4,13 @@
   "name": "Apple Design",
   "description": "Apple's approach to fluid, physical interface design — springs, gestures, momentum, and interruptible motion — translated for the web.",
   "category": "ui",
-  "tags": ["animation", "motion", "gestures", "apple", "ui"],
+  "tags": [
+    "animation",
+    "motion",
+    "gestures",
+    "apple",
+    "ui"
+  ],
   "attribution": {
     "author": "emilkowalski",
     "repo": "emilkowalski/skills",
@@ -19,7 +25,8 @@
     "default": "npx skills add emilkowalski/skills --skill apple-design -g -y",
     "cursor": "npx skills add emilkowalski/skills --skill apple-design -a cursor -g -y",
     "claude": "npx skills add emilkowalski/skills --skill apple-design -a claude-code -g -y",
-    "codex": "npx skills add emilkowalski/skills --skill apple-design -a codex -g -y"
+    "codex": "npx skills add emilkowalski/skills --skill apple-design -a codex -g -y",
+    "vscode": "npx skills add emilkowalski/skills --skill apple-design -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

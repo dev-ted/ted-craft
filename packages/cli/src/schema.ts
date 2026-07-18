@@ -52,6 +52,7 @@ const catalogSchema = z.object({
     cursor: z.string().optional(),
     claude: z.string().optional(),
     codex: z.string().optional(),
+    vscode: z.string().optional(),
   }),
   cli: z.object({ featured: z.boolean().optional() }).optional(),
 });
