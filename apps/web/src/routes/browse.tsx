@@ -4,7 +4,7 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { useMemo, useState } from "react";
 import { FacetedFilter } from "@/components/FacetedFilter";
 import { KindBadge } from "@/components/KindBadge";
-import type { Kind } from "@/components/kind";
+import { kindLabel, type Kind } from "@/components/kind";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -196,7 +196,7 @@ function BrowsePage() {
             selected={search.kind ?? []}
             onSelectedChange={(kind) => update({ kind })}
             options={kinds.map((kind) => ({
-              label: kind,
+              label: kindLabel(kind),
               value: kind,
               count: kindCounts.get(kind),
             }))}

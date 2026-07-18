@@ -17,8 +17,9 @@ description: "Pre-publish checklist: secrets, personal IDs, attribution, and val
   cursorCommand={"npx ted-craft add security-review -a cursor -g -y"}
   claudeCommand={"npx ted-craft add security-review -a claude -g -y"}
   codexCommand={"npx ted-craft add security-review -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add security-review -a vscode -g -y"}
   showInstall={true}>{
-"---\nname: security-review\ndescription: >-\n  Pre-publish security checklist for ted-craft registry artifacts: secret scanning,\n  no personal IDs, attribution for catalog entries, and validate-registry gates.\n  Use before merging registry PRs or publishing new skills.\n---\n\n# Security review (registry)\n\nBefore publishing or merging registry changes:\n\n## Must pass\n\n1. `npm run validate` — Zod manifests, frontmatter, hooks JSON, secret patterns, no absolute home-directory paths\n2. No API keys, tokens, private keys, or `.env` values in artifact files\n3. No personal workspace IDs, emails, or private ClickUp list IDs — placeholders only\n4. Catalog entries include `attribution.license` + `catalogUrl` + upstream install commands\n5. First-party items ship with `manifest.json` + validated artifacts\n\n## Review prompts\n\n- Could this skill cause destructive MCP actions without confirmation?\n- Are destructive ops documented as requiring user confirmation?\n- Does description over-claim access or hide side effects?\n\n## CI\n\nPRs touching `registry/` run `validate-registry`. Fix errors locally before push."
+"---\nname: security-review\ndescription: >-\n  Pre-publish security checklist for ted-craft registry artifacts: secret scanning,\n  no personal IDs, attribution for catalog entries, and validate-registry gates.\n  Use before merging registry PRs or publishing new skills.\n---\n\n# Security review (registry)\n\nBefore publishing or merging registry changes:\n\n## Must pass\n\n1. `npm run validate` — Zod manifests, frontmatter, hooks JSON, secret patterns, no absolute home-directory paths\n2. No API keys, tokens, private keys, or `.env` values in artifact files\n3. No personal workspace IDs, emails, or private ClickUp list IDs — placeholders only\n4. Catalog entries include `attribution.license` + `catalogUrl` + upstream install commands\n5. First-party items ship with `manifest.json` + validated artifacts\n\n## Review prompts\n\n- Could this skill cause destructive MCP actions without confirmation?\n- Are destructive ops documented as requiring user confirmation?\n- Does description over-claim access or hide side effects?\n\n## Executable hooks\n\nHooks install and run code on the user’s machine. Treat them like shipping a small binary.\n\nBefore merging a `kind: \"hook\"` artifact:\n\n1. Human-read every file under `artifacts.hook.scriptsDir` (`.mjs`, `.js`, `.sh`, etc.)\n2. Prefer Node built-ins only — no `child_process`, network (`fetch`/`http`/`https`), `eval`, or dynamic remote imports\n3. Confine writes to the intended paths (workspace jail / allowlisted extensions); refuse path escapes and out-of-workspace symlinks\n4. Fail closed: catch errors and exit `0` so a hook never blocks the agent\n5. Docs must disclose side effects (which files are written) and that the script is local-only\n6. No secrets, absolute home paths, or personal IDs in config or scripts\n7. `npm run validate` must pass (hooks JSON + secret/path scan of the whole package)\n\nIf a hook needs shell or network, reject the PR unless there is a clear, documented, least-privilege reason and user confirmation before destructive work.\n\n## CI\n\nPRs touching `registry/` run `validate-registry`. Fix errors locally before push."
 }</RegistryInstallPreview>
 
 # Security review (registry)
@@ -38,6 +39,22 @@ Before publishing or merging registry changes:
 - Could this skill cause destructive MCP actions without confirmation?
 - Are destructive ops documented as requiring user confirmation?
 - Does description over-claim access or hide side effects?
+
+## Executable hooks
+
+Hooks install and run code on the user’s machine. Treat them like shipping a small binary.
+
+Before merging a `kind: "hook"` artifact:
+
+1. Human-read every file under `artifacts.hook.scriptsDir` (`.mjs`, `.js`, `.sh`, etc.)
+2. Prefer Node built-ins only — no `child_process`, network (`fetch`/`http`/`https`), `eval`, or dynamic remote imports
+3. Confine writes to the intended paths (workspace jail / allowlisted extensions); refuse path escapes and out-of-workspace symlinks
+4. Fail closed: catch errors and exit `0` so a hook never blocks the agent
+5. Docs must disclose side effects (which files are written) and that the script is local-only
+6. No secrets, absolute home paths, or personal IDs in config or scripts
+7. `npm run validate` must pass (hooks JSON + secret/path scan of the whole package)
+
+If a hook needs shell or network, reject the PR unless there is a clear, documented, least-privilege reason and user confirmation before destructive work.
 
 ## CI
 

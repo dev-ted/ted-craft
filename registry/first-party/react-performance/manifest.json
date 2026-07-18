@@ -1,0 +1,26 @@
+{
+  "slug": "react-performance",
+  "kind": "skill",
+  "name": "React Performance",
+  "description": "Measure and optimize React/Next.js apps for load time and responsiveness: bundles, re-renders, data fetching, Core Web Vitals, and perceived performance.",
+  "category": "performance",
+  "tags": ["react", "performance", "web-vitals", "nextjs"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "react-performance"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add react-performance -a cursor -g -y",
+    "featured": false
+  }
+}

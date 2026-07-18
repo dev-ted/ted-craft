@@ -2,26 +2,35 @@
 
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { type ReactNode, useEffect, useState } from "react";
-import { ClaudeIcon, CodexIcon, CursorIcon } from "@/components/agent-icons";
+import {
+  ClaudeIcon,
+  CodexIcon,
+  CursorIcon,
+  VsCodeIcon,
+} from "@/components/agent-icons";
 import { Button } from "@/components/ui/button";
 import { highlightCode } from "@/lib/highlight-code";
 import { cn } from "@/lib/utils";
 
-type Agent = "cursor" | "claude" | "codex";
+type Agent = "cursor" | "claude" | "codex" | "vscode";
 
 type Props = {
   children: string;
   cursorCommand?: string;
   claudeCommand?: string;
   codexCommand?: string;
+  vscodeCommand?: string;
   showInstall?: boolean;
   className?: string;
 };
 
+const agentOrder: Agent[] = ["cursor", "claude", "codex", "vscode"];
+
 const agentMeta: Record<Agent, { label: string; icon: ReactNode }> = {
-  cursor: { label: "Cursor", icon: <CursorIcon className="size-3.5" /> },
-  claude: { label: "Claude", icon: <ClaudeIcon className="size-3.5" /> },
-  codex: { label: "Codex", icon: <CodexIcon className="size-3.5" /> },
+  cursor: { label: "Add to Cursor", icon: <CursorIcon className="size-3.5" /> },
+  claude: { label: "Add to Claude", icon: <ClaudeIcon /> },
+  codex: { label: "Add to Codex", icon: <CodexIcon /> },
+  vscode: { label: "Add to VS Code", icon: <VsCodeIcon /> },
 };
 
 export function RegistryInstallPreview({
@@ -29,6 +38,7 @@ export function RegistryInstallPreview({
   cursorCommand = "",
   claudeCommand = "",
   codexCommand = "",
+  vscodeCommand = "",
   showInstall = true,
   className,
 }: Props) {
@@ -42,6 +52,7 @@ export function RegistryInstallPreview({
     cursor: cursorCommand,
     claude: claudeCommand,
     codex: codexCommand,
+    vscode: vscodeCommand,
   };
 
   useEffect(() => {
@@ -81,7 +92,7 @@ export function RegistryInstallPreview({
       <div className="flex flex-wrap items-center justify-between gap-2 px-1 py-2">
         {showInstall ? (
           <div className="flex flex-wrap gap-1.5">
-            {(["cursor", "claude", "codex"] as const).map((agent) => (
+            {agentOrder.map((agent) => (
               <Button
                 key={agent}
                 type="button"
@@ -89,7 +100,7 @@ export function RegistryInstallPreview({
                 size="sm"
                 onClick={() => void copyAgent(agent)}
                 disabled={!commands[agent]}
-                className="tc-press gap-1.5 border-transparent bg-transparent text-[color:var(--tc-ink)] hover:bg-[color:var(--tc-panel)] [&_svg]:size-3.5"
+                className="tc-press gap-1.5 border-transparent bg-transparent text-[color:var(--tc-ink)] hover:bg-[color:var(--tc-panel)] [&_img]:size-3.5 [&_svg]:size-3.5"
               >
                 {agentMeta[agent].icon}
                 {copiedAgent === agent ? "Copied" : agentMeta[agent].label}

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-17T13:37:16.440Z",
+  "generatedAt": "2026-07-18T07:06:32.223Z",
   "items": [
     {
       "slug": "anthropics/frontend-design",
@@ -27,7 +27,8 @@
         "default": "npx skills add anthropics/skills --skill frontend-design -g -y",
         "cursor": "npx skills add anthropics/skills --skill frontend-design -a cursor -g -y",
         "claude": "npx skills add anthropics/skills --skill frontend-design -a claude-code -g -y",
-        "codex": "npx skills add anthropics/skills --skill frontend-design -a codex -g -y"
+        "codex": "npx skills add anthropics/skills --skill frontend-design -a codex -g -y",
+        "vscode": "npx skills add anthropics/skills --skill frontend-design -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -168,7 +169,8 @@
         "default": "npx skills add emilkowalski/skills --skill animation-vocabulary -g -y",
         "cursor": "npx skills add emilkowalski/skills --skill animation-vocabulary -a cursor -g -y",
         "claude": "npx skills add emilkowalski/skills --skill animation-vocabulary -a claude-code -g -y",
-        "codex": "npx skills add emilkowalski/skills --skill animation-vocabulary -a codex -g -y"
+        "codex": "npx skills add emilkowalski/skills --skill animation-vocabulary -a codex -g -y",
+        "vscode": "npx skills add emilkowalski/skills --skill animation-vocabulary -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -203,7 +205,8 @@
         "default": "npx skills add emilkowalski/skills --skill apple-design -g -y",
         "cursor": "npx skills add emilkowalski/skills --skill apple-design -a cursor -g -y",
         "claude": "npx skills add emilkowalski/skills --skill apple-design -a claude-code -g -y",
-        "codex": "npx skills add emilkowalski/skills --skill apple-design -a codex -g -y"
+        "codex": "npx skills add emilkowalski/skills --skill apple-design -a codex -g -y",
+        "vscode": "npx skills add emilkowalski/skills --skill apple-design -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -237,7 +240,8 @@
         "default": "npx skills add emilkowalski/skills --skill emil-design-eng -g -y",
         "cursor": "npx skills add emilkowalski/skills --skill emil-design-eng -a cursor -g -y",
         "claude": "npx skills add emilkowalski/skills --skill emil-design-eng -a claude-code -g -y",
-        "codex": "npx skills add emilkowalski/skills --skill emil-design-eng -a codex -g -y"
+        "codex": "npx skills add emilkowalski/skills --skill emil-design-eng -a codex -g -y",
+        "vscode": "npx skills add emilkowalski/skills --skill emil-design-eng -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -271,7 +275,8 @@
         "default": "npx skills add emilkowalski/skills --skill find-animation-opportunities -g -y",
         "cursor": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a cursor -g -y",
         "claude": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a claude-code -g -y",
-        "codex": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a codex -g -y"
+        "codex": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a codex -g -y",
+        "vscode": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -305,7 +310,8 @@
         "default": "npx skills add emilkowalski/skills --skill improve-animations -g -y",
         "cursor": "npx skills add emilkowalski/skills --skill improve-animations -a cursor -g -y",
         "claude": "npx skills add emilkowalski/skills --skill improve-animations -a claude-code -g -y",
-        "codex": "npx skills add emilkowalski/skills --skill improve-animations -a codex -g -y"
+        "codex": "npx skills add emilkowalski/skills --skill improve-animations -a codex -g -y",
+        "vscode": "npx skills add emilkowalski/skills --skill improve-animations -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -339,7 +345,8 @@
         "default": "npx skills add emilkowalski/skills --skill review-animations -g -y",
         "cursor": "npx skills add emilkowalski/skills --skill review-animations -a cursor -g -y",
         "claude": "npx skills add emilkowalski/skills --skill review-animations -a claude-code -g -y",
-        "codex": "npx skills add emilkowalski/skills --skill review-animations -a codex -g -y"
+        "codex": "npx skills add emilkowalski/skills --skill review-animations -a codex -g -y",
+        "vscode": "npx skills add emilkowalski/skills --skill review-animations -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -373,7 +380,8 @@
         "default": "npx skills add ibelick/ui-skills --skill baseline-ui -g -y",
         "cursor": "npx skills add ibelick/ui-skills --skill baseline-ui -a cursor -g -y",
         "claude": "npx skills add ibelick/ui-skills --skill baseline-ui -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill baseline-ui -a codex -g -y"
+        "codex": "npx skills add ibelick/ui-skills --skill baseline-ui -a codex -g -y",
+        "vscode": "npx skills add ibelick/ui-skills --skill baseline-ui -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -407,7 +415,8 @@
         "default": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -g -y",
         "cursor": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a cursor -g -y",
         "claude": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a codex -g -y"
+        "codex": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a codex -g -y",
+        "vscode": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a github-copilot -g -y"
       },
       "cli": {
         "featured": false
@@ -441,7 +450,8 @@
         "default": "npx skills add ibelick/ui-skills --skill improve-ui -g -y",
         "cursor": "npx skills add ibelick/ui-skills --skill improve-ui -a cursor -g -y",
         "claude": "npx skills add ibelick/ui-skills --skill improve-ui -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill improve-ui -a codex -g -y"
+        "codex": "npx skills add ibelick/ui-skills --skill improve-ui -a codex -g -y",
+        "vscode": "npx skills add ibelick/ui-skills --skill improve-ui -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
@@ -474,13 +484,81 @@
         "default": "npx skills add ibelick/ui-skills --skill ui-skills-root -g -y",
         "cursor": "npx skills add ibelick/ui-skills --skill ui-skills-root -a cursor -g -y",
         "claude": "npx skills add ibelick/ui-skills --skill ui-skills-root -a claude-code -g -y",
-        "codex": "npx skills add ibelick/ui-skills --skill ui-skills-root -a codex -g -y"
+        "codex": "npx skills add ibelick/ui-skills --skill ui-skills-root -a codex -g -y",
+        "vscode": "npx skills add ibelick/ui-skills --skill ui-skills-root -a github-copilot -g -y"
       },
       "cli": {
         "featured": true
       },
       "sourceType": "catalog",
       "path": "catalog/ibelick-ui-skills-root.json"
+    },
+    {
+      "slug": "react-performance",
+      "kind": "skill",
+      "name": "React Performance",
+      "description": "Measure and optimize React/Next.js apps for load time and responsiveness: bundles, re-renders, data fetching, Core Web Vitals, and perceived performance.",
+      "category": "performance",
+      "tags": [
+        "react",
+        "performance",
+        "web-vitals",
+        "nextjs"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "react-performance"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-performance -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-performance"
+    },
+    {
+      "slug": "react-security",
+      "kind": "skill",
+      "name": "React Security",
+      "description": "Harden React/Next.js apps: HttpOnly auth cookies, CSP, XSS-safe HTML, security headers, env separation, BotID, and Snyk SAST/SCA gates.",
+      "category": "security",
+      "tags": [
+        "react",
+        "security",
+        "xss",
+        "nextjs",
+        "snyk"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "react-security"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add react-security -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/react-security"
     },
     {
       "slug": "security-review",
@@ -513,6 +591,43 @@
       },
       "sourceType": "first-party",
       "path": "first-party/security-review"
+    },
+    {
+      "slug": "svg-current-color",
+      "kind": "hook",
+      "name": "SVG currentColor",
+      "description": "After an agent writes an SVG, normalize hardcoded stroke and fill colors to currentColor so icons inherit theme text color.",
+      "category": "ui",
+      "tags": [
+        "svg",
+        "hooks",
+        "currentColor",
+        "icons",
+        "theming"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "docs": {
+        "readme": "README.md"
+      },
+      "artifacts": {
+        "hook": {
+          "config": "hooks.json",
+          "scriptsDir": "hooks"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add svg-current-color -a cursor -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/svg-current-color"
     },
     {
       "slug": "ted-craft-root",

@@ -4,7 +4,12 @@
   "name": "Improve UI",
   "description": "Audit an existing product surface against its design evidence and write self-contained UI improvement plans.",
   "category": "ui",
-  "tags": ["ui", "audit", "design-system", "polish"],
+  "tags": [
+    "ui",
+    "audit",
+    "design-system",
+    "polish"
+  ],
   "attribution": {
     "author": "ibelick",
     "repo": "ibelick/ui-skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add ibelick/ui-skills --skill improve-ui -g -y",
     "cursor": "npx skills add ibelick/ui-skills --skill improve-ui -a cursor -g -y",
     "claude": "npx skills add ibelick/ui-skills --skill improve-ui -a claude-code -g -y",
-    "codex": "npx skills add ibelick/ui-skills --skill improve-ui -a codex -g -y"
+    "codex": "npx skills add ibelick/ui-skills --skill improve-ui -a codex -g -y",
+    "vscode": "npx skills add ibelick/ui-skills --skill improve-ui -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

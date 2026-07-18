@@ -17,23 +17,40 @@ function escapeMdxBody(text: string): string {
   return escapeMdx(text).replace(/\{/g, "&#123;").replace(/\}/g, "&#125;");
 }
 
+/** Map a skills install command to the GitHub Copilot / VS Code agent. */
+function toVsCodeInstallCommand(command: string): string {
+  if (/-a\s+\S+/.test(command)) {
+    return command.replace(/-a\s+\S+/, "-a github-copilot");
+  }
+  if (/\s-g\s+-y\s*$/.test(command)) {
+    return command.replace(/\s-g\s+-y\s*$/, " -a github-copilot -g -y");
+  }
+  return `${command} -a github-copilot`;
+}
+
 function installCommands(item: RegistryItem): {
   cursor: string;
   claude: string;
   codex: string;
+  vscode: string;
 } {
   if (item.sourceType === "catalog") {
+    const cursor = item.install.cursor ?? item.install.default;
     return {
-      cursor: item.install.cursor ?? item.install.default,
+      cursor,
       claude: item.install.claude ?? item.install.default,
       codex: item.install.codex ?? item.install.default,
+      vscode: item.install.vscode ?? toVsCodeInstallCommand(cursor),
     };
   }
 
+  // Hooks use project-relative command paths (e.g. `.cursor/hooks/...`).
+  const globalFlag = item.kind === "hook" ? "" : " -g";
   return {
-    cursor: `npx ted-craft add ${item.slug} -a cursor -g -y`,
-    claude: `npx ted-craft add ${item.slug} -a claude -g -y`,
-    codex: `npx ted-craft add ${item.slug} -a codex -g -y`,
+    cursor: `npx ted-craft add ${item.slug} -a cursor${globalFlag} -y`,
+    claude: `npx ted-craft add ${item.slug} -a claude${globalFlag} -y`,
+    codex: `npx ted-craft add ${item.slug} -a codex${globalFlag} -y`,
+    vscode: `npx ted-craft add ${item.slug} -a vscode${globalFlag} -y`,
   };
 }
 
@@ -68,6 +85,7 @@ type InstallCmds = {
   cursor: string;
   claude: string;
   codex: string;
+  vscode: string;
 };
 
 /** Full MD in RegistryInstallPreview + escaped prose body below. */
@@ -90,6 +108,7 @@ function renderMarkdownArtifact(
   cursorCommand={${JSON.stringify(opts.install!.cursor)}}
   claudeCommand={${JSON.stringify(opts.install!.claude)}}
   codexCommand={${JSON.stringify(opts.install!.codex)}}
+  vscodeCommand={${JSON.stringify(opts.install!.vscode)}}
   showInstall={true}`
     : `
   showInstall={false}`;
@@ -191,9 +210,38 @@ function firstPartyBody(
   }
 
   if (artifacts.hook) {
+    if (item.docs?.readme) {
+      const readme = readText(path.join(base, item.docs.readme));
+      if (readme) {
+        sections.push(
+          renderMarkdownArtifact(readme, {
+            sectionTitle: multi ? "Overview" : undefined,
+            install: installAttached ? false : cmds,
+          }),
+        );
+        installAttached = true;
+      }
+    }
+
     const hook = readText(path.join(base, artifacts.hook.config));
     if (hook) {
-      sections.push(renderCodeArtifact(hook, "hooks.json", multi ? "Hook" : "Hook config"));
+      sections.push(
+        renderCodeArtifact(hook, "hooks.json", multi ? "Hook" : "Hook config"),
+      );
+    }
+
+    if (artifacts.hook.scriptsDir) {
+      const scriptsDir = path.join(base, artifacts.hook.scriptsDir);
+      if (fs.existsSync(scriptsDir)) {
+        for (const file of fs.readdirSync(scriptsDir).sort()) {
+          if (!/\.(mjs|cjs|js|sh)$/i.test(file)) continue;
+          const script = readText(path.join(scriptsDir, file));
+          if (!script) continue;
+          sections.push(
+            renderCodeArtifact(script, file, `Hook script: ${file}`),
+          );
+        }
+      }
     }
   }
 

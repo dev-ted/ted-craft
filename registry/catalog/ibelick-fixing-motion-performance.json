@@ -4,7 +4,12 @@
   "name": "Fixing Motion Performance",
   "description": "Diagnose and fix animation performance issues — jank, layout thrash, and motion that fights the main thread.",
   "category": "ui",
-  "tags": ["animation", "motion", "performance", "ui"],
+  "tags": [
+    "animation",
+    "motion",
+    "performance",
+    "ui"
+  ],
   "attribution": {
     "author": "ibelick",
     "repo": "ibelick/ui-skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -g -y",
     "cursor": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a cursor -g -y",
     "claude": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a claude-code -g -y",
-    "codex": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a codex -g -y"
+    "codex": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a codex -g -y",
+    "vscode": "npx skills add ibelick/ui-skills --skill fixing-motion-performance -a github-copilot -g -y"
   },
   "cli": {
     "featured": false

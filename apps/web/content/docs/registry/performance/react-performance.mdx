@@ -1,0 +1,126 @@
+---
+title: "React Performance"
+description: "Measure and optimize React/Next.js apps for load time and responsiveness: bundles, re-renders, data fetching, Core Web Vitals, and perceived performance."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="skill" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add react-performance -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add react-performance -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add react-performance -a claude -g -y"}
+  codexCommand={"npx ted-craft add react-performance -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add react-performance -a vscode -g -y"}
+  showInstall={true}>{
+"---\nname: react-performance\ndescription: >-\n  Optimize React and Next.js apps for load time and runtime responsiveness:\n  Core Web Vitals, bundle size, re-renders, data fetching, assets, and perceived\n  performance. Use when the UI feels slow, Lighthouse/INP/LCP is poor, or the\n  user asks to profile, optimize, or improve React performance.\n---\n\n# React Performance\n\nMeasure first. Fix highest-impact issues. Re-measure.\n\n**Stacks:** React 18/19. Prefer Next.js App Router guidance when `next` is present; otherwise Vite/SPA patterns. Prefer structural fixes and React Compiler over blanket `useMemo`/`useCallback`.\n\n## Workflow\n\nCopy and track:\n\n```\nPerf Progress:\n- [ ] 1. Baseline metrics (LCP, INP, CLS, FCP; Profiler/Lighthouse)\n- [ ] 2. Classify: load vs runtime vs perceived\n- [ ] 3. Fix by impact (waterfalls → bundle → server → re-renders)\n- [ ] 4. Re-measure same routes/interactions\n- [ ] 5. Document what changed and remaining budget\n```\n\n### 1. Baseline\n\nCapture before changing code:\n\n| Signal | Tools |\n|--------|--------|\n| Load (FCP, LCP, TTI) | Lighthouse, PageSpeed, WebPageTest |\n| Responsiveness (INP) | Chrome Performance panel, field RUM |\n| Layout shift (CLS) | Lighthouse, Performance panel |\n| Component cost | React DevTools Profiler |\n| Bundle weight | Vite/Webpack analyzer |\n\nNext.js: wire `useReportWebVitals` or Vercel Analytics/Speed Insights when available.\n\n### 2. Prioritize by impact\n\nApply in this order (highest ROI first):\n\n1. **Eliminate async waterfalls** — `Promise.all`, start fetch early / await late, Suspense boundaries\n2. **Shrink JS sent to the client** — no barrel imports, `next/dynamic` / `React.lazy`, defer analytics\n3. **Server / CDN path** (Next) — RSC caching, `revalidate` / `use cache`, `next/image`, Cache-Control\n4. **Client data** — SWR/TanStack Query dedup; debounce search; throttle scroll/resize\n5. **Re-renders** — localize state; split components; memo only where Profiler proves cost\n6. **Rendering / perceived** — virtualize long lists; reserve image space; skeletons; `startTransition`\n\nDeep checklists: [references/sentry-checklist.md](references/sentry-checklist.md), [references/vercel-patterns.md](references/vercel-patterns.md).\n\n### 3. Fix rules (defaults)\n\n**Do**\n\n- Parallelize independent awaits; move `await` into branches that need the result\n- Import leaf modules, not large barrels (`import { X } from 'lib'` → `import X from 'lib/x'`)\n- Keep state close to consumers; subscribe stores selectively (Zustand/Jotai/Redux selectors)\n- Lazy-load modals, charts, editors; show Suspense fallbacks\n- Prefer CSS animations for transforms/opacity; clean up listeners/timers in `useEffect`\n- Cap interaction animations ≤ ~300ms; avoid animating every repeated click\n\n**Don't**\n\n- Sprinkle `useMemo`/`useCallback` without a Profiler hit\n- Put frequently changing values in a wide Context that re-renders the tree\n- Block first paint with third-party scripts\n- Ship oversized images/fonts “for convenience”\n\n### 4. Next.js specifics\n\nWhen the project uses Next.js App Router:\n\n- Prefer Server Components for data; pass minimal props to Client Components\n- Use `next/image` with width/height (or fill + sized parent) to protect CLS\n- Use `next/dynamic` for heavy client-only UI\n- Cache: `React.cache` for per-request dedupe; route `revalidate` / `'use cache'` where appropriate\n- Stream with Suspense; avoid sequential waterfalls across sibling server fetches\n\nVite/SPA: route-level code splitting, CDN compression (Brotli/Gzip), same client rules.\n\n### 5. Output format\n\nWhen reporting optimizations:\n\n```markdown\n## Performance pass\n\n**Baseline:** [metrics / route]\n**Top issues:** [1–3 ranked]\n**Changes:** [what + why]\n**After:** [same metrics]\n**Left on the table:** [optional follow-ups]\n```\n\n## Sources\n\nSynthesized for agents (not a verbatim copy):\n\n- [React.js Performance Guide (Sentry)](https://blog.sentry.io/react-js-performance-guide/)\n- [Next.js on Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs)\n- [Image Optimization quickstart](https://vercel.com/docs/image-optimization/quickstart)\n- [CDN Cache / Cache-Control](https://vercel.com/docs/caching/cdn-cache)\n- [Incremental Static Regeneration](https://vercel.com/docs/incremental-static-regeneration/quickstart)\n- [Partial Prerendering](https://vercel.com/docs/partial-prerendering)\n- [Web Analytics quickstart](https://vercel.com/docs/analytics/quickstart)\n- Vercel React best-practices skill (impact-ordered rules: waterfalls, bundles, RSC, re-renders)"
+}</RegistryInstallPreview>
+
+# React Performance
+
+Measure first. Fix highest-impact issues. Re-measure.
+
+**Stacks:** React 18/19. Prefer Next.js App Router guidance when `next` is present; otherwise Vite/SPA patterns. Prefer structural fixes and React Compiler over blanket `useMemo`/`useCallback`.
+
+## Workflow
+
+Copy and track:
+
+```
+Perf Progress:
+- [ ] 1. Baseline metrics (LCP, INP, CLS, FCP; Profiler/Lighthouse)
+- [ ] 2. Classify: load vs runtime vs perceived
+- [ ] 3. Fix by impact (waterfalls → bundle → server → re-renders)
+- [ ] 4. Re-measure same routes/interactions
+- [ ] 5. Document what changed and remaining budget
+```
+
+### 1. Baseline
+
+Capture before changing code:
+
+| Signal | Tools |
+|--------|--------|
+| Load (FCP, LCP, TTI) | Lighthouse, PageSpeed, WebPageTest |
+| Responsiveness (INP) | Chrome Performance panel, field RUM |
+| Layout shift (CLS) | Lighthouse, Performance panel |
+| Component cost | React DevTools Profiler |
+| Bundle weight | Vite/Webpack analyzer |
+
+Next.js: wire `useReportWebVitals` or Vercel Analytics/Speed Insights when available.
+
+### 2. Prioritize by impact
+
+Apply in this order (highest ROI first):
+
+1. **Eliminate async waterfalls** — `Promise.all`, start fetch early / await late, Suspense boundaries
+2. **Shrink JS sent to the client** — no barrel imports, `next/dynamic` / `React.lazy`, defer analytics
+3. **Server / CDN path** (Next) — RSC caching, `revalidate` / `use cache`, `next/image`, Cache-Control
+4. **Client data** — SWR/TanStack Query dedup; debounce search; throttle scroll/resize
+5. **Re-renders** — localize state; split components; memo only where Profiler proves cost
+6. **Rendering / perceived** — virtualize long lists; reserve image space; skeletons; `startTransition`
+
+Deep checklists: [references/sentry-checklist.md](references/sentry-checklist.md), [references/vercel-patterns.md](references/vercel-patterns.md).
+
+### 3. Fix rules (defaults)
+
+**Do**
+
+- Parallelize independent awaits; move `await` into branches that need the result
+- Import leaf modules, not large barrels (`import &#123; X &#125; from 'lib'` → `import X from 'lib/x'`)
+- Keep state close to consumers; subscribe stores selectively (Zustand/Jotai/Redux selectors)
+- Lazy-load modals, charts, editors; show Suspense fallbacks
+- Prefer CSS animations for transforms/opacity; clean up listeners/timers in `useEffect`
+- Cap interaction animations ≤ ~300ms; avoid animating every repeated click
+
+**Don't**
+
+- Sprinkle `useMemo`/`useCallback` without a Profiler hit
+- Put frequently changing values in a wide Context that re-renders the tree
+- Block first paint with third-party scripts
+- Ship oversized images/fonts “for convenience”
+
+### 4. Next.js specifics
+
+When the project uses Next.js App Router:
+
+- Prefer Server Components for data; pass minimal props to Client Components
+- Use `next/image` with width/height (or fill + sized parent) to protect CLS
+- Use `next/dynamic` for heavy client-only UI
+- Cache: `React.cache` for per-request dedupe; route `revalidate` / `'use cache'` where appropriate
+- Stream with Suspense; avoid sequential waterfalls across sibling server fetches
+
+Vite/SPA: route-level code splitting, CDN compression (Brotli/Gzip), same client rules.
+
+### 5. Output format
+
+When reporting optimizations:
+
+```markdown
+## Performance pass
+
+**Baseline:** [metrics / route]
+**Top issues:** [1–3 ranked]
+**Changes:** [what + why]
+**After:** [same metrics]
+**Left on the table:** [optional follow-ups]
+```
+
+## Sources
+
+Synthesized for agents (not a verbatim copy):
+
+- [React.js Performance Guide (Sentry)](https://blog.sentry.io/react-js-performance-guide/)
+- [Next.js on Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs)
+- [Image Optimization quickstart](https://vercel.com/docs/image-optimization/quickstart)
+- [CDN Cache / Cache-Control](https://vercel.com/docs/caching/cdn-cache)
+- [Incremental Static Regeneration](https://vercel.com/docs/incremental-static-regeneration/quickstart)
+- [Partial Prerendering](https://vercel.com/docs/partial-prerendering)
+- [Web Analytics quickstart](https://vercel.com/docs/analytics/quickstart)
+- Vercel React best-practices skill (impact-ordered rules: waterfalls, bundles, RSC, re-renders)

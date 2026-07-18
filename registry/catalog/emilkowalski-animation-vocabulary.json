@@ -4,7 +4,12 @@
   "name": "Animation Vocabulary",
   "description": "Reverse-lookup glossary that turns a vague motion description into the exact term — so you can prompt designers or agents with the right words.",
   "category": "ui",
-  "tags": ["animation", "motion", "vocabulary", "ui"],
+  "tags": [
+    "animation",
+    "motion",
+    "vocabulary",
+    "ui"
+  ],
   "attribution": {
     "author": "emilkowalski",
     "repo": "emilkowalski/skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add emilkowalski/skills --skill animation-vocabulary -g -y",
     "cursor": "npx skills add emilkowalski/skills --skill animation-vocabulary -a cursor -g -y",
     "claude": "npx skills add emilkowalski/skills --skill animation-vocabulary -a claude-code -g -y",
-    "codex": "npx skills add emilkowalski/skills --skill animation-vocabulary -a codex -g -y"
+    "codex": "npx skills add emilkowalski/skills --skill animation-vocabulary -a codex -g -y",
+    "vscode": "npx skills add emilkowalski/skills --skill animation-vocabulary -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

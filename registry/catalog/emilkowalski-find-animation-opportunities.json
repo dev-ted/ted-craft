@@ -4,7 +4,12 @@
   "name": "Find Animation Opportunities",
   "description": "Search a UI for places that don't animate but should — and reject everything that shouldn't. Read-only; proposes motion with exact values, does not implement.",
   "category": "ui",
-  "tags": ["animation", "motion", "discovery", "ui"],
+  "tags": [
+    "animation",
+    "motion",
+    "discovery",
+    "ui"
+  ],
   "attribution": {
     "author": "emilkowalski",
     "repo": "emilkowalski/skills",
@@ -19,7 +24,8 @@
     "default": "npx skills add emilkowalski/skills --skill find-animation-opportunities -g -y",
     "cursor": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a cursor -g -y",
     "claude": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a claude-code -g -y",
-    "codex": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a codex -g -y"
+    "codex": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a codex -g -y",
+    "vscode": "npx skills add emilkowalski/skills --skill find-animation-opportunities -a github-copilot -g -y"
   },
   "cli": {
     "featured": true

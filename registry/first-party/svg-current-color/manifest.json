@@ -1,0 +1,29 @@
+{
+  "slug": "svg-current-color",
+  "kind": "hook",
+  "name": "SVG currentColor",
+  "description": "After an agent writes an SVG, normalize hardcoded stroke and fill colors to currentColor so icons inherit theme text color.",
+  "category": "ui",
+  "tags": ["svg", "hooks", "currentColor", "icons", "theming"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "docs": {
+    "readme": "README.md"
+  },
+  "artifacts": {
+    "hook": {
+      "config": "hooks.json",
+      "scriptsDir": "hooks"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add svg-current-color -a cursor -y",
+    "featured": false
+  }
+}

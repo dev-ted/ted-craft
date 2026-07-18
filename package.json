@@ -1,5 +1,5 @@
 {
-  "name": "ted-craft",
+  "name": "@ted-craft/monorepo",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -13,6 +13,7 @@
     "validate": "node scripts/ws.mjs @ted-craft/validate validate",
     "types:check": "node scripts/ws.mjs @ted-craft/validate generate && node scripts/ws.mjs @ted-craft/web types:check",
     "cli": "node scripts/ws.mjs ted-craft start",
+    "ted-craft": "node packages/cli/dist/cli.js",
     "lint": "node scripts/ws.mjs @ted-craft/web lint"
   },
   "engines": {

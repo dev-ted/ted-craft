@@ -1,6 +1,7 @@
 {
   "title": "security",
   "pages": [
+    "react-security",
     "security-review"
   ]
 }
