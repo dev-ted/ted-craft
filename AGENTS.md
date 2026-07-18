@@ -23,3 +23,11 @@
 - Web app deploys on Vercel with Root Directory `apps/web` and Framework TanStack Start; leave Build Command and Output Directory on Auto (do not override to `dist`—Nitro writes `.vercel/output`); monorepo Install may be `cd ../.. && bun install --frozen-lockfile`.
 - CLI package lives in `packages/cli` and publishes as the `ted-craft` npm package.
 - Outside a local checkout, the published CLI loads the registry from GitHub raw (`…/main/registry/index.json`); that URL 404s while `dev-ted/ted-craft` is private—host the index on the Vercel site for remote installs.
+
+## Cursor Cloud specific instructions
+
+- Toolchain: Node 24 and Bun are pre-provisioned in the VM snapshot. Because the base image ships a `/exec-daemon/node` (v22) that would otherwise shadow it, Node 24 (`node`/`npm`/`npx`) and `bun`/`bunx` are symlinked into `/usr/local/cargo/bin` (which sits ahead of `/exec-daemon` on `PATH`), so they resolve in any shell — including the non-login shells the agent runs — without sourcing `~/.bashrc`. The startup update script only runs `bun install`.
+- Commands are the standard ones in `README.md` / root `package.json`: `bun run dev` (web on `http://localhost:3000`), `bun run generate`, `bun run validate`, `bun run types:check`, `bun run lint`, and the CLI via `bun run cli -- <list|search|get|add ...>`.
+- Non-obvious build ordering: the web app statically imports `apps/web/src/data/registry.json`, so the `generate` step (from `@ted-craft/validate`) must run before the web app can build/serve. `bun run dev`, `bun run build`, and `bun run types:check` already chain `generate` first; run `bun run generate` manually if you serve the web app another way.
+- `bun run lint` (Biome) currently reports pre-existing findings on committed source (e.g. quote style in `apps/web/vite.config.ts`); this is the repo's existing state, not a broken environment.
+- No secrets or `.env` are required for dev. The `VERCEL_OIDC_TOKEN is not set` message from the dev server is a harmless Vercel-emulation notice.
