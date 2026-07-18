@@ -1,0 +1,162 @@
+---
+title: "Design Thinking"
+description: "Run a human-centered design-thinking pass—Empathize, Define, Ideate, Prototype, Test plan—when exploring user problems before build. Prefer this for HCD/service/UX discovery and how-might-we framing; skip when the spec is frozen or the task is code-only maintenance."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="skill" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add design-thinking -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add design-thinking -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add design-thinking -a claude -g -y"}
+  codexCommand={"npx ted-craft add design-thinking -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add design-thinking -a vscode -g -y"}
+  showInstall={true}>{
+"---\nname: design-thinking\ndescription: >-\n  Run a human-centered design-thinking pass—Empathize, Define, Ideate, Prototype,\n  Test plan—when exploring user problems before build. Prefer this for HCD/service/UX\n  discovery and how-might-we framing; skip when the spec is frozen or the task is\n  code-only maintenance.\n---\n\n# Design Thinking\n\nHuman-centered discovery workflow for framing problems and exploring solutions before implementation. Stages follow the classic Empathize → Define → Ideate → Prototype → Test arc (see [Interaction Design Foundation — Design Thinking](https://ixdf.org/literature/topics/design-thinking)). Paraphrase those stages here; do not paste upstream page text.\n\nUse when the user wants design thinking, HCD, service/UX concept work, problem framing from user evidence, or how-might-we discovery. Skip when requirements are already frozen or the task is pure code maintenance.\n\n## Execution rules\n\n1. **No invented research.** Only use evidence the user provides, artifacts already in the workspace, or clearly labeled assumptions. If evidence is thin, say what is missing and what to gather next.\n2. **POV + HMW before Ideate.** Do not jump to solutions. Lock a point-of-view statement and at least one how-might-we question before ideation.\n3. **Ideate with substance.** Produce a real option set (not a single obvious answer). Score or annotate ideas with the three lenses as **hypotheses**, not facts:\n   - **Desirable** — do people want this?\n   - **Feasible** — can we build it with available tech/skills?\n   - **Viable** — does it make sense for the business/mission?\n4. **Prototype with purpose.** State what the prototype is meant to learn and at what fidelity (sketch, clickable, stub UI, service blueprint, etc.).\n5. **Falsifiable tests.** Every test plan item needs a signal that could prove the idea wrong.\n6. **Portable.** No project-specific paths, private IDs, or single-repo assumptions. Adapt prompts to the user's domain.\n\n## Workflow\n\nRun stages in order. Summarize each stage before moving on. End with **What to learn next**.\n\n### 0. Setup\n\nCapture in a few lines:\n\n- Goal / opportunity the user cares about\n- Primary users or stakeholders (roles, not invented personas)\n- Constraints (time, stack, brand, compliance, scope)\n- Available evidence (interviews, analytics, tickets, competitor notes, prior decisions)\n- Success for this pass (e.g. \"aligned POV + 3 testable concepts\")\n\nIf evidence is missing, list concrete research asks instead of fabricating users or quotes.\n\n### 1. Empathize\n\nSynthesize what is known about people and context:\n\n- Jobs, pains, gains, and workarounds (sourced or assumed—label which)\n- Environment and channel (web, mobile, support, in-person, etc.)\n- Emotions and trust issues that affect adoption\n- Gaps: questions you still cannot answer\n\nOutput: a short empathy summary + open questions. No solutions yet.\n\n### 2. Define\n\nConverge on a problem frame:\n\n1. **Point of view (POV):** `[user] needs [need] because [insight]` grounded in Empathize.\n2. **How-might-we (HMW):** 2–5 generative questions that open solution space without prescribing a feature.\n3. **Out of scope:** what you are intentionally not solving this pass.\n4. **Success criteria:** observable outcomes if a good solution lands.\n\nDo not proceed to Ideate until POV + at least one HMW are explicit.\n\n### 3. Ideate\n\nWiden then cluster:\n\n1. Generate a diverse set of ideas against the HMW set (aim for breadth before polish).\n2. Cluster by theme; kill duplicates.\n3. Shortlist 3–7 concepts worth carrying forward.\n4. For each shortlisted idea, note desirability / feasibility / viability as **hypotheses** (what would have to be true).\n\nPrefer contrasting approaches (different interaction models, service vs product, automation vs human) over minor UI variants.\n\n### 4. Prototype\n\nFor each shortlisted concept (or the top 1–2 if time-boxed):\n\n- **Purpose:** what uncertainty this prototype reduces\n- **Fidelity:** sketch / wire / clickable / copy deck / service map / stub\n- **Artifact outline:** screens, flows, scripts, or touchpoints to produce\n- **Non-goals:** what not to polish yet\n\nDescribe enough that someone could build or draw the prototype; do not implement production code unless the user asks.\n\n### 5. Test plan\n\nDefine how learning will happen:\n\n| Concept | Method | Participants / sample | Success signal | Fail / pivot signal |\n| --- | --- | --- | --- | --- |\n| … | interview, usability, concierge, A/B, dogfood, support replay, … | who / how many (realistic) | falsifiable yes | falsifiable no |\n\nInclude ethics basics: informed consent for research, no deceptive dark patterns in tests, respect private data.\n\n### 6. What to learn next\n\nClose with a crisp backlog:\n\n1. Highest-risk assumption still untested\n2. Next research or prototype step (one primary)\n3. Decision gate: what evidence would justify building vs killing vs reframing the POV\n\n## Output shape\n\nPrefer a single structured pass the user can paste into a doc:\n\n```markdown\n## Setup\n…\n\n## Empathize\n…\n\n## Define\n**POV:** …\n**HMW:** …\n**Out of scope:** …\n**Success:** …\n\n## Ideate\n### Shortlist\n1. … — D/F/V hypotheses: …\n…\n\n## Prototype\n…\n\n## Test plan\n…\n\n## What to learn next\n1. …\n2. …\n3. …\n```\n\n## Quality bar\n\n- Evidence and assumptions are separated\n- POV and HMW appear before any solution list\n- Ideation is plural and D/F/V-tagged as hypotheses\n- Prototypes state learning purpose + fidelity\n- Tests can fail (not only confirm)\n- No secrets, personal IDs, or project-locked paths"
+}</RegistryInstallPreview>
+
+# Design Thinking
+
+Human-centered discovery workflow for framing problems and exploring solutions before implementation. Stages follow the classic Empathize → Define → Ideate → Prototype → Test arc (see [Interaction Design Foundation — Design Thinking](https://ixdf.org/literature/topics/design-thinking)). Paraphrase those stages here; do not paste upstream page text.
+
+Use when the user wants design thinking, HCD, service/UX concept work, problem framing from user evidence, or how-might-we discovery. Skip when requirements are already frozen or the task is pure code maintenance.
+
+## Execution rules
+
+1. **No invented research.** Only use evidence the user provides, artifacts already in the workspace, or clearly labeled assumptions. If evidence is thin, say what is missing and what to gather next.
+2. **POV + HMW before Ideate.** Do not jump to solutions. Lock a point-of-view statement and at least one how-might-we question before ideation.
+3. **Ideate with substance.** Produce a real option set (not a single obvious answer). Score or annotate ideas with the three lenses as **hypotheses**, not facts:
+   - **Desirable** — do people want this?
+   - **Feasible** — can we build it with available tech/skills?
+   - **Viable** — does it make sense for the business/mission?
+4. **Prototype with purpose.** State what the prototype is meant to learn and at what fidelity (sketch, clickable, stub UI, service blueprint, etc.).
+5. **Falsifiable tests.** Every test plan item needs a signal that could prove the idea wrong.
+6. **Portable.** No project-specific paths, private IDs, or single-repo assumptions. Adapt prompts to the user's domain.
+
+## Workflow
+
+Run stages in order. Summarize each stage before moving on. End with **What to learn next**.
+
+### 0. Setup
+
+Capture in a few lines:
+
+- Goal / opportunity the user cares about
+- Primary users or stakeholders (roles, not invented personas)
+- Constraints (time, stack, brand, compliance, scope)
+- Available evidence (interviews, analytics, tickets, competitor notes, prior decisions)
+- Success for this pass (e.g. "aligned POV + 3 testable concepts")
+
+If evidence is missing, list concrete research asks instead of fabricating users or quotes.
+
+### 1. Empathize
+
+Synthesize what is known about people and context:
+
+- Jobs, pains, gains, and workarounds (sourced or assumed—label which)
+- Environment and channel (web, mobile, support, in-person, etc.)
+- Emotions and trust issues that affect adoption
+- Gaps: questions you still cannot answer
+
+Output: a short empathy summary + open questions. No solutions yet.
+
+### 2. Define
+
+Converge on a problem frame:
+
+1. **Point of view (POV):** `[user] needs [need] because [insight]` grounded in Empathize.
+2. **How-might-we (HMW):** 2–5 generative questions that open solution space without prescribing a feature.
+3. **Out of scope:** what you are intentionally not solving this pass.
+4. **Success criteria:** observable outcomes if a good solution lands.
+
+Do not proceed to Ideate until POV + at least one HMW are explicit.
+
+### 3. Ideate
+
+Widen then cluster:
+
+1. Generate a diverse set of ideas against the HMW set (aim for breadth before polish).
+2. Cluster by theme; kill duplicates.
+3. Shortlist 3–7 concepts worth carrying forward.
+4. For each shortlisted idea, note desirability / feasibility / viability as **hypotheses** (what would have to be true).
+
+Prefer contrasting approaches (different interaction models, service vs product, automation vs human) over minor UI variants.
+
+### 4. Prototype
+
+For each shortlisted concept (or the top 1–2 if time-boxed):
+
+- **Purpose:** what uncertainty this prototype reduces
+- **Fidelity:** sketch / wire / clickable / copy deck / service map / stub
+- **Artifact outline:** screens, flows, scripts, or touchpoints to produce
+- **Non-goals:** what not to polish yet
+
+Describe enough that someone could build or draw the prototype; do not implement production code unless the user asks.
+
+### 5. Test plan
+
+Define how learning will happen:
+
+| Concept | Method | Participants / sample | Success signal | Fail / pivot signal |
+| --- | --- | --- | --- | --- |
+| … | interview, usability, concierge, A/B, dogfood, support replay, … | who / how many (realistic) | falsifiable yes | falsifiable no |
+
+Include ethics basics: informed consent for research, no deceptive dark patterns in tests, respect private data.
+
+### 6. What to learn next
+
+Close with a crisp backlog:
+
+1. Highest-risk assumption still untested
+2. Next research or prototype step (one primary)
+3. Decision gate: what evidence would justify building vs killing vs reframing the POV
+
+## Output shape
+
+Prefer a single structured pass the user can paste into a doc:
+
+```markdown
+## Setup
+…
+
+## Empathize
+…
+
+## Define
+**POV:** …
+**HMW:** …
+**Out of scope:** …
+**Success:** …
+
+## Ideate
+### Shortlist
+1. … — D/F/V hypotheses: …
+…
+
+## Prototype
+…
+
+## Test plan
+…
+
+## What to learn next
+1. …
+2. …
+3. …
+```
+
+## Quality bar
+
+- Evidence and assumptions are separated
+- POV and HMW appear before any solution list
+- Ideation is plural and D/F/V-tagged as hypotheses
+- Prototypes state learning purpose + fidelity
+- Tests can fail (not only confirm)
+- No secrets, personal IDs, or project-locked paths

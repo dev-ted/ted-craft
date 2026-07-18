@@ -1,6 +1,7 @@
 {
   "title": "Registry",
   "pages": [
+    "design",
     "meta",
     "performance",
     "productivity",

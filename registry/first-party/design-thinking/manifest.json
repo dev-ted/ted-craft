@@ -1,0 +1,26 @@
+{
+  "slug": "design-thinking",
+  "kind": "skill",
+  "name": "Design Thinking",
+  "description": "Run a human-centered design-thinking pass—Empathize, Define, Ideate, Prototype, Test plan—when exploring user problems before build. Prefer this for HCD/service/UX discovery and how-might-we framing; skip when the spec is frozen or the task is code-only maintenance.",
+  "category": "design",
+  "tags": ["design-thinking", "hcd", "ux", "discovery", "ideate"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "design-thinking"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add design-thinking -a cursor -g -y",
+    "featured": false
+  }
+}
