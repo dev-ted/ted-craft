@@ -29,3 +29,17 @@ Third-party skills are **metadata only** — no vendored copies.
 npm run cli -- list
 npm run cli -- add click-up-maintainer -a cursor -g -y
 ```
+
+### Publishing `ted-craft` to npm
+
+From the repo root (see also `packages/cli/README.md`):
+
+```bash
+bun run cli:version:patch   # or minor / major
+# commit packages/cli/package.json
+bun run cli:publish:dry     # local check
+bun run cli:tag
+git push origin "$(node scripts/cli-tag.mjs --print)"
+```
+
+Pushing a `cli-v*` tag triggers **Publish CLI** (`.github/workflows/publish-cli.yml`). Requires the `NPM_TOKEN` GitHub Actions secret.
