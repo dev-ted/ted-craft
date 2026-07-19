@@ -4,10 +4,19 @@ import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { useMemo, useState } from "react";
 import { FacetedFilter } from "@/components/FacetedFilter";
 import { KindBadge } from "@/components/KindBadge";
-import { kindLabel, type Kind } from "@/components/kind";
+import { type Kind, kindLabel } from "@/components/kind";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { baseOptions } from "@/lib/layout.shared";
 import {
   docsPathForItem,
@@ -17,12 +26,15 @@ import {
 } from "@/lib/registry";
 import { authorDisplay } from "@/lib/shared";
 
+const PAGE_SIZE = 10;
+
 type Search = {
   q?: string;
   kind?: string[];
   category?: string[];
   source?: string[];
   author?: string[];
+  page?: number;
 };
 
 function parseList(value: unknown): string[] | undefined {
@@ -51,6 +63,41 @@ function countBy<T>(items: T[], key: (item: T) => string): Map<string, number> {
   return counts;
 }
 
+function parsePage(value: unknown): number | undefined {
+  if (typeof value === "number" && Number.isInteger(value) && value > 1) {
+    return value;
+  }
+  if (typeof value === "string" && value.length > 0) {
+    const parsed = Number.parseInt(value, 10);
+    if (Number.isInteger(parsed) && parsed > 1) return parsed;
+  }
+  return undefined;
+}
+
+/** Compact page list with ellipses for larger result sets. */
+function pageList(current: number, total: number): Array<number | "ellipsis"> {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages = new Set<number>([1, total, current]);
+  for (let offset = -1; offset <= 1; offset++) {
+    const page = current + offset;
+    if (page >= 1 && page <= total) pages.add(page);
+  }
+
+  const sorted = [...pages].sort((a, b) => a - b);
+  const result: Array<number | "ellipsis"> = [];
+  for (const page of sorted) {
+    const prev = result[result.length - 1];
+    if (typeof prev === "number" && page - prev > 1) {
+      result.push("ellipsis");
+    }
+    result.push(page);
+  }
+  return result;
+}
+
 export const Route = createFileRoute("/browse")({
   validateSearch: (search: Record<string, unknown>): Search => ({
     q: typeof search.q === "string" ? search.q : undefined,
@@ -58,6 +105,7 @@ export const Route = createFileRoute("/browse")({
     category: parseList(search.category),
     source: parseList(search.source),
     author: parseList(search.author),
+    page: parsePage(search.page),
   }),
   loader: async () => {
     const index = await loadRegistryIndex();
@@ -128,6 +176,17 @@ function BrowsePage() {
     });
   }, [items, search]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const currentPage = Math.min(Math.max(search.page ?? 1, 1), totalPages);
+  const pageItems = useMemo(() => {
+    const start = (currentPage - 1) * PAGE_SIZE;
+    return filtered.slice(start, start + PAGE_SIZE);
+  }, [filtered, currentPage]);
+  const pages = useMemo(
+    () => pageList(currentPage, totalPages),
+    [currentPage, totalPages],
+  );
+
   const hasFilters = Boolean(
     search.q ||
       search.kind?.length ||
@@ -136,16 +195,20 @@ function BrowsePage() {
       search.author?.length,
   );
 
-  function update(partial: Search) {
+  function update(partial: Search, options?: { resetPage?: boolean }) {
     void navigate({
       search: (prev) => {
         const next = { ...prev, ...partial };
+        if (options?.resetPage !== false && !("page" in partial)) {
+          delete next.page;
+        }
         for (const key of Object.keys(next) as (keyof Search)[]) {
           const value = next[key];
           if (
             value == null ||
             value === "" ||
-            (Array.isArray(value) && value.length === 0)
+            (Array.isArray(value) && value.length === 0) ||
+            (key === "page" && value === 1)
           ) {
             delete next[key];
           }
@@ -153,6 +216,11 @@ function BrowsePage() {
         return next;
       },
     });
+  }
+
+  function goToPage(page: number) {
+    const next = Math.min(Math.max(page, 1), totalPages);
+    update({ page: next <= 1 ? undefined : next }, { resetPage: false });
   }
 
   function resetFilters() {
@@ -254,10 +322,13 @@ function BrowsePage() {
 
         <p className="mb-4 font-mono text-xs text-[color:var(--tc-muted)]">
           {filtered.length} result{filtered.length === 1 ? "" : "s"}
+          {filtered.length > PAGE_SIZE
+            ? ` · page ${currentPage} of ${totalPages}`
+            : null}
         </p>
 
         <ul className="flex flex-col gap-3">
-          {filtered.map((item) => (
+          {pageItems.map((item) => (
             <li
               key={item.slug}
               className="rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-surface)] p-4"
@@ -315,6 +386,72 @@ function BrowsePage() {
             </li>
           ))}
         </ul>
+
+        {totalPages > 1 ? (
+          <Pagination className="mt-8">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  aria-disabled={currentPage <= 1}
+                  className={
+                    currentPage <= 1
+                      ? "pointer-events-none opacity-50"
+                      : undefined
+                  }
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (currentPage > 1) goToPage(currentPage - 1);
+                  }}
+                />
+              </PaginationItem>
+              {pages.map((page, index) => {
+                if (page === "ellipsis") {
+                  const prev = pages[index - 1];
+                  const key =
+                    typeof prev === "number"
+                      ? `ellipsis-after-${prev}`
+                      : "ellipsis-start";
+                  return (
+                    <PaginationItem key={key}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  );
+                }
+
+                return (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      isActive={page === currentPage}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        goToPage(page);
+                      }}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  aria-disabled={currentPage >= totalPages}
+                  className={
+                    currentPage >= totalPages
+                      ? "pointer-events-none opacity-50"
+                      : undefined
+                  }
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (currentPage < totalPages) goToPage(currentPage + 1);
+                  }}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        ) : null}
       </div>
       <SiteFooter />
     </HomeLayout>
