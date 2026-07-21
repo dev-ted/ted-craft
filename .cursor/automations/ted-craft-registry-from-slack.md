@@ -24,6 +24,21 @@ Cursor Automation prompt for Cloud Agents. Trigger: Slack message containing `te
 
 Work only in `dev-ted/ted-craft`. From the Slack message after `tedcraft:`:
 
+### Plan first (mandatory)
+
+Before creating files, running validate/generate, committing, or opening a PR:
+
+1. Parse the request (see below). If required fields are missing, reply in Slack asking for them and **stop**.
+2. Write a short plan in the Slack triggering thread (and ClickUp task description if available):
+   - Goal in one sentence
+   - Source + kind + slug
+   - Files you will add/change
+   - Validation steps
+   - Risks / open questions
+3. Do **not** start implementation until that plan is posted. Then execute the plan without waiting for approval unless the plan lists blockers.
+
+### After the plan
+
 1. **Parse** required fields:
    - `source`: `first-party` or `catalog` (default `first-party` if omitted)
    - `kind`: `skill` | `rule` | `subagent` | `hook` | `bundle`
@@ -31,7 +46,7 @@ Work only in `dev-ted/ted-craft`. From the Slack message after `tedcraft:`:
    - For **catalog**: require attribution (author, repo, skill/path, license, catalogUrl) and install command(s)
    - If source/kind/slug/purpose (or catalog attribution) is missing, reply in Slack asking for them and stop — do not open a half-baked PR
 
-2. **ClickUp:** create a task in list `901219646845` with name = `[kind] title`, markdown description = full brief + source/kind + Slack context; status `in progress`; assignee `me` if supported.
+2. **ClickUp:** create a task in list `901219646845` with name = `[kind] title`, markdown description = full brief + plan + source/kind + Slack context; status `in progress`; assignee `me` if supported.
 
 3. **Author by source:**
    - **first-party:** under `registry/first-party/<slug>/` — correct `kind`, `artifacts.*`, `source.type: "first-party"`, author ted / https://github.com/dev-ted; portable copy; no secrets; generalize for any target project (not one codebase)
@@ -39,7 +54,7 @@ Work only in `dev-ted/ted-craft`. From the Slack message after `tedcraft:`:
 
 4. **Validate:** run repo validate/generate scripts if available; fix failures before PR. Match schemas used by the validate package.
 
-5. **PR:** branch + title `feat(<kind>): add <slug>` or `feat(catalog): add <slug>`; body summarizes files, source/kind, and ClickUp task URL. Never merge. Never publish npm yourself.
+5. **PR:** branch + title `feat(<kind>): add <slug>` or `feat(catalog): add <slug>`; body includes the plan plus files, source/kind, and ClickUp task URL. Never merge. Never publish npm yourself.
 
 6. **Close the loop:** comment PR URL on the ClickUp task; set status `complete`; reply in the Slack triggering thread with ClickUp URL + PR URL.
 
