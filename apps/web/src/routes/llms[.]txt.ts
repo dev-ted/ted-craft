@@ -1,7 +1,7 @@
 import { source } from '@/lib/source';
 import { createFileRoute } from '@tanstack/react-router';
 import { llms } from 'fumadocs-core/source';
-import { loadRegistryIndex } from '@/lib/registry';
+import { hasPublicDocs, loadRegistryIndex } from '@/lib/registry';
 
 export const Route = createFileRoute('/llms.txt')({
   server: {
@@ -13,7 +13,7 @@ export const Route = createFileRoute('/llms.txt')({
           '',
           '# Registry',
           '',
-          ...registry.items.map(
+          ...registry.items.filter(hasPublicDocs).map(
             (item) =>
               `- [${item.name}](/docs/registry/${item.category}/${item.slug.replace(/\//g, '--')}): ${item.description}`,
           ),

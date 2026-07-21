@@ -350,6 +350,18 @@ ${body}
 `;
 }
 
+/** Categories omitted from public docs (maintainer/routing tools). */
+const DOCS_EXCLUDED_CATEGORIES = new Set(["meta"]);
+
+/** Individual catalog/first-party slugs omitted from public docs. */
+const DOCS_EXCLUDED_SLUGS = new Set(["0xdesign/design-lab"]);
+
+function includeInPublicDocs(item: RegistryItem): boolean {
+  if (DOCS_EXCLUDED_CATEGORIES.has(item.category)) return false;
+  if (DOCS_EXCLUDED_SLUGS.has(item.slug)) return false;
+  return true;
+}
+
 export async function generateDocs(repoRoot?: string): Promise<void> {
   const root = repoRoot ?? findRepoRoot();
   const indexPath = path.join(root, "registry", "index.json");
@@ -371,12 +383,14 @@ export async function generateDocs(repoRoot?: string): Promise<void> {
 
   const byCategory = new Map<string, RegistryItem[]>();
   for (const item of index.items) {
+    if (!includeInPublicDocs(item)) continue;
     const list = byCategory.get(item.category) ?? [];
     list.push(item);
     byCategory.set(item.category, list);
   }
 
   const categoryMeta: string[] = [];
+  let generatedCount = 0;
   for (const [category, items] of [...byCategory.entries()].sort((a, b) =>
     a[0].localeCompare(b[0]),
   )) {
@@ -387,6 +401,7 @@ export async function generateDocs(repoRoot?: string): Promise<void> {
       const file = path.join(catDir, `${safeSlug(item.slug)}.mdx`);
       fs.writeFileSync(file, await renderPage(root, item));
       pages.push(safeSlug(item.slug));
+      generatedCount += 1;
     }
     fs.writeFileSync(
       path.join(catDir, "meta.json"),
@@ -413,7 +428,7 @@ export async function generateDocs(repoRoot?: string): Promise<void> {
   );
 
   console.log(
-    `Generated docs for ${index.items.length} items → apps/web/content/docs/registry`,
+    `Generated docs for ${generatedCount} items → apps/web/content/docs/registry`,
   );
 }
 

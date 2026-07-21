@@ -20,6 +20,7 @@ import {
 import { baseOptions } from "@/lib/layout.shared";
 import {
   docsPathForItem,
+  hasPublicDocs,
   installCommands,
   loadRegistryIndex,
   type RegistryItem,
@@ -342,12 +343,16 @@ function BrowsePage() {
                     </span>
                   </div>
                   <h2 className="text-lg font-semibold text-[color:var(--tc-ink)]">
-                    <a
-                      href={docsPathForItem(item)}
-                      className="hover:underline decoration-[color:var(--tc-brass)] underline-offset-4"
-                    >
-                      {item.name}
-                    </a>
+                    {hasPublicDocs(item) ? (
+                      <a
+                        href={docsPathForItem(item)}
+                        className="hover:underline decoration-[color:var(--tc-brass)] underline-offset-4"
+                      >
+                        {item.name}
+                      </a>
+                    ) : (
+                      item.name
+                    )}
                   </h2>
                   <p className="mt-1 text-sm text-[color:var(--tc-muted)]">
                     {item.description}
@@ -366,21 +371,23 @@ function BrowsePage() {
                   >
                     {copied === item.slug ? "Copied" : "Copy install"}
                   </Button>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    className="tc-press bg-[color:var(--tc-ink)] text-[color:var(--tc-paper)] hover:bg-[color:var(--tc-ink)]/90"
-                    render={
-                      <Link
-                        to="/docs/$"
-                        params={{
-                          _splat: `registry/${item.category}/${item.slug.replace(/\//g, "--")}`,
-                        }}
-                      />
-                    }
-                  >
-                    Docs
-                  </Button>
+                  {hasPublicDocs(item) ? (
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="tc-press bg-[color:var(--tc-ink)] text-[color:var(--tc-paper)] hover:bg-[color:var(--tc-ink)]/90"
+                      render={
+                        <Link
+                          to="/docs/$"
+                          params={{
+                            _splat: `registry/${item.category}/${item.slug.replace(/\//g, "--")}`,
+                          }}
+                        />
+                      }
+                    >
+                      Docs
+                    </Button>
+                  ) : null}
                 </div>
               </div>
             </li>
