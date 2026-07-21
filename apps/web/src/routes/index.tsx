@@ -10,6 +10,7 @@ import { WorkbenchTerminal } from "@/components/WorkbenchTerminal";
 import { baseOptions } from "@/lib/layout.shared";
 import {
   docsPathForItem,
+  hasPublicDocs,
   loadRegistryIndex,
   type RegistryItem,
 } from "@/lib/registry";
@@ -18,9 +19,10 @@ import { authorDisplay } from "@/lib/shared";
 export const Route = createFileRoute("/")({
   loader: async () => {
     const index = await loadRegistryIndex();
-    const featured = index.items.filter((i) => i.cli?.featured).slice(0, 6);
+    const withDocs = index.items.filter(hasPublicDocs);
+    const featured = withDocs.filter((i) => i.cli?.featured).slice(0, 6);
     return {
-      featured: featured.length > 0 ? featured : index.items.slice(0, 6),
+      featured: featured.length > 0 ? featured : withDocs.slice(0, 6),
       count: index.items.length,
     };
   },
