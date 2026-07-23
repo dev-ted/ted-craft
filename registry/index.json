@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T13:19:31.747Z",
+  "generatedAt": "2026-07-23T08:06:12.485Z",
   "items": [
     {
       "slug": "0xdesign/design-lab",
@@ -1159,6 +1159,41 @@
       },
       "sourceType": "first-party",
       "path": "first-party/ted-craft-root"
+    },
+    {
+      "slug": "writing-skills",
+      "kind": "skill",
+      "name": "Writing Skills",
+      "description": "Compose high-quality writing with a modular framework—constitution, tone/format packs, workflow, editing pipeline, and checklists. Use for emails, docs, PRs, proposals, blogs, and social posts; skip for pure code generation with no prose.",
+      "category": "productivity",
+      "tags": [
+        "writing",
+        "editing",
+        "tone",
+        "clarity",
+        "content",
+        "communication"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "writing-skills"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add writing-skills -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/writing-skills"
     }
   ]
 }

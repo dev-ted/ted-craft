@@ -1,0 +1,463 @@
+---
+title: "Writing Skills"
+description: "Compose high-quality writing with a modular framework—constitution, tone/format packs, workflow, editing pipeline, and checklists. Use for emails, docs, PRs, proposals, blogs, and social posts; skip for pure code generation with no prose."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="skill" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add writing-skills -a cursor -g -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add writing-skills -a cursor -g -y"}
+  claudeCommand={"npx ted-craft add writing-skills -a claude -g -y"}
+  codexCommand={"npx ted-craft add writing-skills -a codex -g -y"}
+  vscodeCommand={"npx ted-craft add writing-skills -a vscode -g -y"}
+  showInstall={true}>{
+"---\nname: writing-skills\ndescription: >-\n  Compose high-quality writing with a modular framework—constitution, tone/format\n  packs, workflow, editing pipeline, and checklists. Use for emails, docs, PRs,\n  proposals, blogs, and social posts; skip for pure code generation with no prose.\n---\n\n# Writing Skills\n\nA modular writing framework for AI agents. Compose pieces by combining a **constitution**, **decision trees**, a **workflow**, **tone packs**, **format packs**, an **editing pipeline**, and **checklists**—not by dumping one giant prompt.\n\nUse when the user asks to write, rewrite, polish, or adapt prose (email, docs, PR, proposal, blog, social, status update, etc.). Skip when the task is pure code with no user-facing writing.\n\n## Execution rules\n\n1. **Ask before inventing facts.** Do not invent metrics, quotes, dates, product claims, or legal language. Label assumptions or ask.\n2. **Pick tone + format explicitly.** State which tone pack and format pack you are using before drafting (or confirm with the user if ambiguous).\n3. **Draft → Edit → Check.** Never ship a first draft as final. Run the editing pipeline, then the relevant checklist.\n4. **Audience first.** Every piece answers: who is reading, what they need to do or know, and by when.\n5. **Portable.** No project-specific paths, private IDs, secrets, or single-repo assumptions. Adapt examples to the user's domain.\n6. **Match length to job.** Prefer the shortest piece that still decides, informs, or persuades.\n\n---\n\n## 1. Writing constitution\n\nNon-negotiables for every piece:\n\n| Principle | Practice |\n| --- | --- |\n| Clarity over cleverness | Prefer plain words; cut jargon unless the audience expects it |\n| One idea per unit | One point per sentence; one theme per paragraph; one job per section |\n| Active and concrete | Prefer active voice; prefer specific nouns and verbs over abstractions |\n| Truthfulness | Only claim what evidence supports; flag uncertainty |\n| Respect | No condescension, no dark-pattern urgency, no manipulative framing |\n| Inclusive default | Avoid idioms that exclude; use accessible reading level unless tone pack says otherwise |\n| Scannable | Lead with the point; use structure (headers, lists, short paras) when length grows |\n| Editable | Leave the draft easy for a human to tweak—no ornate filler |\n\n**Forbidden by default:** filler openers (\"I hope this email finds you well\"), throat-clearing, stacked hedges (\"might possibly potentially\"), fake urgency, unexplained acronyms, wall-of-text paragraphs.\n\n---\n\n## 2. Decision trees\n\n### 2.1 Which tone pack?\n\n```\nIs the reader a peer / teammate casually?\n  → conversational or friendly\nIs the reader an exec / board / time-starved decision maker?\n  → executive\nIs the piece selling / launching / converting?\n  → marketing\nIs the piece specifying systems, APIs, or procedures?\n  → technical\nIs the piece formal client / partner / external professional?\n  → professional\nUnsure?\n  → professional (safe default), then offer a tone swap\n```\n\n### 2.2 Which format pack?\n\n```\nInternal code review / merge request → PR\nHow-to, reference, or README → documentation\nPersuade a stakeholder to approve spend/scope → proposal\nPublic long-form thought leadership → blog\nShort public channel (LinkedIn/X/etc.) → social\nDirect message to one person or small group → email\nStatus / standup / changelog note → email (short) or documentation (changelog)\n```\n\n### 2.3 Depth vs speed?\n\n```\nUser said \"quick\" / \"draft\" / \"rough\" → draft only; light edit; skip few-shot polish\nUser said \"ship\" / \"send\" / \"final\" → full workflow + editing pipeline + checklist\nHigh-stakes (legal, exec, public) → full pipeline + offer alternatives (A/B openings)\n```\n\n### 2.4 Structure first or prose first?\n\n```\nComplex / multi-audience / long → outline → draft sections → edit\nShort / single ask → draft whole → edit for punch\nRewrite of existing text → diagnose issues → edit in place → diff summary\n```\n\n---\n\n## 3. Writing workflow\n\nRun in order. Skip stages only when the user already supplied that output.\n\n### Stage A — Brief\n\nCapture (ask only for what is missing):\n\n- **Goal:** inform / persuade / request / document / celebrate / apologize\n- **Audience:** role, knowledge level, relationship, constraints\n- **Tone pack** + **format pack**\n- **Must include / must avoid**\n- **Length budget** (e.g. 5 bullets, ≤150 words, 1 page)\n- **Call to action** (what should happen next)\n- **Facts & sources** (user-provided only)\n\n### Stage B — Outline\n\nProduce a skeleton: sections or beat list. For short forms, a 3–5 beat outline is enough.\n\n### Stage C — Draft\n\nWrite the full piece using the chosen tone + format packs. Prefer getting a complete draft over perfecting the first paragraph.\n\n### Stage D — Edit pipeline\n\nRun §6 Editing pipeline (passes 1–5).\n\n### Stage E — Checklist + deliver\n\nRun the relevant checklist (§8). Deliver:\n\n1. Final piece (ready to paste)\n2. Optional: 1–2 alternate openings or subject lines when high-stakes\n3. Brief note of tone/format used and any assumptions\n\n---\n\n## 4. Tone packs\n\nApply one primary pack. You may blend lightly (e.g. professional + friendly) if the user asks.\n\n### Professional\n\n- Warm but restrained; complete sentences; modest hedging only when needed\n- No slang; light contractions OK in email, avoid in formal proposals\n- Example vibe: \"Attached is the revised timeline. Please confirm by Friday so we can lock vendor slots.\"\n\n### Conversational\n\n- Natural speech rhythm; contractions; short sentences; one clear ask\n- Still specific—casual ≠ vague\n- Example vibe: \"Quick update: the migration landed. One follow-up—can you sanity-check the staging URL when you have 10 minutes?\"\n\n### Executive\n\n- Bottom line first; options with tradeoffs; numbers over narrative\n- Ruthlessly short; no background essay unless asked\n- Example vibe: \"Recommend Option B. Ships two weeks sooner, +8% cost, lower delivery risk. Need a yes/no by Thursday.\"\n\n### Technical\n\n- Precise terms; define once; prefer steps, inputs/outputs, failure modes\n- No marketing adjectives; link concepts to observable behavior\n- Example vibe: \"The worker retries 3× with exponential backoff (1s, 4s, 16s), then dead-letters the payload to `queue.dlq`.\"\n\n### Marketing\n\n- Benefit-led; concrete outcomes; credible proof only if provided\n- Strong verbs; scannable; CTA explicit—not hype stacks\n- Example vibe: \"Cut review time from days to minutes. Start with one workflow—see results this sprint.\"\n\n### Friendly\n\n- Approachable, encouraging, human; still clear on the ask\n- Soften bad news without obscuring it\n- Example vibe: \"Thanks for hanging in there on this. Here's where we landed, and here's the one thing I need from you.\"\n\n**Tone swap cue:** If the user says \"make it more X\", remap to the pack above and rewrite—don't just sprinkle adjectives.\n\n---\n\n## 5. Format packs\n\n### Email\n\n- Subject: specific + actionable (not \"Quick question\")\n- Opening line = purpose; body = context → ask → deadline\n- Close with clear owner + next step\n- Default length: ≤150 words unless complexity requires more\n\n### Documentation\n\n- Title states the job (\"Install the CLI\", not \"Overview\")\n- Prerequisites → steps → verify → troubleshoot\n- Use imperative mood in procedures; present tense in reference\n- Call out warnings before destructive steps\n\n### Pull requests (PRs)\n\n- Title: `type(scope): summary` when the repo uses conventional commits; else clear imperative summary\n- Body: **Why** → **What changed** → **How to test** → **Risks / follow-ups**\n- Bullet the user-visible behavior; link issues if provided\n- No novel-length backstory\n\n### Proposals\n\n- Situation → problem → proposed approach → options → recommendation → ask\n- Include cost/time/risk only with user-supplied figures\n- End with an explicit decision request\n\n### Blog\n\n- Hook → thesis → sections with subheads → concrete examples → takeaway\n- One thesis; cut side quests\n- Prefer stories or examples the user provided; do not fabricate case studies\n\n### Social posts\n\n- One idea; hook in the first line; short paragraphs or line breaks\n- CTA or question optional; hashtags only if asked\n- Platform note: keep X/Twitter tighter; LinkedIn can run slightly longer\n\n### Other short forms\n\n- **Status / standup:** Done / Doing / Blockers (or equivalent)\n- **Apology:** Acknowledge → impact → fix → prevention → ask\n- **Decline:** Thanks → clear no → brief reason → alternative if any\n\n---\n\n## 6. Editing pipeline\n\nRun these passes in order on every \"final\" draft:\n\n### Pass 1 — Purpose\n\n- Does the first screenful answer \"so what?\" / state the ask?\n- Delete anything that does not serve goal, audience, or CTA.\n\n### Pass 2 — Structure\n\n- Logical order; headers or bullets where they help scan\n- One job per section; merge duplicates; cut preambles.\n\n### Pass 3 — Clarity\n\n- Replace abstractions with concrete nouns/verbs\n- Resolve ambiguous pronouns (\"this\", \"it\", \"they\")\n- Expand or define acronyms on first use\n\n### Pass 4 — Tightening\n\n- Cut filler, double hedges, and throat-clearing\n- Prefer shorter sentences; split run-ons\n- Prefer active voice unless passive is clearer (e.g. error victims)\n\n### Pass 5 — Voice + mechanics\n\n- Align to the chosen tone pack\n- Check grammar, punctuation, consistency (capitalization, product names)\n- Verify claims against the brief—remove unsupported ones\n\n**Diff habit:** When rewriting existing text, briefly list what changed (clarity, tone, structure) so the user can trust the edit.\n\n---\n\n## 7. Readability and clarity techniques\n\nUse deliberately—not all at once:\n\n| Technique | When |\n| --- | --- |\n| **BLUF / bottom line up front** | Exec, email asks, status |\n| **Inverted pyramid** | News-like updates: most important first |\n| **Given–new** | Docs: start with known context, then new info |\n| **Parallelism** | Lists and compared options |\n| **Chunking** | Long docs: short sections, descriptive headers |\n| **Example after rule** | Technical and docs: show one concrete case |\n| **Contrast** | Proposals: Option A vs B on same axes |\n| **Cut nominalizations** | \"make a decision\" → \"decide\"; \"provide assistance\" → \"help\" |\n| **Specific numbers** | Prefer \"3 days\" over \"soon\" when known |\n| **Read-aloud test** | If you stumble speaking it, rewrite |\n\n**Reading level:** Default to clear adult prose (~8th–10th grade) unless technical or legal audience requires denser language.\n\n---\n\n## 8. Checklists\n\n### Universal (always)\n\n- [ ] Audience and goal are clear\n- [ ] Tone pack + format pack applied intentionally\n- [ ] Ask / CTA is explicit (or explicitly \"FYI only\")\n- [ ] No invented facts, quotes, or metrics\n- [ ] No secrets, tokens, private URLs, or personal data\n- [ ] Length fits the budget\n- [ ] Editing passes 1–5 completed\n\n### Email\n\n- [ ] Subject line is specific\n- [ ] Purpose in first 2 sentences\n- [ ] Single primary ask (or numbered asks)\n- [ ] Deadline / owner if action needed\n\n### Documentation\n\n- [ ] Prerequisites listed\n- [ ] Steps are ordered and completable\n- [ ] Verification step present\n- [ ] Failure/edge cases called out when relevant\n\n### PR\n\n- [ ] Why is clear without reading the diff\n- [ ] Test plan is actionable\n- [ ] Risks / breaking changes noted\n- [ ] Title matches repo conventions if known\n\n### Proposal\n\n- [ ] Recommendation is unambiguous\n- [ ] Options compared fairly\n- [ ] Decision ask is time-bound when appropriate\n- [ ] Unstated assumptions listed\n\n### Blog / social\n\n- [ ] One thesis / one idea\n- [ ] Hook earns the next line\n- [ ] CTA (if any) is one clear action\n- [ ] No fabricated testimonials or results\n\n---\n\n## 9. Few-shot examples\n\n### Example A — Email (professional → executive rewrite)\n\n**Brief:** Ask design lead to review checkout flow by Wednesday; blocking launch.\n\n**Professional draft:**\n\n```text\nSubject: Checkout flow review needed by Wednesday\n\nHi Maya,\n\nCould you review the updated checkout flow when you have a chance? We're hoping to lock copy and empty states before launch, and your pass would help us catch friction we might miss.\n\nIf you can leave comments by Wednesday EOD, we can still land fixes in this sprint.\n\nThanks,\nAlex\n```\n\n**Executive variant (same facts):**\n\n```text\nSubject: Decision needed: checkout review by Wed EOD\n\nMaya — need your review on checkout (copy + empty states) by Wed EOD to keep launch. Blocking without it. Link in thread. Thanks.\n```\n\n### Example B — PR body\n\n```markdown\n## Why\nUsers could submit the form twice and create duplicate orders.\n\n## What changed\n- Disable submit after first click; show pending state\n- Idempotency key on create-order request\n\n## Test plan\n1. Submit form once — single order created\n2. Double-click submit — still one order\n3. Refresh mid-submit — no duplicate\n\n## Risks / follow-ups\n- Follow-up: server-side idempotency for older clients\n```\n\n### Example C — Docs step (technical)\n\n```markdown\n## Verify the worker is healthy\n\n1. Run `appctl status worker`\n2. Confirm `ready: true` and `lag < 100`\n3. If `ready: false`, check logs for `dial tcp` errors and confirm broker connectivity\n```\n\n### Example D — Social (marketing, proof supplied by user)\n\n```text\nWe cut average review time from 2 days to 14 minutes by standardizing PR templates.\n\nOne change. Same team. Faster merges.\n\nWant the template? Comment \"PR\" and we'll share it.\n```\n\n*(Only use metrics the user provided—as in this example.)*\n\n### Example E — Soft decline (friendly)\n\n```text\nThanks for thinking of me for the panel—it sounds great.\n\nI need to pass this time so I can protect delivery on an in-flight launch. If a later date opens up, I'd be glad to reconsider.\n\nHappy to suggest a couple of folks who speak on this topic if that helps.\n```\n\n---\n\n## 10. Output shape\n\nDefault delivery:\n\n```markdown\n**Tone:** <pack> · **Format:** <pack>\n\n## Draft\n<final piece>\n\n## Notes\n- Assumptions: …\n- Alternatives (optional): …\n```\n\nFor rewrites of user text, prefer:\n\n```markdown\n## Revised\n…\n\n## What changed\n- …\n```\n\n---\n\n## Quality bar\n\n- Constitution followed; no filler openers or fake urgency\n- Tone and format stated and applied consistently\n- Workflow completed through edit + checklist for \"final\" asks\n- Facts only from user/context; assumptions labeled\n- Portable: no secrets, private IDs, or project-locked paths\n- Shortest effective version wins"
+}</RegistryInstallPreview>
+
+# Writing Skills
+
+A modular writing framework for AI agents. Compose pieces by combining a **constitution**, **decision trees**, a **workflow**, **tone packs**, **format packs**, an **editing pipeline**, and **checklists**—not by dumping one giant prompt.
+
+Use when the user asks to write, rewrite, polish, or adapt prose (email, docs, PR, proposal, blog, social, status update, etc.). Skip when the task is pure code with no user-facing writing.
+
+## Execution rules
+
+1. **Ask before inventing facts.** Do not invent metrics, quotes, dates, product claims, or legal language. Label assumptions or ask.
+2. **Pick tone + format explicitly.** State which tone pack and format pack you are using before drafting (or confirm with the user if ambiguous).
+3. **Draft → Edit → Check.** Never ship a first draft as final. Run the editing pipeline, then the relevant checklist.
+4. **Audience first.** Every piece answers: who is reading, what they need to do or know, and by when.
+5. **Portable.** No project-specific paths, private IDs, secrets, or single-repo assumptions. Adapt examples to the user's domain.
+6. **Match length to job.** Prefer the shortest piece that still decides, informs, or persuades.
+
+---
+
+## 1. Writing constitution
+
+Non-negotiables for every piece:
+
+| Principle | Practice |
+| --- | --- |
+| Clarity over cleverness | Prefer plain words; cut jargon unless the audience expects it |
+| One idea per unit | One point per sentence; one theme per paragraph; one job per section |
+| Active and concrete | Prefer active voice; prefer specific nouns and verbs over abstractions |
+| Truthfulness | Only claim what evidence supports; flag uncertainty |
+| Respect | No condescension, no dark-pattern urgency, no manipulative framing |
+| Inclusive default | Avoid idioms that exclude; use accessible reading level unless tone pack says otherwise |
+| Scannable | Lead with the point; use structure (headers, lists, short paras) when length grows |
+| Editable | Leave the draft easy for a human to tweak—no ornate filler |
+
+**Forbidden by default:** filler openers ("I hope this email finds you well"), throat-clearing, stacked hedges ("might possibly potentially"), fake urgency, unexplained acronyms, wall-of-text paragraphs.
+
+---
+
+## 2. Decision trees
+
+### 2.1 Which tone pack?
+
+```
+Is the reader a peer / teammate casually?
+  → conversational or friendly
+Is the reader an exec / board / time-starved decision maker?
+  → executive
+Is the piece selling / launching / converting?
+  → marketing
+Is the piece specifying systems, APIs, or procedures?
+  → technical
+Is the piece formal client / partner / external professional?
+  → professional
+Unsure?
+  → professional (safe default), then offer a tone swap
+```
+
+### 2.2 Which format pack?
+
+```
+Internal code review / merge request → PR
+How-to, reference, or README → documentation
+Persuade a stakeholder to approve spend/scope → proposal
+Public long-form thought leadership → blog
+Short public channel (LinkedIn/X/etc.) → social
+Direct message to one person or small group → email
+Status / standup / changelog note → email (short) or documentation (changelog)
+```
+
+### 2.3 Depth vs speed?
+
+```
+User said "quick" / "draft" / "rough" → draft only; light edit; skip few-shot polish
+User said "ship" / "send" / "final" → full workflow + editing pipeline + checklist
+High-stakes (legal, exec, public) → full pipeline + offer alternatives (A/B openings)
+```
+
+### 2.4 Structure first or prose first?
+
+```
+Complex / multi-audience / long → outline → draft sections → edit
+Short / single ask → draft whole → edit for punch
+Rewrite of existing text → diagnose issues → edit in place → diff summary
+```
+
+---
+
+## 3. Writing workflow
+
+Run in order. Skip stages only when the user already supplied that output.
+
+### Stage A — Brief
+
+Capture (ask only for what is missing):
+
+- **Goal:** inform / persuade / request / document / celebrate / apologize
+- **Audience:** role, knowledge level, relationship, constraints
+- **Tone pack** + **format pack**
+- **Must include / must avoid**
+- **Length budget** (e.g. 5 bullets, ≤150 words, 1 page)
+- **Call to action** (what should happen next)
+- **Facts & sources** (user-provided only)
+
+### Stage B — Outline
+
+Produce a skeleton: sections or beat list. For short forms, a 3–5 beat outline is enough.
+
+### Stage C — Draft
+
+Write the full piece using the chosen tone + format packs. Prefer getting a complete draft over perfecting the first paragraph.
+
+### Stage D — Edit pipeline
+
+Run §6 Editing pipeline (passes 1–5).
+
+### Stage E — Checklist + deliver
+
+Run the relevant checklist (§8). Deliver:
+
+1. Final piece (ready to paste)
+2. Optional: 1–2 alternate openings or subject lines when high-stakes
+3. Brief note of tone/format used and any assumptions
+
+---
+
+## 4. Tone packs
+
+Apply one primary pack. You may blend lightly (e.g. professional + friendly) if the user asks.
+
+### Professional
+
+- Warm but restrained; complete sentences; modest hedging only when needed
+- No slang; light contractions OK in email, avoid in formal proposals
+- Example vibe: "Attached is the revised timeline. Please confirm by Friday so we can lock vendor slots."
+
+### Conversational
+
+- Natural speech rhythm; contractions; short sentences; one clear ask
+- Still specific—casual ≠ vague
+- Example vibe: "Quick update: the migration landed. One follow-up—can you sanity-check the staging URL when you have 10 minutes?"
+
+### Executive
+
+- Bottom line first; options with tradeoffs; numbers over narrative
+- Ruthlessly short; no background essay unless asked
+- Example vibe: "Recommend Option B. Ships two weeks sooner, +8% cost, lower delivery risk. Need a yes/no by Thursday."
+
+### Technical
+
+- Precise terms; define once; prefer steps, inputs/outputs, failure modes
+- No marketing adjectives; link concepts to observable behavior
+- Example vibe: "The worker retries 3× with exponential backoff (1s, 4s, 16s), then dead-letters the payload to `queue.dlq`."
+
+### Marketing
+
+- Benefit-led; concrete outcomes; credible proof only if provided
+- Strong verbs; scannable; CTA explicit—not hype stacks
+- Example vibe: "Cut review time from days to minutes. Start with one workflow—see results this sprint."
+
+### Friendly
+
+- Approachable, encouraging, human; still clear on the ask
+- Soften bad news without obscuring it
+- Example vibe: "Thanks for hanging in there on this. Here's where we landed, and here's the one thing I need from you."
+
+**Tone swap cue:** If the user says "make it more X", remap to the pack above and rewrite—don't just sprinkle adjectives.
+
+---
+
+## 5. Format packs
+
+### Email
+
+- Subject: specific + actionable (not "Quick question")
+- Opening line = purpose; body = context → ask → deadline
+- Close with clear owner + next step
+- Default length: ≤150 words unless complexity requires more
+
+### Documentation
+
+- Title states the job ("Install the CLI", not "Overview")
+- Prerequisites → steps → verify → troubleshoot
+- Use imperative mood in procedures; present tense in reference
+- Call out warnings before destructive steps
+
+### Pull requests (PRs)
+
+- Title: `type(scope): summary` when the repo uses conventional commits; else clear imperative summary
+- Body: **Why** → **What changed** → **How to test** → **Risks / follow-ups**
+- Bullet the user-visible behavior; link issues if provided
+- No novel-length backstory
+
+### Proposals
+
+- Situation → problem → proposed approach → options → recommendation → ask
+- Include cost/time/risk only with user-supplied figures
+- End with an explicit decision request
+
+### Blog
+
+- Hook → thesis → sections with subheads → concrete examples → takeaway
+- One thesis; cut side quests
+- Prefer stories or examples the user provided; do not fabricate case studies
+
+### Social posts
+
+- One idea; hook in the first line; short paragraphs or line breaks
+- CTA or question optional; hashtags only if asked
+- Platform note: keep X/Twitter tighter; LinkedIn can run slightly longer
+
+### Other short forms
+
+- **Status / standup:** Done / Doing / Blockers (or equivalent)
+- **Apology:** Acknowledge → impact → fix → prevention → ask
+- **Decline:** Thanks → clear no → brief reason → alternative if any
+
+---
+
+## 6. Editing pipeline
+
+Run these passes in order on every "final" draft:
+
+### Pass 1 — Purpose
+
+- Does the first screenful answer "so what?" / state the ask?
+- Delete anything that does not serve goal, audience, or CTA.
+
+### Pass 2 — Structure
+
+- Logical order; headers or bullets where they help scan
+- One job per section; merge duplicates; cut preambles.
+
+### Pass 3 — Clarity
+
+- Replace abstractions with concrete nouns/verbs
+- Resolve ambiguous pronouns ("this", "it", "they")
+- Expand or define acronyms on first use
+
+### Pass 4 — Tightening
+
+- Cut filler, double hedges, and throat-clearing
+- Prefer shorter sentences; split run-ons
+- Prefer active voice unless passive is clearer (e.g. error victims)
+
+### Pass 5 — Voice + mechanics
+
+- Align to the chosen tone pack
+- Check grammar, punctuation, consistency (capitalization, product names)
+- Verify claims against the brief—remove unsupported ones
+
+**Diff habit:** When rewriting existing text, briefly list what changed (clarity, tone, structure) so the user can trust the edit.
+
+---
+
+## 7. Readability and clarity techniques
+
+Use deliberately—not all at once:
+
+| Technique | When |
+| --- | --- |
+| **BLUF / bottom line up front** | Exec, email asks, status |
+| **Inverted pyramid** | News-like updates: most important first |
+| **Given–new** | Docs: start with known context, then new info |
+| **Parallelism** | Lists and compared options |
+| **Chunking** | Long docs: short sections, descriptive headers |
+| **Example after rule** | Technical and docs: show one concrete case |
+| **Contrast** | Proposals: Option A vs B on same axes |
+| **Cut nominalizations** | "make a decision" → "decide"; "provide assistance" → "help" |
+| **Specific numbers** | Prefer "3 days" over "soon" when known |
+| **Read-aloud test** | If you stumble speaking it, rewrite |
+
+**Reading level:** Default to clear adult prose (~8th–10th grade) unless technical or legal audience requires denser language.
+
+---
+
+## 8. Checklists
+
+### Universal (always)
+
+- [ ] Audience and goal are clear
+- [ ] Tone pack + format pack applied intentionally
+- [ ] Ask / CTA is explicit (or explicitly "FYI only")
+- [ ] No invented facts, quotes, or metrics
+- [ ] No secrets, tokens, private URLs, or personal data
+- [ ] Length fits the budget
+- [ ] Editing passes 1–5 completed
+
+### Email
+
+- [ ] Subject line is specific
+- [ ] Purpose in first 2 sentences
+- [ ] Single primary ask (or numbered asks)
+- [ ] Deadline / owner if action needed
+
+### Documentation
+
+- [ ] Prerequisites listed
+- [ ] Steps are ordered and completable
+- [ ] Verification step present
+- [ ] Failure/edge cases called out when relevant
+
+### PR
+
+- [ ] Why is clear without reading the diff
+- [ ] Test plan is actionable
+- [ ] Risks / breaking changes noted
+- [ ] Title matches repo conventions if known
+
+### Proposal
+
+- [ ] Recommendation is unambiguous
+- [ ] Options compared fairly
+- [ ] Decision ask is time-bound when appropriate
+- [ ] Unstated assumptions listed
+
+### Blog / social
+
+- [ ] One thesis / one idea
+- [ ] Hook earns the next line
+- [ ] CTA (if any) is one clear action
+- [ ] No fabricated testimonials or results
+
+---
+
+## 9. Few-shot examples
+
+### Example A — Email (professional → executive rewrite)
+
+**Brief:** Ask design lead to review checkout flow by Wednesday; blocking launch.
+
+**Professional draft:**
+
+```text
+Subject: Checkout flow review needed by Wednesday
+
+Hi Maya,
+
+Could you review the updated checkout flow when you have a chance? We're hoping to lock copy and empty states before launch, and your pass would help us catch friction we might miss.
+
+If you can leave comments by Wednesday EOD, we can still land fixes in this sprint.
+
+Thanks,
+Alex
+```
+
+**Executive variant (same facts):**
+
+```text
+Subject: Decision needed: checkout review by Wed EOD
+
+Maya — need your review on checkout (copy + empty states) by Wed EOD to keep launch. Blocking without it. Link in thread. Thanks.
+```
+
+### Example B — PR body
+
+```markdown
+## Why
+Users could submit the form twice and create duplicate orders.
+
+## What changed
+- Disable submit after first click; show pending state
+- Idempotency key on create-order request
+
+## Test plan
+1. Submit form once — single order created
+2. Double-click submit — still one order
+3. Refresh mid-submit — no duplicate
+
+## Risks / follow-ups
+- Follow-up: server-side idempotency for older clients
+```
+
+### Example C — Docs step (technical)
+
+```markdown
+## Verify the worker is healthy
+
+1. Run `appctl status worker`
+2. Confirm `ready: true` and `lag &lt; 100`
+3. If `ready: false`, check logs for `dial tcp` errors and confirm broker connectivity
+```
+
+### Example D — Social (marketing, proof supplied by user)
+
+```text
+We cut average review time from 2 days to 14 minutes by standardizing PR templates.
+
+One change. Same team. Faster merges.
+
+Want the template? Comment "PR" and we'll share it.
+```
+
+*(Only use metrics the user provided—as in this example.)*
+
+### Example E — Soft decline (friendly)
+
+```text
+Thanks for thinking of me for the panel—it sounds great.
+
+I need to pass this time so I can protect delivery on an in-flight launch. If a later date opens up, I'd be glad to reconsider.
+
+Happy to suggest a couple of folks who speak on this topic if that helps.
+```
+
+---
+
+## 10. Output shape
+
+Default delivery:
+
+```markdown
+**Tone:** &lt;pack&gt; · **Format:** &lt;pack&gt;
+
+## Draft
+&lt;final piece&gt;
+
+## Notes
+- Assumptions: …
+- Alternatives (optional): …
+```
+
+For rewrites of user text, prefer:
+
+```markdown
+## Revised
+…
+
+## What changed
+- …
+```
+
+---
+
+## Quality bar
+
+- Constitution followed; no filler openers or fake urgency
+- Tone and format stated and applied consistently
+- Workflow completed through edit + checklist for "final" asks
+- Facts only from user/context; assumptions labeled
+- Portable: no secrets, private IDs, or project-locked paths
+- Shortest effective version wins
