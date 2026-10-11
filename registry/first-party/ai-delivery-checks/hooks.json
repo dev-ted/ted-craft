@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "node .cursor/hooks/ai-delivery-checks.mjs --file"
+      }
+    ],
+    "stop": [
+      {
+        "command": "node .cursor/hooks/ai-delivery-checks.mjs --change",
+        "loop_limit": 8
+      }
+    ]
+  }
+}

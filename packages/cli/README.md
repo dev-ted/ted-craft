@@ -6,9 +6,12 @@ Install and discover agent artifacts (skills, subagents, rules, hooks) from the 
 npx ted-craft start
 npx ted-craft list
 npx ted-craft add click-up-maintainer -a cursor -g -y
+npx ted-craft setup ai-delivery -a cursor --preset small
 npx ted-craft search clickup
 npx ted-craft get ted-craft-root
 ```
+
+`setup ai-delivery` installs the AI Delivery workflow into the current project. `--preset standard` adds orchestrator, worker, and reviewer agents. `--ui` adds the UI rule. `-g` installs skills and rules into your personal agent directory. The checks hook stays in the project. See the docs page "Set up AI Delivery" for the full steps.
 
 Wraps [vercel-labs/skills](https://github.com/vercel-labs/skills) for catalog installs and copies first-party artifacts into Cursor / Claude / Codex directories.
 

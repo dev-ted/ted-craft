@@ -1,0 +1,37 @@
+---
+description: Design tokens over raw values — three UI states, no stop for copy
+globs:
+  - "**/*.{tsx,jsx,css,scss}"
+alwaysApply: false
+---
+
+# AI Delivery UI
+
+**Assumes:** a UI surface with a design system or theme tokens. Skip this rule on API-only projects. Pair with `react-accessibility` and `react-styling` when the stack is React. Do not duplicate those rules here.
+
+Customer-facing copy and UI are not a hard stop. Finish the slice. A human reads it at review.
+
+## Tokens
+
+- Never hardcode a colour, spacing value, or font where a design-system token exists.
+- Raw hex, rgb, and magic pixel spacing in UI files are findings. Prefer the token.
+- If no token exists, list a reversible decision. Do not invent a one-off value. Do not add a token without review.
+
+## Components
+
+- Read a component's usage rules before you use it.
+- The design system is a locked asset, like a shared contract (`ai-delivery-contracts`). Propose a new variant. The design owner approves it. Do not add a variant because the current task wants one.
+
+## Three states
+
+Every view handles loading, empty, and error. An error reaches the project's error reporting. No empty catch block.
+
+## Verify
+
+Check the project's real breakpoints before you report done. If the project has more than one theme, check each theme. Exercise the flow. A single screenshot is not verification.
+
+If the project already has a component workshop or visual baselines, a new or changed component gets a story, or the pull request says it renders only on the server. A baseline update is a listed decision. Do not block on a baseline suite that does not exist.
+
+## Reference
+
+Component reference is generated (Storybook, or Compodoc on Angular). The doc comment on each exported component is its input (`ai-delivery-comments`). Do not write a component reference by hand.

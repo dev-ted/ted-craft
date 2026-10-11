@@ -1,0 +1,30 @@
+{
+  "slug": "ai-delivery-worker",
+  "kind": "bundle",
+  "name": "AI Delivery Worker",
+  "description": "Focused feature worker: one scoped task, own branch, check:change evidence in the done report. Use for a component, endpoint, or fix after the orchestrator or a human has scoped the work.",
+  "category": "productivity",
+  "tags": ["ai", "worker", "subagent", "delivery"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ai-delivery-worker"
+    },
+    "subagent": {
+      "file": "subagent/ai-delivery-worker.md",
+      "name": "ai-delivery-worker"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-worker -a cursor -g -y",
+    "featured": false
+  }
+}

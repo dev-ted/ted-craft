@@ -1,0 +1,50 @@
+---
+description: AI-assisted delivery — reversible decisions, seven hard stops, test rule
+alwaysApply: true
+---
+
+# AI Delivery Guardrails
+
+**Assumes:** a git repo on GitHub, GitLab, or Azure DevOps ("the platform"). Read `AGENTS.md` at session start, plus the patterns row for this task. Do not pre-load framework docs or the decision archive. Read docs for the locked version only when calling an API you are unsure of.
+
+Agents propose. A person approves everything that merges. These rules govern the repository, not the author.
+
+## Hard rules
+
+1. **One owner at a time.** Two writers must not change the same module at once. One agent may own a whole slice (contract, API, UI) for one work item.
+2. **Humans merge.** An agent prepares a pull request. A human approves it. Agent approval never counts. No agent holds production credentials.
+3. **Protected branches, pull requests only.** Nobody pushes to `main` or a release branch directly.
+4. **Fix forward.** Do not force-push or amend commits that are already pushed.
+5. **One branch from main** when you are the only writer. Use a separate worktree only when more than one agent is writing. Own caches, keyed on content. Say so if a result might be stale. Push when you park, when the slice is ready for review, or once for the review-fix batch. Not once per commit.
+6. **Label what is synthetic.** Every pull request carries `ai:none`, `ai:assisted`, or `ai:generated`. On `ai:generated`, name the tool and model. On `ai:assisted`, say what the agent produced.
+7. **A human reads customer-facing work at review**, before release. Copy and UI are not a reason to stop. Finish the slice.
+8. **Short branches off main.** One work item. Its ID in the branch name. Do not build on an unmerged branch. Squash-merge is the default.
+9. **One revert can undo the change.** Migrations add first and remove later, so a code revert needs no database rollback.
+
+## Decisions
+
+A **reversible** decision is one the pull request, or one revert commit, can undo. Pick the recommended option, list the chosen option and the rejected ones, and continue. Count only a decision that changes behaviour, a public API, a runtime dependency, or a patterns-table row. Dev dependencies do not count. At most five unmarked decisions per pull request.
+
+A **hard stop** is only one of these. Write the four-part note below, push the branch if you can, and end the turn. Do not wait in the chat. Do not start the next ticket in this context. Resume from the progress note.
+
+1. A **shared** contract change (more than one consumer, or a consumer outside this repo), including an additive one. If the only consumer is this repo and this work item, it is a **slice** contract: continue and list it.
+2. An irreversible action you would run: production, deleting data outside the item, sending mail, or migrating a shared database. A new migration is not a stop unless it changes a shared schema.
+3. A module another open pull request or parked item is already changing. If you cannot see open pull requests, name the modules you assume are free and continue.
+4. Auth policy or the permission model.
+5. Departing from a rejected alternative or a module boundary an approved approach already named. A file tweak inside the approved design is not a stop.
+6. A sixth unmarked reversible decision, using the narrow count above.
+7. Main is red on a check **this** pull request needs, and the failure reproduces on a clean main tree. An unrelated red job is one tracker item, then continue.
+
+## Approach
+
+Write an approach note only for a new module, a new boundary, a new persisted shape, a shared-contract crossing, a framework upgrade, or a diff too big to review in one sitting. If the tool has a plan or ask mode, the approved plan is that note. Write `docs/decisions/` only when future work must follow the choice. Most reversible decisions stay in the pull request body.
+
+## Test rule
+
+Never skip, focus, weaken, or delete a test to make a check pass. A test change is a listed decision. Do not edit the harness, a ratchet, a suppression, or an inline disable to go green. Run `check:change` before you report done. If the tool has no stop hook, you still run it.
+
+## Stop note and done report
+
+**Stop note:** where I stopped · what blocks me · two to four options with costs, recommendation first · I am ending the turn.
+
+**Done report:** what is done (one line) · what is not done, and why · evidence: command, exit code, last twenty lines · decisions for the reviewer. The diff is the narration. The long checklist is for the reviewer (`ai-delivery-review`), not for this report.

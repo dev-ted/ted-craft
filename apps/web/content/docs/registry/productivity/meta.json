@@ -1,6 +1,14 @@
 {
   "title": "productivity",
   "pages": [
+    "ai-delivery",
+    "ai-delivery-checks",
+    "ai-delivery-orchestrate",
+    "ai-delivery-orchestrator",
+    "ai-delivery-review",
+    "ai-delivery-reviewer",
+    "ai-delivery-setup",
+    "ai-delivery-worker",
     "click-up-maintainer"
   ]
 }

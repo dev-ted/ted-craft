@@ -1,0 +1,71 @@
+---
+title: Set up AI Delivery
+description: Install the AI Delivery workflow into a project with one command.
+---
+
+AI Delivery is a set of rules, skills, and agents for working with coding agents. One command installs the set into the project you are in.
+
+Run it from the app repository, not from the ted-craft repository.
+
+## Install
+
+```bash
+npx ted-craft setup ai-delivery -a cursor --preset small
+```
+
+Add the UI rule when the project has a web or mobile interface:
+
+```bash
+npx ted-craft setup ai-delivery -a cursor --preset small --ui
+```
+
+Use the standard preset when several agents will work in parallel. It adds an orchestrator, a worker, and a reviewer:
+
+```bash
+npx ted-craft setup ai-delivery -a claude --preset standard --ui
+```
+
+Leave off `--ui` for an API-only repository.
+
+## Choose an agent
+
+| Agent | Flag | Project folder |
+|-------|------|----------------|
+| Cursor | `-a cursor` | `.cursor` |
+| Claude Code | `-a claude` | `.claude` |
+| Codex | `-a codex` | `.codex` |
+| VS Code | `-a vscode` | `.agents` |
+
+The default install is the project folder. Pass `-g` only when you want the skills, rules, and agents in your personal directory. The checks hook always stays in the project.
+
+## What you get
+
+**Small** installs the instructions, guardrails, comment rule, contract rule, setup skill, review skill, and the checks hook.
+
+**Standard** adds orchestration: when to split work, plus orchestrator, worker, and reviewer agents. Use it only when domains are independent, shared contracts are locked, and a person can review the extra output. One agent on one task is still the default.
+
+**`--ui`** adds the UI rule: design tokens, loading, empty, and error states.
+
+## What lands on disk
+
+- The skills, rules, and agents for the preset you chose
+- `AGENTS.md`, only when the repository does not already have one
+- A `.gitignore` line for `.ai-delivery/hard-stop.json`
+
+Existing files are left alone. A second run does not replace `AGENTS.md`.
+
+## What happens next
+
+The command does not write feature code, a design system, or CI.
+
+Open the agent in that repository and run **ai-delivery-setup**. Confirm the profile: preset, surfaces, tracker, and whether the codebase is new or existing. Wait for a person to sign off before feature work starts.
+
+## Install one piece
+
+To add a single rule or skill instead of the whole workflow:
+
+```bash
+npx ted-craft add ai-delivery-guardrails -a cursor -g -y
+```
+
+Each piece is also listed on its own page under [Browse](/browse).

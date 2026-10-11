@@ -2,8 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
+import { GradientCover } from "@/components/GradientCover";
 import { KindBadge } from "@/components/KindBadge";
-import type { Kind } from "@/components/kind";
+import { type Kind, kindLabel } from "@/components/kind";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { WorkbenchTerminal } from "@/components/WorkbenchTerminal";
@@ -53,19 +54,21 @@ function Home() {
 
     const ctx = gsap.context(() => {
       gsap.from("[data-hero-el]", {
-        y: 18,
-        opacity: 0,
-        duration: 0.45,
-        stagger: 0.08,
-        ease: "power2.out",
-      });
-      gsap.from("[data-feature-card]", {
-        y: 16,
+        y: 8,
         opacity: 0,
         duration: 0.4,
-        stagger: 0.06,
-        delay: 0.25,
+        stagger: 0.05,
         ease: "power2.out",
+        clearProps: "transform,opacity",
+      });
+      gsap.from("[data-feature-card]", {
+        y: 8,
+        opacity: 0,
+        duration: 0.4,
+        stagger: 0.05,
+        delay: 0.15,
+        ease: "power2.out",
+        clearProps: "transform,opacity",
       });
     }, root);
 
@@ -125,22 +128,30 @@ function Home() {
         </section>
 
         <section className="relative mx-auto max-w-5xl px-4 pb-24 md:px-8">
-          <div className="mb-6 flex items-end justify-between gap-4">
+          <div className="mb-8 flex items-end justify-between gap-4">
             <h2 className="tc-display text-2xl text-[color:var(--tc-ink)] md:text-3xl">
               Featured
             </h2>
             <Link
               to="/browse"
-              className="text-sm text-[color:var(--tc-muted)] underline decoration-[color:var(--tc-brass)] underline-offset-4 transition-opacity duration-150 ease-out hover:opacity-80"
+              className="text-sm text-[color:var(--tc-muted)] underline decoration-[color:var(--tc-brass)] underline-offset-4 transition-opacity duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:opacity-80"
             >
               View all
             </Link>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {featured.map((item) => (
-              <FeatureCard key={item.slug} item={item} />
-            ))}
-          </div>
+          {featured[0] ? <LeadFeature item={featured[0]} /> : null}
+          {featured.length > 1 ? (
+            <div className="mt-12">
+              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--tc-muted)]">
+                More
+              </p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {featured.slice(1, 4).map((item) => (
+                  <MoreFeature key={item.slug} item={item} />
+                ))}
+              </div>
+            </div>
+          ) : null}
         </section>
         <SiteFooter />
       </div>
@@ -148,26 +159,76 @@ function Home() {
   );
 }
 
-function FeatureCard({ item }: { item: RegistryItem }) {
+function LeadFeature({ item }: { item: RegistryItem }) {
+  const href = docsPathForItem(item);
+  return (
+    <div className="grid items-center gap-8 md:grid-cols-2 md:gap-12">
+      <div data-feature-card>
+        <div className="mb-3 flex items-center gap-2">
+          <KindBadge kind={item.kind as Kind} />
+          <span className="font-mono text-[10px] uppercase tracking-wide text-[color:var(--tc-muted)]">
+            {authorDisplay(item)}
+          </span>
+        </div>
+        <h3 className="tc-display max-w-md text-4xl leading-[0.95] tracking-tight text-[color:var(--tc-ink)] md:text-5xl">
+          {item.name}
+        </h3>
+        <p className="mt-4 max-w-md text-base text-[color:var(--tc-muted)]">
+          {item.description}
+        </p>
+        <Button
+          className="tc-press mt-6 rounded-lg bg-[color:var(--tc-ink)] text-[color:var(--tc-paper)] hover:bg-[color:var(--tc-ink)]/90"
+          render={<a href={href} />}
+        >
+          Read more
+        </Button>
+      </div>
+      <a
+        data-feature-card
+        href={href}
+        className="tc-card block overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-surface)]"
+      >
+        <GradientCover
+          slug={item.slug}
+          title={item.name}
+          className="min-h-56 md:min-h-64"
+          titleClassName="text-3xl md:text-4xl"
+        />
+        <div className="p-4">
+          <p className="font-mono text-[10px] uppercase tracking-wide text-[color:var(--tc-muted)]">
+            {kindLabel(item.kind)} · {authorDisplay(item)}
+          </p>
+          <p className="mt-2 line-clamp-3 text-sm text-[color:var(--tc-muted)]">
+            {item.description}
+          </p>
+        </div>
+      </a>
+    </div>
+  );
+}
+
+function MoreFeature({ item }: { item: RegistryItem }) {
   const href = docsPathForItem(item);
   return (
     <a
       data-feature-card
       href={href}
-      className="tc-press group block rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-surface)] p-4 transition-[transform,border-color,background-color] duration-150 ease-out hover:border-[color:var(--tc-brass)] hover:bg-[color:var(--tc-panel-hover)]"
+      className="tc-card block overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-surface)]"
     >
-      <div className="mb-2 flex items-center gap-2">
-        <KindBadge kind={item.kind as Kind} />
-        <span className="font-mono text-[10px] uppercase tracking-wide text-[color:var(--tc-muted)]">
-          {authorDisplay(item)}
-        </span>
+      <GradientCover
+        slug={item.slug}
+        title={item.name}
+        titleLevel="h3"
+        className="min-h-40"
+      />
+      <div className="p-4">
+        <p className="font-mono text-[10px] uppercase tracking-wide text-[color:var(--tc-muted)]">
+          {kindLabel(item.kind)} · {authorDisplay(item)}
+        </p>
+        <p className="mt-2 line-clamp-2 text-sm text-[color:var(--tc-muted)]">
+          {item.description}
+        </p>
       </div>
-      <h3 className="text-base font-semibold text-[color:var(--tc-ink)] group-hover:text-[color:var(--tc-ink)]">
-        {item.name}
-      </h3>
-      <p className="mt-1 line-clamp-2 text-sm text-[color:var(--tc-muted)]">
-        {item.description}
-      </p>
     </a>
   );
 }

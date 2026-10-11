@@ -1,0 +1,26 @@
+{
+  "slug": "ai-delivery-setup",
+  "kind": "skill",
+  "name": "AI Delivery Setup",
+  "description": "Stand a repository up for AI-assisted delivery: project profile, contracts, AGENTS.md, check commands, and branch-rule checklist. Use when bootstrapping a project for coding agents. Do not write feature code until a human signs off.",
+  "category": "productivity",
+  "tags": ["ai", "setup", "bootstrap", "agents", "delivery"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ai-delivery-setup"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-setup -a cursor -g -y",
+    "featured": false
+  }
+}

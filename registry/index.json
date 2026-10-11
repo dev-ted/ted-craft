@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T13:19:31.747Z",
+  "generatedAt": "2026-10-11T06:06:26.774Z",
   "items": [
     {
       "slug": "0xdesign/design-lab",
@@ -36,6 +36,424 @@
       },
       "sourceType": "catalog",
       "path": "catalog/0xdesign-design-lab.json"
+    },
+    {
+      "slug": "ai-delivery",
+      "kind": "skill",
+      "name": "AI Delivery",
+      "description": "Index of the AI Delivery pack for any coding agent: reversible decisions, slice and shared contracts, review gates, and optional orchestration. Use when setting up AI-assisted delivery or choosing which artifacts to install.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "agents",
+        "delivery",
+        "workflow",
+        "playbook",
+        "index"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery -a cursor -g -y",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery"
+    },
+    {
+      "slug": "ai-delivery-checks",
+      "kind": "hook",
+      "name": "AI Delivery Checks",
+      "description": "Run check:file after an agent edit and check:change when the agent stops. Blocks the stop until checks pass. Fail open if the project has not wired those scripts yet.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "hooks",
+        "checks",
+        "lint",
+        "tests",
+        "delivery"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "docs": {
+        "readme": "README.md"
+      },
+      "artifacts": {
+        "hook": {
+          "config": "hooks.json",
+          "scriptsDir": "hooks"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-checks -a cursor -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-checks"
+    },
+    {
+      "slug": "ai-delivery-comments",
+      "kind": "rule",
+      "name": "AI Delivery Comments",
+      "description": "Comment and documentation rules for AI-assisted code: why-comments, package-boundary docs, no narration, generated reference docs. Use when agents write or edit comments or docs.",
+      "category": "rules",
+      "tags": [
+        "ai",
+        "comments",
+        "docs",
+        "documentation"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/ai-delivery-comments.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-comments -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-comments"
+    },
+    {
+      "slug": "ai-delivery-contracts",
+      "kind": "rule",
+      "name": "AI Delivery Contracts",
+      "description": "Shared contracts are a hard stop. A slice contract, whose only consumer is this repo and this work item, may change inside the pull request.",
+      "category": "rules",
+      "tags": [
+        "ai",
+        "contracts",
+        "api",
+        "schema",
+        "types"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/ai-delivery-contracts.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-contracts -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-contracts"
+    },
+    {
+      "slug": "ai-delivery-guardrails",
+      "kind": "rule",
+      "name": "AI Delivery Guardrails",
+      "description": "Always-on rules for AI-assisted delivery: humans merge, reversible decisions, seven hard stops, and a test rule that forbids weakening checks to go green.",
+      "category": "rules",
+      "tags": [
+        "ai",
+        "agents",
+        "guardrails",
+        "review",
+        "delivery"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/ai-delivery-guardrails.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-guardrails -a cursor -g -y",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-guardrails"
+    },
+    {
+      "slug": "ai-delivery-orchestrate",
+      "kind": "skill",
+      "name": "AI Delivery Orchestrate",
+      "description": "When and how to split coding agents: isolation, review chain, context hygiene, and optional cheap-model routing. Use for multi-domain work, parallel agents, or when a single agent is losing the plot.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "orchestration",
+        "subagents",
+        "context",
+        "tokens"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery-orchestrate"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-orchestrate -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-orchestrate"
+    },
+    {
+      "slug": "ai-delivery-orchestrator",
+      "kind": "bundle",
+      "name": "AI Delivery Orchestrator",
+      "description": "Plan-only coding orchestrator: splits independent domains, dispatches workers, accepts work on check output — never edits code. Use for multi-domain builds after contracts are locked.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "orchestrator",
+        "subagent",
+        "delivery"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery-orchestrator"
+        },
+        "subagent": {
+          "file": "subagent/ai-delivery-orchestrator.md",
+          "name": "ai-delivery-orchestrator"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-orchestrator -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-orchestrator"
+    },
+    {
+      "slug": "ai-delivery-review",
+      "kind": "skill",
+      "name": "AI Delivery Review",
+      "description": "Review AI-generated work: findings before fixes, PR and comment shapes, human triage, and turning repeated findings into sensors. Use when reviewing a pull request, triaging bugs for agents, or checking generated comments.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "review",
+        "pr",
+        "findings",
+        "qa",
+        "triage"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery-review"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-review -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-review"
+    },
+    {
+      "slug": "ai-delivery-reviewer",
+      "kind": "bundle",
+      "name": "AI Delivery Reviewer",
+      "description": "Fresh-context reviewer for AI-generated diffs: full findings pass, one comment per finding, then dispatch fixes. Use when reviewing a pull request or as a second reader. Does not merge.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "review",
+        "subagent",
+        "pr"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery-reviewer"
+        },
+        "subagent": {
+          "file": "subagent/ai-delivery-reviewer.md",
+          "name": "ai-delivery-reviewer"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-reviewer -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-reviewer"
+    },
+    {
+      "slug": "ai-delivery-setup",
+      "kind": "skill",
+      "name": "AI Delivery Setup",
+      "description": "Stand a repository up for AI-assisted delivery: project profile, contracts, AGENTS.md, check commands, and branch-rule checklist. Use when bootstrapping a project for coding agents. Do not write feature code until a human signs off.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "setup",
+        "bootstrap",
+        "agents",
+        "delivery"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery-setup"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-setup -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-setup"
+    },
+    {
+      "slug": "ai-delivery-ui",
+      "kind": "rule",
+      "name": "AI Delivery UI",
+      "description": "UI rules for AI-assisted delivery: tokens over raw values, loading empty and error states, and real breakpoints. Copy is not a stop. Skip on API-only projects.",
+      "category": "rules",
+      "tags": [
+        "ai",
+        "ui",
+        "design-system",
+        "tokens",
+        "css"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "rule": {
+          "file": "rule/ai-delivery-ui.mdc"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-ui -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-ui"
+    },
+    {
+      "slug": "ai-delivery-worker",
+      "kind": "bundle",
+      "name": "AI Delivery Worker",
+      "description": "Focused feature worker: one scoped task, own branch, check:change evidence in the done report. Use for a component, endpoint, or fix after the orchestrator or a human has scoped the work.",
+      "category": "productivity",
+      "tags": [
+        "ai",
+        "worker",
+        "subagent",
+        "delivery"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "ai-delivery-worker"
+        },
+        "subagent": {
+          "file": "subagent/ai-delivery-worker.md",
+          "name": "ai-delivery-worker"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add ai-delivery-worker -a cursor -g -y",
+        "featured": false
+      },
+      "sourceType": "first-party",
+      "path": "first-party/ai-delivery-worker"
     },
     {
       "slug": "anthropics/frontend-design",
