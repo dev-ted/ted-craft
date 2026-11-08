@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-11T06:06:26.774Z",
+  "generatedAt": "2026-11-08T09:33:33.110Z",
   "items": [
     {
       "slug": "0xdesign/design-lab",
@@ -980,6 +980,39 @@
       },
       "sourceType": "catalog",
       "path": "catalog/ibelick-ui-skills-root.json"
+    },
+    {
+      "slug": "kern",
+      "kind": "skill",
+      "name": "Kern",
+      "description": "Write the smallest change that stays clean and maintainable, on any language or stack. When the work has a UI, finish it: clear hierarchy, real states, accessibility, and motion only where it explains a change.",
+      "category": "craft",
+      "tags": [
+        "craft",
+        "maintainability",
+        "ui",
+        "any-stack"
+      ],
+      "author": {
+        "name": "ted",
+        "url": "https://github.com/dev-ted"
+      },
+      "license": "MIT",
+      "artifacts": {
+        "skill": {
+          "dir": "skill",
+          "name": "kern"
+        }
+      },
+      "source": {
+        "type": "first-party"
+      },
+      "cli": {
+        "promptExample": "npx ted-craft add kern -a cursor -g -y",
+        "featured": true
+      },
+      "sourceType": "first-party",
+      "path": "first-party/kern"
     },
     {
       "slug": "react-accessibility",

@@ -1,0 +1,26 @@
+{
+  "slug": "kern",
+  "kind": "skill",
+  "name": "Kern",
+  "description": "Write the smallest change that stays clean and maintainable, on any language or stack. When the work has a UI, finish it: clear hierarchy, real states, accessibility, and motion only where it explains a change.",
+  "category": "craft",
+  "tags": ["craft", "maintainability", "ui", "any-stack"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "kern"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add kern -a cursor -g -y",
+    "featured": true
+  }
+}
