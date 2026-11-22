@@ -12,8 +12,12 @@ import {
 type AgentTarget = "cursor" | "claude" | "codex" | "vscode";
 
 const GITHUB_REPO = "dev-ted/ted-craft";
-const INDEX_URL =
-  "https://raw.githubusercontent.com/dev-ted/ted-craft/main/registry/index.json";
+const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_REPO}/main`;
+const INDEX_URL = `${RAW_BASE}/registry/index.json`;
+const PACK_PATH = "registry/first-party/ai-delivery/pack.json";
+const AGENTS_TEMPLATE_PATH =
+  "registry/first-party/ai-delivery/skill/references/agents-md.md";
+const HARD_STOP_IGNORE = ".ai-delivery/hard-stop.json";
 
 function findRepoRoot(from = process.cwd()): string {
   let current = path.resolve(from);
@@ -41,11 +45,13 @@ Usage:
   ted-craft search <query>
   ted-craft get <slug>
   ted-craft add <slug> [-a cursor|claude|codex|vscode] [-g] [-y]
+  ted-craft setup ai-delivery [-a cursor|claude|codex|vscode] [--preset small|standard] [--ui] [-g]
   ted-craft help
 
 Examples:
   npx ted-craft start
   npx ted-craft add click-up-maintainer -a cursor -g -y
+  npx ted-craft setup ai-delivery -a cursor --preset small
   npx ted-craft search clickup
 `);
 }
@@ -221,6 +227,7 @@ async function installFirstParty(
   item: RegistryItem & { sourceType: "first-party" },
   agent: AgentTarget,
   global: boolean,
+  options?: { hookInProject?: boolean },
 ): Promise<void> {
   let repoRoot: string | null = null;
   try {
@@ -229,9 +236,9 @@ async function installFirstParty(
     repoRoot = null;
   }
 
-  const destBase = global
-    ? agentHome(agent)
-    : path.join(process.cwd(), agentProjectDir(agent));
+  const projectBase = path.join(process.cwd(), agentProjectDir(agent));
+  const destBase = global ? agentHome(agent) : projectBase;
+  const hookBase = options?.hookInProject ? projectBase : destBase;
 
   if (item.artifacts.skill) {
     const skillName = item.artifacts.skill.name;
@@ -312,13 +319,13 @@ async function installFirstParty(
       item.path,
       item.artifacts.hook.config,
     );
-    const hooksDest = path.join(destBase, "hooks.json");
+    const hooksDest = path.join(hookBase, "hooks.json");
     const incomingRaw = fs.readFileSync(srcConfig, "utf8");
     const existingRaw = fs.existsSync(hooksDest)
       ? fs.readFileSync(hooksDest, "utf8")
       : null;
     const { json, merged } = mergeHooksConfig(existingRaw, incomingRaw);
-    fs.mkdirSync(destBase, { recursive: true });
+    fs.mkdirSync(hookBase, { recursive: true });
     fs.writeFileSync(hooksDest, json, "utf8");
     if (item.artifacts.hook.scriptsDir) {
       const srcScripts = path.join(
@@ -327,7 +334,7 @@ async function installFirstParty(
         item.path,
         item.artifacts.hook.scriptsDir,
       );
-      const destScripts = path.join(destBase, "hooks");
+      const destScripts = path.join(hookBase, "hooks");
       // Non-destructive: copy/overwrite packaged scripts only; keep user scripts.
       copyDir(srcScripts, destScripts);
       console.log(`Installed hook scripts → ${destScripts}`);
@@ -386,6 +393,191 @@ async function installCatalog(
   }
 }
 
+type GhContent = {
+  name: string;
+  path: string;
+  type: string;
+  download_url: string | null;
+};
+
+const ghHeaders = {
+  Accept: "application/vnd.github+json",
+  "User-Agent": "ted-craft",
+};
+
+async function fetchText(url: string): Promise<string> {
+  const res = await fetch(url, { headers: ghHeaders });
+  if (!res.ok) {
+    throw new Error(`Failed to download ${url} (${res.status})`);
+  }
+  return res.text();
+}
+
+async function downloadGithubDir(repoPath: string, destDir: string): Promise<void> {
+  const api = `https://api.github.com/repos/${GITHUB_REPO}/contents/${repoPath}?ref=main`;
+  const res = await fetch(api, { headers: ghHeaders });
+  if (!res.ok) {
+    throw new Error(`Failed to list ${repoPath} (${res.status})`);
+  }
+  const entries = (await res.json()) as GhContent[] | { message?: string };
+  if (!Array.isArray(entries)) {
+    throw new Error(`Unexpected listing for ${repoPath}`);
+  }
+  fs.mkdirSync(destDir, { recursive: true });
+  for (const entry of entries) {
+    if (entry.type === "dir") {
+      await downloadGithubDir(entry.path, path.join(destDir, entry.name));
+      continue;
+    }
+    if (entry.type !== "file" || !entry.download_url) continue;
+    const body = await fetchText(entry.download_url);
+    fs.writeFileSync(path.join(destDir, entry.name), body, "utf8");
+  }
+}
+
+async function installFirstPartyRemote(
+  item: RegistryItem & { sourceType: "first-party" },
+  agent: AgentTarget,
+  global: boolean,
+  options?: { hookInProject?: boolean },
+): Promise<void> {
+  const projectBase = path.join(process.cwd(), agentProjectDir(agent));
+  const destBase = global ? agentHome(agent) : projectBase;
+  const hookBase = options?.hookInProject ? projectBase : destBase;
+  const root = `registry/${item.path}`;
+
+  if (item.artifacts.skill) {
+    const dest = path.join(destBase, "skills", item.artifacts.skill.name);
+    fs.rmSync(dest, { recursive: true, force: true });
+    await downloadGithubDir(`${root}/${item.artifacts.skill.dir}`, dest);
+    console.log(`Installed skill → ${dest}`);
+  }
+
+  if (item.artifacts.subagent) {
+    const destDir = path.join(destBase, "agents");
+    fs.mkdirSync(destDir, { recursive: true });
+    const dest = path.join(destDir, path.basename(item.artifacts.subagent.file));
+    const body = await fetchText(`${RAW_BASE}/${root}/${item.artifacts.subagent.file}`);
+    fs.writeFileSync(dest, body, "utf8");
+    console.log(`Installed subagent → ${dest}`);
+  }
+
+  if (item.artifacts.rule) {
+    const destDir = path.join(destBase, "rules");
+    fs.mkdirSync(destDir, { recursive: true });
+    const dest = path.join(destDir, path.basename(item.artifacts.rule.file));
+    const body = await fetchText(`${RAW_BASE}/${root}/${item.artifacts.rule.file}`);
+    fs.writeFileSync(dest, body, "utf8");
+    console.log(`Installed rule → ${dest}`);
+  }
+
+  if (item.artifacts.hook) {
+    const incomingRaw = await fetchText(
+      `${RAW_BASE}/${root}/${item.artifacts.hook.config}`,
+    );
+    const hooksDest = path.join(hookBase, "hooks.json");
+    const existingRaw = fs.existsSync(hooksDest)
+      ? fs.readFileSync(hooksDest, "utf8")
+      : null;
+    const { json, merged } = mergeHooksConfig(existingRaw, incomingRaw);
+    fs.mkdirSync(hookBase, { recursive: true });
+    fs.writeFileSync(hooksDest, json, "utf8");
+    if (item.artifacts.hook.scriptsDir) {
+      const destScripts = path.join(hookBase, "hooks");
+      await downloadGithubDir(
+        `${root}/${item.artifacts.hook.scriptsDir}`,
+        destScripts,
+      );
+      console.log(`Installed hook scripts → ${destScripts}`);
+    }
+    console.log(
+      merged ? `Merged hooks → ${hooksDest}` : `Installed hooks → ${hooksDest}`,
+    );
+  }
+}
+
+type DeliveryPack = {
+  small: string[];
+  standard: string[];
+  ui: string[];
+};
+
+function tryRepoRoot(): string | null {
+  try {
+    return findRepoRoot();
+  } catch {
+    return null;
+  }
+}
+
+async function loadDeliveryPack(): Promise<{ pack: DeliveryPack; localRoot: string | null }> {
+  const localRoot = tryRepoRoot();
+  if (localRoot) {
+    const file = path.join(localRoot, PACK_PATH);
+    if (fs.existsSync(file)) {
+      return {
+        pack: JSON.parse(fs.readFileSync(file, "utf8")) as DeliveryPack,
+        localRoot,
+      };
+    }
+  }
+  const raw = await fetchText(`${RAW_BASE}/${PACK_PATH}`);
+  return { pack: JSON.parse(raw) as DeliveryPack, localRoot: null };
+}
+
+function writeAgentsTemplate(localRoot: string | null, template: string | null): void {
+  const dest = path.join(process.cwd(), "AGENTS.md");
+  if (fs.existsSync(dest)) {
+    console.log(`Left existing file → ${dest}`);
+    return;
+  }
+  let body = template;
+  if (!body && localRoot) {
+    const src = path.join(localRoot, AGENTS_TEMPLATE_PATH);
+    if (fs.existsSync(src)) body = fs.readFileSync(src, "utf8");
+  }
+  if (!body) {
+    console.log("AGENTS.md template was not found. Run ai-delivery-setup to write it.");
+    return;
+  }
+  if (!body.endsWith("\n")) body += "\n";
+  fs.writeFileSync(dest, body, "utf8");
+  console.log(`Wrote ${dest}`);
+}
+
+function ensureHardStopGitignore(): void {
+  const dest = path.join(process.cwd(), ".gitignore");
+  if (!fs.existsSync(dest)) {
+    fs.writeFileSync(dest, `${HARD_STOP_IGNORE}\n`, "utf8");
+    console.log(`Created ${dest}`);
+    return;
+  }
+  const text = fs.readFileSync(dest, "utf8");
+  const present = text.split("\n").some((line) => line.trim() === HARD_STOP_IGNORE);
+  if (present) {
+    console.log(`.gitignore already ignores ${HARD_STOP_IGNORE}`);
+    return;
+  }
+  const suffix = text.endsWith("\n") || text.length === 0 ? "" : "\n";
+  fs.appendFileSync(dest, `${suffix}${HARD_STOP_IGNORE}\n`, "utf8");
+  console.log(`Updated ${dest}`);
+}
+
+function parseAgent(flags: Record<string, string | boolean>): AgentTarget {
+  const agentRaw = (flags.agent as string | undefined) ?? "cursor";
+  if (
+    agentRaw !== "cursor" &&
+    agentRaw !== "claude" &&
+    agentRaw !== "codex" &&
+    agentRaw !== "vscode"
+  ) {
+    throw new Error(
+      `Unsupported agent "${agentRaw}". Use cursor|claude|codex|vscode.`,
+    );
+  }
+  return agentRaw;
+}
+
 function parseArgs(argv: string[]): {
   command: string;
   positional: string[];
@@ -415,6 +607,14 @@ function parseArgs(argv: string[]): {
     }
     if (arg === "--kind") {
       flags.kind = rest[++i] ?? "";
+      continue;
+    }
+    if (arg === "--preset") {
+      flags.preset = rest[++i] ?? "";
+      continue;
+    }
+    if (arg === "--ui") {
+      flags.ui = true;
       continue;
     }
     if (arg.startsWith("-")) {
@@ -568,18 +768,7 @@ You are routing through the ted-craft marketplace.
           "Usage: ted-craft add <slug> [-a cursor|claude|codex|vscode]",
         );
       }
-      const agentRaw = (flags.agent as string | undefined) ?? "cursor";
-      if (
-        agentRaw !== "cursor" &&
-        agentRaw !== "claude" &&
-        agentRaw !== "codex" &&
-        agentRaw !== "vscode"
-      ) {
-        throw new Error(
-          `Unsupported agent "${agentRaw}". Use cursor|claude|codex|vscode.`,
-        );
-      }
-      const agent: AgentTarget = agentRaw;
+      const agent = parseAgent(flags);
       const index = await loadIndex();
       const item = findItem(index, slug);
       // Skills historically default to global; hooks use project-relative
@@ -594,6 +783,61 @@ You are routing through the ted-craft marketplace.
       } else {
         await installFirstParty(item, agent, global);
       }
+      return;
+    }
+
+    case "setup": {
+      const packName = positional[0];
+      if (packName !== "ai-delivery") {
+        throw new Error(
+          "Usage: ted-craft setup ai-delivery [-a cursor|claude|codex|vscode] [--preset small|standard] [--ui] [-g]",
+        );
+      }
+      const presetRaw = (flags.preset as string | undefined) || "small";
+      if (presetRaw !== "small" && presetRaw !== "standard") {
+        throw new Error('Preset must be "small" or "standard".');
+      }
+      const agent = parseAgent(flags);
+      const global = Boolean(flags.global);
+      const { pack, localRoot } = await loadDeliveryPack();
+      const slugs = [...pack[presetRaw]];
+      if (flags.ui) slugs.push(...pack.ui);
+
+      const index = await loadIndex();
+      for (const slug of slugs) {
+        const item = findItem(index, slug);
+        if (item.sourceType !== "first-party") {
+          throw new Error(`Pack slug "${slug}" is not a first-party artifact.`);
+        }
+        if (localRoot) {
+          await installFirstParty(item, agent, global, { hookInProject: true });
+        } else {
+          await installFirstPartyRemote(item, agent, global, {
+            hookInProject: true,
+          });
+        }
+      }
+
+      let template: string | null = null;
+      if (!localRoot) {
+        try {
+          template = await fetchText(`${RAW_BASE}/${AGENTS_TEMPLATE_PATH}`);
+        } catch {
+          template = null;
+        }
+      }
+      writeAgentsTemplate(localRoot, template);
+      ensureHardStopGitignore();
+
+      const where = global
+        ? `${agentHome(agent)} (hook stays in ${agentProjectDir(agent)})`
+        : agentProjectDir(agent);
+      console.log(`
+AI Delivery (${presetRaw}${flags.ui ? ", ui" : ""}) installed into ${where}.
+
+Next: open your agent in this repo and run ai-delivery-setup.
+Confirm the project profile before any feature code.
+`);
       return;
     }
 

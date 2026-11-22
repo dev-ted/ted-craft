@@ -1,0 +1,37 @@
+---
+description: Comments explain why, not what — package-boundary docs, no narration
+globs:
+  - "**/*.{ts,tsx,js,jsx,mjs,cjs,py,go,rs,java,kt,swift,php}"
+alwaysApply: false
+---
+
+# AI Delivery Comments
+
+**Assumes:** a typed or documented codebase. Pair with `ai-delivery-guardrails`. A generated comment is a claim until a human checks it against the code.
+
+Left alone, an agent writes too many comments, and the wrong kind. It narrates its own work, restates the next line, and puts a docstring on a three-line private helper. The next agent reads that comment as truth.
+
+## Four parts
+
+1. A doc comment on every export at a **package boundary**. What it does, when to use it, what it must not be used for. Never the parameter types the type system already carries. "Package boundary" means what the package exposes through its index file, not every exported symbol inside an app.
+2. Inside a function, a comment only for what the code cannot say. A why. A constraint. A workaround, with its ticket. An invariant that is not obvious. One line each.
+3. Never a comment that restates the next line, narrates the change, or talks to a person. What changed and why goes in the commit message and the pull request.
+4. Do not touch comments in code you did not change. A comment fix is not a reason to edit nearby comments. The exception is a cleanup task a human asked for.
+
+If the code needs a comment to be understood, simplify the code. Match this standard, not the comment density around you.
+
+## Three homes for an explanation
+
+- **In the code:** a why-comment where the surprise is. It applies to that line and nowhere else.
+- **In the instructions and rules files:** a convention or a gotcha that applies across files. Nothing the agent can learn by reading the code.
+- **In a decision record:** a choice with alternatives and consequences, in `docs/decisions/`. A comment that needs a paragraph is a decision record.
+
+## Generated reference
+
+Reference documentation is generated from the code, never written by hand. The tool depends on the surface: TypeDoc for TypeScript packages, Compodoc for Angular, Storybook for components, OpenAPI for services, phpDocumentor for PHP.
+
+Do not create a new documentation file unless a human asks for one. Documentation changes in the same pull request as the code it describes.
+
+## Review
+
+A comment that restates the code, narrates the change, or addresses a person is a finding. Check a generated doc comment against the code before you commit it.

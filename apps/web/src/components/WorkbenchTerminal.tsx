@@ -204,7 +204,7 @@ function TabStrip() {
             key={tab.label}
             index={index}
             className={cn(
-              "cursor-pointer rounded-md px-3 py-1 font-mono text-[11px] transition-all duration-150 md:text-xs",
+              "cursor-pointer rounded-md px-3 py-1 font-mono text-[11px] transition-[color,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] md:text-xs",
               "data-[state=active]:bg-[color:var(--tc-brass)] data-[state=active]:font-medium data-[state=active]:text-[color:var(--tc-console)]",
               "data-[state=inactive]:text-white/45 data-[state=inactive]:hover:text-white/80",
             )}
@@ -276,7 +276,7 @@ function StaticTerminal({
                 data-state={isActive ? "active" : "inactive"}
                 onClick={() => onActiveTabChange(index)}
                 className={cn(
-                  "cursor-pointer rounded-md px-3 py-1 font-mono text-[11px] transition-all duration-150 md:text-xs",
+                  "cursor-pointer rounded-md px-3 py-1 font-mono text-[11px] transition-[color,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] md:text-xs",
                   isActive
                     ? "bg-[color:var(--tc-brass)] font-medium text-[color:var(--tc-console)]"
                     : "text-white/45 hover:text-white/80",

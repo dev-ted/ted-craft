@@ -9,7 +9,7 @@ export function SiteFooter() {
             href="https://frontendted.co.za"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[color:var(--tc-ink)] underline decoration-[color:var(--tc-brass)] underline-offset-4 transition-opacity duration-150 ease-out hover:opacity-80"
+            className="text-[color:var(--tc-ink)] underline decoration-[color:var(--tc-brass)] underline-offset-4 transition-opacity duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] hover:opacity-80"
           >
             ted.code
           </a>

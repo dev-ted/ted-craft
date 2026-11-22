@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { HomeLayout } from "fumadocs-ui/layouts/home";
 import { useMemo, useState } from "react";
 import { FacetedFilter } from "@/components/FacetedFilter";
+import { GradientCover } from "@/components/GradientCover";
 import { KindBadge } from "@/components/KindBadge";
 import { type Kind, kindLabel } from "@/components/kind";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -332,9 +333,13 @@ function BrowsePage() {
           {pageItems.map((item) => (
             <li
               key={item.slug}
-              className="rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-surface)] p-4"
+              className="tc-row flex flex-col overflow-hidden rounded-xl border border-[color:var(--tc-line)] bg-[color:var(--tc-surface)] sm:flex-row"
             >
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              <GradientCover
+                slug={item.slug}
+                className="min-h-36 w-full shrink-0 sm:w-[9.25rem]"
+              />
+              <div className="flex flex-1 flex-col gap-3 p-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
                 <div className="min-w-0 flex-1">
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     <KindBadge kind={item.kind as Kind} />

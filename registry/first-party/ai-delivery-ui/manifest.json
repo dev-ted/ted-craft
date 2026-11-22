@@ -1,0 +1,25 @@
+{
+  "slug": "ai-delivery-ui",
+  "kind": "rule",
+  "name": "AI Delivery UI",
+  "description": "UI rules for AI-assisted delivery: tokens over raw values, loading empty and error states, and real breakpoints. Copy is not a stop. Skip on API-only projects.",
+  "category": "rules",
+  "tags": ["ai", "ui", "design-system", "tokens", "css"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/ai-delivery-ui.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-ui -a cursor -g -y",
+    "featured": false
+  }
+}

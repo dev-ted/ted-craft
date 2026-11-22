@@ -1,0 +1,103 @@
+---
+title: "AI Delivery Checks"
+description: "Run check:file after an agent edit and check:change when the agent stops. Blocks the stop until checks pass. Fail open if the project has not wired those scripts yet."
+---
+
+<div className="not-prose mb-6 flex flex-wrap items-center gap-3">
+  <KindBadge kind="hook" />
+  <span className="text-sm text-fd-muted-foreground">dev-ted</span>
+</div>
+
+
+
+<CliCommand>npx ted-craft add ai-delivery-checks -a cursor -y</CliCommand>
+
+
+<RegistryInstallPreview
+  cursorCommand={"npx ted-craft add ai-delivery-checks -a cursor -y"}
+  claudeCommand={"npx ted-craft add ai-delivery-checks -a claude -y"}
+  codexCommand={"npx ted-craft add ai-delivery-checks -a codex -y"}
+  vscodeCommand={"npx ted-craft add ai-delivery-checks -a vscode -y"}
+  showInstall={true}>{
+"# AI Delivery Checks\n\nThe check contract is the same for every coding agent:\n\n- Run `check:file` on an edited file.\n- Run `check:change` before reporting done.\n- If the script is missing, or the runner cannot start, say so and continue. Do not invent a linter.\n- If `check:change` fails, do not report done. Do not edit a test, a ratchet, or the hook to make it pass.\n- A hard stop may end the turn while checks are still red. Write `.ai-delivery/hard-stop.json` as `{\"stop\":1,\"reason\":\"one line\"}` with `stop` from 1 to 7. Do not commit that file. CI still blocks the merge.\n\nWhen the agent tool can run a hook, this package wires that contract. A tool with no hooks still follows it: the agent runs `check:change` itself.\n\n## Install\n\nThis is a **hook**. Run the command in the **app project** that should get `.cursor/`, not as a global skill install.\n\n```bash\nnpx ted-craft add ai-delivery-checks -a cursor -y\n```\n\nThat writes:\n\n- `.cursor/hooks.json` — `afterFileEdit` and `stop` entries (merged with hooks you already have)\n- `.cursor/hooks/ai-delivery-checks.mjs` — the runner\n\nWire the scripts first (or right after), or the hook will fail open:\n\n```json\n{\n  \"scripts\": {\n    \"check:file\": \"your formatter and linter for one file\",\n    \"check:change\": \"typecheck, lint, and tests for the change\"\n  }\n}\n```\n\nUse bun, npm, pnpm, or yarn. The hook picks the runner from the lockfile. You can also put Node scripts at `scripts/check-file.mjs` / `scripts/check-change.mjs` or `.ai-delivery/check-file.mjs` / `.ai-delivery/check-change.mjs`.\n\n## What the hook does\n\n- After a file edit, it runs `check:file`. A failure is extra context. The edit is already on disk.\n- When the agent stops, it runs `check:change`. A real failure exits 2 so the agent can fix and try again, up to eight times.\n- A missing script, a hook crash, or a runner that cannot start exits 0 and says the checks are not wired.\n- If `.ai-delivery/hard-stop.json` names a stop from 1 to 7 and a one-line reason, the hook still prints the red checks and exits 0. Add that path to the project's ignore file. A false marker breaks the test rule. It does not make a red pull request mergeable.\n\nSkipped paths: `node_modules`, `.git`, `dist`, `coverage`, `.next`, `build`.\n\n## Safety\n\nLocal-only:\n\n- No network, no `eval`, no remote imports\n- Spawn is allowlisted: `bun` / `npm` / `pnpm` / `yarn` with `run <script>`, or `node` on an allowlisted `.mjs` inside the workspace\n- `shell` is never true\n- File paths must resolve inside a workspace root\n- Missing scripts and unexpected errors fail open (exit 0) so a broken hook never bricks the agent\n- `check:change` failure is the one intentional block (exit 2)\n\nThis hook uses `child_process.spawnSync` for one reason: the delivery pack requires the agent to run the project's own checks. Review the script on this page before you install. Hooks run on your machine.\n\n## Caveats\n\n- You must define `check:file` and `check:change`. The hook does not create them.\n- `check:file` should be idempotent. A formatter that rewrites the file will fire `afterFileEdit` again. A second clean run should no-op.\n- Name the scripts `check:file` and `check:change`. Do not name them after a tier number."
+}</RegistryInstallPreview>
+
+# AI Delivery Checks
+
+The check contract is the same for every coding agent:
+
+- Run `check:file` on an edited file.
+- Run `check:change` before reporting done.
+- If the script is missing, or the runner cannot start, say so and continue. Do not invent a linter.
+- If `check:change` fails, do not report done. Do not edit a test, a ratchet, or the hook to make it pass.
+- A hard stop may end the turn while checks are still red. Write `.ai-delivery/hard-stop.json` as `&#123;"stop":1,"reason":"one line"&#125;` with `stop` from 1 to 7. Do not commit that file. CI still blocks the merge.
+
+When the agent tool can run a hook, this package wires that contract. A tool with no hooks still follows it: the agent runs `check:change` itself.
+
+## Install
+
+This is a **hook**. Run the command in the **app project** that should get `.cursor/`, not as a global skill install.
+
+```bash
+npx ted-craft add ai-delivery-checks -a cursor -y
+```
+
+That writes:
+
+- `.cursor/hooks.json` — `afterFileEdit` and `stop` entries (merged with hooks you already have)
+- `.cursor/hooks/ai-delivery-checks.mjs` — the runner
+
+Wire the scripts first (or right after), or the hook will fail open:
+
+```json
+&#123;
+  "scripts": &#123;
+    "check:file": "your formatter and linter for one file",
+    "check:change": "typecheck, lint, and tests for the change"
+  &#125;
+&#125;
+```
+
+Use bun, npm, pnpm, or yarn. The hook picks the runner from the lockfile. You can also put Node scripts at `scripts/check-file.mjs` / `scripts/check-change.mjs` or `.ai-delivery/check-file.mjs` / `.ai-delivery/check-change.mjs`.
+
+## What the hook does
+
+- After a file edit, it runs `check:file`. A failure is extra context. The edit is already on disk.
+- When the agent stops, it runs `check:change`. A real failure exits 2 so the agent can fix and try again, up to eight times.
+- A missing script, a hook crash, or a runner that cannot start exits 0 and says the checks are not wired.
+- If `.ai-delivery/hard-stop.json` names a stop from 1 to 7 and a one-line reason, the hook still prints the red checks and exits 0. Add that path to the project's ignore file. A false marker breaks the test rule. It does not make a red pull request mergeable.
+
+Skipped paths: `node_modules`, `.git`, `dist`, `coverage`, `.next`, `build`.
+
+## Safety
+
+Local-only:
+
+- No network, no `eval`, no remote imports
+- Spawn is allowlisted: `bun` / `npm` / `pnpm` / `yarn` with `run &lt;script&gt;`, or `node` on an allowlisted `.mjs` inside the workspace
+- `shell` is never true
+- File paths must resolve inside a workspace root
+- Missing scripts and unexpected errors fail open (exit 0) so a broken hook never bricks the agent
+- `check:change` failure is the one intentional block (exit 2)
+
+This hook uses `child_process.spawnSync` for one reason: the delivery pack requires the agent to run the project's own checks. Review the script on this page before you install. Hooks run on your machine.
+
+## Caveats
+
+- You must define `check:file` and `check:change`. The hook does not create them.
+- `check:file` should be idempotent. A formatter that rewrites the file will fire `afterFileEdit` again. A second clean run should no-op.
+- Name the scripts `check:file` and `check:change`. Do not name them after a tier number.
+
+## Hook config
+
+<CodeBlock label="hooks.json">{
+"{\n  \"version\": 1,\n  \"hooks\": {\n    \"afterFileEdit\": [\n      {\n        \"command\": \"node .cursor/hooks/ai-delivery-checks.mjs --file\"\n      }\n    ],\n    \"stop\": [\n      {\n        \"command\": \"node .cursor/hooks/ai-delivery-checks.mjs --change\",\n        \"loop_limit\": 8\n      }\n    ]\n  }\n}"
+}</CodeBlock>
+
+
+## Hook script: ai-delivery-checks.mjs
+
+<CodeBlock label="ai-delivery-checks.mjs">{
+"#!/usr/bin/env node\n/**\n * AI Delivery checks (after-edit and stop hook).\n *\n * Threat model: local-only. Reads stdin JSON from the agent tool. May spawn one\n * allowlisted local check already in the repo. No network, no eval, no remote\n * imports, shell: false.\n *\n * Why child_process: the delivery pack requires check:file / check:change to\n * run even when the agent skips them. This process only invokes those names.\n */\nimport { spawnSync } from \"node:child_process\";\nimport { existsSync, readFileSync, realpathSync, statSync } from \"node:fs\";\nimport { isAbsolute, join, relative, resolve, sep } from \"node:path\";\n\nconst MAX_OUTPUT = 8 * 1024;\nconst FILE_TIMEOUT_MS = 30_000;\nconst CHANGE_TIMEOUT_MS = 180_000;\nconst SKIP_DIR_NAMES = new Set([\n  \"node_modules\",\n  \".git\",\n  \"dist\",\n  \"coverage\",\n  \".next\",\n  \"build\",\n]);\n\nconst RUNNERS = new Set([\"bun\", \"npm\", \"pnpm\", \"yarn\"]);\nconst LOCAL_FILE_NAMES = {\n  file: [\"check-file.mjs\"],\n  change: [\"check-change.mjs\"],\n};\nconst LOCAL_DIRS = [\"scripts\", \".ai-delivery\"];\n\n/**\n * @param {unknown} input\n * @returns {string | null}\n */\nfunction workspaceRoot(input) {\n  if (!input || typeof input !== \"object\") return null;\n  const roots = /** @type {{ workspace_roots?: unknown }} */ (input).workspace_roots;\n  if (Array.isArray(roots) && typeof roots[0] === \"string\" && roots[0].trim()) {\n    return resolve(roots[0]);\n  }\n  return resolve(process.cwd());\n}\n\n/**\n * @param {unknown} input\n * @param {string} root\n * @returns {string | null}\n */\nfunction resolveFilePath(input, root) {\n  if (!input || typeof input !== \"object\") return null;\n  const raw = /** @type {{ file_path?: unknown }} */ (input).file_path;\n  if (typeof raw !== \"string\" || !raw.trim()) return null;\n  return isAbsolute(raw) ? resolve(raw) : resolve(join(root, raw));\n}\n\n/**\n * @param {string} filePath\n * @param {string} root\n */\nfunction isInsideRoot(filePath, root) {\n  let realFile;\n  let realRoot;\n  try {\n    realFile = realpathSync(filePath);\n  } catch {\n    realFile = resolve(filePath);\n  }\n  try {\n    realRoot = realpathSync(root);\n  } catch {\n    realRoot = resolve(root);\n  }\n  const prefix = realRoot.endsWith(sep) ? realRoot : realRoot + sep;\n  return realFile === realRoot || realFile.startsWith(prefix);\n}\n\n/**\n * @param {string} filePath\n * @param {string} root\n */\nfunction isSkippedPath(filePath, root) {\n  const rel = relative(root, filePath);\n  if (!rel || rel.startsWith(\"..\")) return true;\n  return rel.split(/[\\\\/]/).some((part) => SKIP_DIR_NAMES.has(part));\n}\n\n/**\n * @param {string} root\n */\nfunction packageManager(root) {\n  if (existsSync(join(root, \"bun.lock\")) || existsSync(join(root, \"bun.lockb\"))) {\n    return \"bun\";\n  }\n  if (existsSync(join(root, \"pnpm-lock.yaml\"))) return \"pnpm\";\n  if (existsSync(join(root, \"yarn.lock\"))) return \"yarn\";\n  return \"npm\";\n}\n\n/**\n * @param {string} root\n * @param {\"file\" | \"change\"} kind\n * @returns {string | null}\n */\nfunction packageScript(root, kind) {\n  const pkgPath = join(root, \"package.json\");\n  if (!existsSync(pkgPath)) return null;\n  try {\n    const pkg = JSON.parse(readFileSync(pkgPath, \"utf8\"));\n    const scripts = pkg && typeof pkg === \"object\" ? pkg.scripts : null;\n    if (!scripts || typeof scripts !== \"object\") return null;\n    const name = kind === \"file\" ? \"check:file\" : \"check:change\";\n    return typeof scripts[name] === \"string\" && scripts[name].trim() ? name : null;\n  } catch {\n    return null;\n  }\n}\n\n/**\n * @param {string} root\n * @param {\"file\" | \"change\"} kind\n * @returns {string | null}\n */\nfunction localScript(root, kind) {\n  const names = LOCAL_FILE_NAMES[kind];\n  for (const dir of LOCAL_DIRS) {\n    for (const name of names) {\n      const candidate = join(root, dir, name);\n      if (!existsSync(candidate)) continue;\n      if (!isInsideRoot(candidate, root)) continue;\n      try {\n        if (!statSync(candidate).isFile()) continue;\n      } catch {\n        continue;\n      }\n      return candidate;\n    }\n  }\n  return null;\n}\n\n/**\n * @param {string} text\n */\nfunction lastTwentyLines(text) {\n  const lines = text.split(/\\r?\\n/);\n  const slice = lines.slice(-20).join(\"\\n\");\n  if (slice.length <= MAX_OUTPUT) return slice;\n  return slice.slice(-MAX_OUTPUT);\n}\n\n/**\n * @param {{ cmd: string, args: string[], cwd: string, timeout: number }} spec\n */\nfunction run(spec) {\n  const result = spawnSync(spec.cmd, spec.args, {\n    cwd: spec.cwd,\n    timeout: spec.timeout,\n    encoding: \"utf8\",\n    shell: false,\n    env: { ...process.env, AI_DELIVERY_CHECK: \"1\" },\n  });\n  const stdout = typeof result.stdout === \"string\" ? result.stdout : \"\";\n  const stderr = typeof result.stderr === \"string\" ? result.stderr : \"\";\n  const combined = `${stdout}${stderr}`.trim();\n  const timedOut = Boolean(result.error && result.error.message.includes(\"TIMEDOUT\"));\n  const hasStatus = typeof result.status === \"number\";\n  return {\n    status: hasStatus ? result.status : 1,\n    output: lastTwentyLines(combined),\n    error: result.error ? result.error.message : \"\",\n    timedOut,\n    spawnFailed: result.error != null && !hasStatus && !timedOut,\n  };\n}\n\n/**\n * @param {string} name\n */\nfunction runnerBin(name) {\n  if (!RUNNERS.has(name)) return null;\n  if (process.platform === \"win32\") {\n    if (name === \"yarn\") return \"yarn.cmd\";\n    if (name === \"pnpm\") return \"pnpm.cmd\";\n    if (name === \"npm\") return \"npm.cmd\";\n    if (name === \"bun\") return \"bun.exe\";\n  }\n  return name;\n}\n\n/**\n * @param {string} root\n * @param {\"file\" | \"change\"} kind\n * @param {string | null} filePath\n */\nfunction resolveCommand(root, kind, filePath) {\n  const script = packageScript(root, kind);\n  if (script) {\n    const pm = runnerBin(packageManager(root));\n    if (!pm) return null;\n    const args = [\"run\", script];\n    if (kind === \"file\" && filePath) {\n      args.push(\"--\", filePath);\n    }\n    return {\n      cmd: pm,\n      args,\n      cwd: root,\n      timeout: kind === \"file\" ? FILE_TIMEOUT_MS : CHANGE_TIMEOUT_MS,\n      label: `${pm} run ${script}`,\n    };\n  }\n\n  const local = localScript(root, kind);\n  if (local) {\n    const args = [local];\n    if (kind === \"file\" && filePath) args.push(filePath);\n    return {\n      cmd: process.execPath,\n      args,\n      cwd: root,\n      timeout: kind === \"file\" ? FILE_TIMEOUT_MS : CHANGE_TIMEOUT_MS,\n      label: `node ${relative(root, local)}`,\n    };\n  }\n\n  return null;\n}\n\n/**\n * Local signal that the agent hit a hard stop and must end the turn.\n * CI still blocks a red merge. A false file breaks the test rule.\n * @param {string} root\n * @returns {{ stop: number, reason: string } | null}\n */\nfunction readHardStop(root) {\n  const file = join(root, \".ai-delivery\", \"hard-stop.json\");\n  if (!existsSync(file) || !isInsideRoot(file, root)) return null;\n  try {\n    const st = statSync(file);\n    if (!st.isFile() || st.size > 4096) return null;\n    const data = JSON.parse(readFileSync(file, \"utf8\"));\n    const stop = data && data.stop;\n    const reason = data && data.reason;\n    if (!Number.isInteger(stop) || stop < 1 || stop > 7) return null;\n    if (typeof reason !== \"string\") return null;\n    const line = reason.trim();\n    if (!line || line.includes(\"\\n\") || line.length > 240) return null;\n    return { stop, reason: line };\n  } catch {\n    return null;\n  }\n}\n\n/**\n * @param {Record<string, unknown>} payload\n */\nfunction emit(payload) {\n  process.stdout.write(`${JSON.stringify(payload)}\\n`);\n}\n\nfunction main() {\n  const kind = process.argv.includes(\"--change\") ? \"change\" : \"file\";\n\n  try {\n    const raw = readFileSync(0, \"utf8\").trim();\n    const input = raw ? JSON.parse(raw) : {};\n    const root = workspaceRoot(input);\n    if (!root) {\n      process.exit(0);\n      return;\n    }\n\n    if (kind === \"file\") {\n      const filePath = resolveFilePath(input, root);\n      if (!filePath || !isInsideRoot(filePath, root) || isSkippedPath(filePath, root)) {\n        process.exit(0);\n        return;\n      }\n      const spec = resolveCommand(root, \"file\", filePath);\n      if (!spec) {\n        emit({\n          additional_context:\n            \"check:file is not wired. Add a package.json script named check:file, or a Node script at scripts/check-file.mjs. Use ai-delivery-setup.\",\n        });\n        process.exit(0);\n        return;\n      }\n      const result = run(spec);\n      if (result.status !== 0) {\n        const detail = result.output || result.error || \"check:file failed\";\n        emit({\n          additional_context: `${spec.label} failed (exit ${result.status}).\\n${detail}`,\n        });\n      }\n      process.exit(0);\n      return;\n    }\n\n    const spec = resolveCommand(root, \"change\", null);\n    if (!spec) {\n      emit({\n        followup_message:\n          \"check:change is not wired. Add a package.json script named check:change, or a Node script at scripts/check-change.mjs. Use ai-delivery-setup. Not blocking.\",\n      });\n      process.exit(0);\n      return;\n    }\n\n    const result = run(spec);\n    if (result.spawnFailed) {\n      emit({\n        followup_message: `${spec.label} could not start (${result.error || \"spawn failed\"}). Not blocking. Wire check:change with ai-delivery-setup.`,\n      });\n      process.exit(0);\n      return;\n    }\n    if (result.status === 0 && !result.timedOut) {\n      process.exit(0);\n      return;\n    }\n\n    const detail = result.output || result.error || \"check:change failed\";\n    const hardStop = readHardStop(root);\n    if (hardStop) {\n      emit({\n        followup_message: `Hard stop ${hardStop.stop}: ${hardStop.reason}\\n${spec.label} is red (exit ${result.status}). Not blocking this turn. CI still blocks merge.\\n${detail}`,\n      });\n      process.exit(0);\n      return;\n    }\n\n    emit({\n      followup_message: `${spec.label} failed (exit ${result.status}). Fix the failures, then stop again. Do not edit tests, ratchets, or this hook to go green.\\n${detail}`,\n    });\n    process.exit(2);\n  } catch {\n    process.exit(0);\n  }\n}\n\nmain();"
+}</CodeBlock>
+

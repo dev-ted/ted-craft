@@ -1,0 +1,26 @@
+{
+  "slug": "ai-delivery-review",
+  "kind": "skill",
+  "name": "AI Delivery Review",
+  "description": "Review AI-generated work: findings before fixes, PR and comment shapes, human triage, and turning repeated findings into sensors. Use when reviewing a pull request, triaging bugs for agents, or checking generated comments.",
+  "category": "productivity",
+  "tags": ["ai", "review", "pr", "findings", "qa", "triage"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ai-delivery-review"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-review -a cursor -g -y",
+    "featured": false
+  }
+}

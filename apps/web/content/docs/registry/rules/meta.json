@@ -1,6 +1,10 @@
 {
   "title": "rules",
   "pages": [
+    "ai-delivery-comments",
+    "ai-delivery-contracts",
+    "ai-delivery-guardrails",
+    "ai-delivery-ui",
     "react-accessibility",
     "react-figma-fidelity",
     "react-forms",

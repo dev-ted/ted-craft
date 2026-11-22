@@ -1,0 +1,25 @@
+{
+  "small": [
+    "ai-delivery",
+    "ai-delivery-guardrails",
+    "ai-delivery-comments",
+    "ai-delivery-contracts",
+    "ai-delivery-setup",
+    "ai-delivery-review",
+    "ai-delivery-checks"
+  ],
+  "standard": [
+    "ai-delivery",
+    "ai-delivery-guardrails",
+    "ai-delivery-comments",
+    "ai-delivery-contracts",
+    "ai-delivery-setup",
+    "ai-delivery-review",
+    "ai-delivery-checks",
+    "ai-delivery-orchestrate",
+    "ai-delivery-orchestrator",
+    "ai-delivery-worker",
+    "ai-delivery-reviewer"
+  ],
+  "ui": ["ai-delivery-ui"]
+}

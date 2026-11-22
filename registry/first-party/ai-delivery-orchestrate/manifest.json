@@ -1,0 +1,26 @@
+{
+  "slug": "ai-delivery-orchestrate",
+  "kind": "skill",
+  "name": "AI Delivery Orchestrate",
+  "description": "When and how to split coding agents: isolation, review chain, context hygiene, and optional cheap-model routing. Use for multi-domain work, parallel agents, or when a single agent is losing the plot.",
+  "category": "productivity",
+  "tags": ["ai", "orchestration", "subagents", "context", "tokens"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ai-delivery-orchestrate"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-orchestrate -a cursor -g -y",
+    "featured": false
+  }
+}

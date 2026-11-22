@@ -1,0 +1,25 @@
+{
+  "slug": "ai-delivery-guardrails",
+  "kind": "rule",
+  "name": "AI Delivery Guardrails",
+  "description": "Always-on rules for AI-assisted delivery: humans merge, reversible decisions, seven hard stops, and a test rule that forbids weakening checks to go green.",
+  "category": "rules",
+  "tags": ["ai", "agents", "guardrails", "review", "delivery"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/ai-delivery-guardrails.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-guardrails -a cursor -g -y",
+    "featured": true
+  }
+}

@@ -1,6 +1,7 @@
 {
   "title": "Registry",
   "pages": [
+    "craft",
     "design",
     "performance",
     "productivity",

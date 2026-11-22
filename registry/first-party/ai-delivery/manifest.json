@@ -1,0 +1,33 @@
+{
+  "slug": "ai-delivery",
+  "kind": "skill",
+  "name": "AI Delivery",
+  "description": "Index of the AI Delivery pack for any coding agent: reversible decisions, slice and shared contracts, review gates, and optional orchestration. Use when setting up AI-assisted delivery or choosing which artifacts to install.",
+  "category": "productivity",
+  "tags": [
+    "ai",
+    "agents",
+    "delivery",
+    "workflow",
+    "playbook",
+    "index"
+  ],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ai-delivery"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery -a cursor -g -y",
+    "featured": true
+  }
+}

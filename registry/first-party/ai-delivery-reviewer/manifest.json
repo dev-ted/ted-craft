@@ -1,0 +1,30 @@
+{
+  "slug": "ai-delivery-reviewer",
+  "kind": "bundle",
+  "name": "AI Delivery Reviewer",
+  "description": "Fresh-context reviewer for AI-generated diffs: full findings pass, one comment per finding, then dispatch fixes. Use when reviewing a pull request or as a second reader. Does not merge.",
+  "category": "productivity",
+  "tags": ["ai", "review", "subagent", "pr"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "skill": {
+      "dir": "skill",
+      "name": "ai-delivery-reviewer"
+    },
+    "subagent": {
+      "file": "subagent/ai-delivery-reviewer.md",
+      "name": "ai-delivery-reviewer"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-reviewer -a cursor -g -y",
+    "featured": false
+  }
+}

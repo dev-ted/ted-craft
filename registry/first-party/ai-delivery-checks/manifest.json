@@ -1,0 +1,29 @@
+{
+  "slug": "ai-delivery-checks",
+  "kind": "hook",
+  "name": "AI Delivery Checks",
+  "description": "Run check:file after an agent edit and check:change when the agent stops. Blocks the stop until checks pass. Fail open if the project has not wired those scripts yet.",
+  "category": "productivity",
+  "tags": ["ai", "hooks", "checks", "lint", "tests", "delivery"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "docs": {
+    "readme": "README.md"
+  },
+  "artifacts": {
+    "hook": {
+      "config": "hooks.json",
+      "scriptsDir": "hooks"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-checks -a cursor -y",
+    "featured": false
+  }
+}

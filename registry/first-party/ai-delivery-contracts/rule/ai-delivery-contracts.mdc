@@ -1,0 +1,32 @@
+---
+description: Slice contracts continue; shared contracts are a hard stop
+alwaysApply: true
+---
+
+# AI Delivery Contracts
+
+**Assumes:** shapes that cross a boundary (API types, schemas, events, shared tokens). Pair with `ai-delivery-guardrails`. Skip token rules on a project with no UI.
+
+If the only consumer is this repo and this work item, the shape is a **slice** contract. Change it inside the work item and list the change as a reversible decision. Continue.
+
+If there is more than one consumer, or a consumer outside this repo, the shape is a **shared** contract. Any change, including an additive one, is hard stop 1. After a human answers, the change is its own reviewed pull request. A breaking change follows expand-and-contract: add the new shape, move each consumer, then remove the old shape. Each step is its own pull request.
+
+## When they disagree
+
+The contract wins. Do not edit a shared contract so your code compiles. Change the caller, or take hard stop 1.
+
+A slice contract may change in the same pull request when every consumer in that pull request is updated and the typecheck passes.
+
+## Tests
+
+Contract tests for a touched package block the pull request the same way a broken build does.
+
+## Adapters
+
+Put an external system behind an adapter. Do not let that system's shape leak into domain code or into a slice contract.
+
+## Reference
+
+A service reference is its OpenAPI document, generated from the code or the contract package. Do not write that reference by hand.
+
+On an existing codebase, type only the boundary the next increment crosses. Until a boundary is typed, current behaviour is the contract. Do not invent a contract the code never had.

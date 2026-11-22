@@ -1,0 +1,25 @@
+{
+  "slug": "ai-delivery-contracts",
+  "kind": "rule",
+  "name": "AI Delivery Contracts",
+  "description": "Shared contracts are a hard stop. A slice contract, whose only consumer is this repo and this work item, may change inside the pull request.",
+  "category": "rules",
+  "tags": ["ai", "contracts", "api", "schema", "types"],
+  "author": {
+    "name": "ted",
+    "url": "https://github.com/dev-ted"
+  },
+  "license": "MIT",
+  "artifacts": {
+    "rule": {
+      "file": "rule/ai-delivery-contracts.mdc"
+    }
+  },
+  "source": {
+    "type": "first-party"
+  },
+  "cli": {
+    "promptExample": "npx ted-craft add ai-delivery-contracts -a cursor -g -y",
+    "featured": false
+  }
+}

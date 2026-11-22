@@ -17,6 +17,7 @@
   --tc-line: #c9d0da;
   --tc-muted: #5c6573;
   --tc-brass: #9a7b45;
+  --tc-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   /* Always-dark console surface (terminals stay dark in both themes) */
   --tc-console: #14181f;
   --tc-console-fg: #eef1f5;
@@ -104,26 +105,173 @@ html > body[data-scroll-locked] {
   mix-blend-mode: soft-light;
 }
 
-.tc-press {
+.tc-press,
+.tc-card,
+.tc-row {
   transform: translateZ(0);
+  transition:
+    transform 160ms var(--tc-ease-out),
+    border-color 160ms var(--tc-ease-out),
+    background-color 160ms var(--tc-ease-out),
+    color 160ms var(--tc-ease-out),
+    opacity 160ms var(--tc-ease-out);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .tc-press:hover {
+  .tc-press:hover,
+  .tc-card:hover,
+  .tc-row:hover {
     transform: translateY(-1px);
+  }
+
+  .tc-card:hover,
+  .tc-row:hover {
+    border-color: var(--tc-brass);
   }
 }
 
-.tc-press:active {
+.tc-press:active,
+.tc-card:active {
   transform: scale(0.97);
+}
+
+.tc-card:focus-visible {
+  outline: 2px solid var(--tc-brass);
+  outline-offset: 3px;
+}
+
+.tc-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--tc-cover-c);
+}
+
+.tc-cover-mesh {
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+}
+
+.tc-cover-blob {
+  position: absolute;
+  width: 78%;
+  height: 78%;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(18px);
+}
+
+.tc-cover-blob-a {
+  left: -8%;
+  top: -12%;
+  background: radial-gradient(
+    circle at var(--tc-cover-ax) var(--tc-cover-ay),
+    var(--tc-cover-a),
+    transparent 68%
+  );
+  transform: translate3d(-4%, -2%, 0);
+  animation: tc-mesh-a 18s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: var(--tc-cover-delay, 0s);
+}
+
+.tc-cover-blob-b {
+  right: -10%;
+  top: -6%;
+  background: radial-gradient(
+    circle at var(--tc-cover-bx) var(--tc-cover-by),
+    var(--tc-cover-b),
+    transparent 70%
+  );
+  transform: translate3d(4%, 2%, 0);
+  animation: tc-mesh-b 22s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: var(--tc-cover-delay, 0s);
+}
+
+.tc-cover-blob-c {
+  left: 8%;
+  bottom: -18%;
+  background: radial-gradient(
+    circle at var(--tc-cover-cx) var(--tc-cover-cy),
+    var(--tc-cover-a),
+    transparent 72%
+  );
+  transform: translate3d(0, 4%, 0);
+  animation: tc-mesh-c 26s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: var(--tc-cover-delay, 0s);
+}
+
+@keyframes tc-mesh-a {
+  0%,
+  100% {
+    transform: translate3d(-4%, -2%, 0);
+  }
+  50% {
+    transform: translate3d(8%, 6%, 0);
+  }
+}
+
+@keyframes tc-mesh-b {
+  0%,
+  100% {
+    transform: translate3d(4%, 2%, 0);
+  }
+  50% {
+    transform: translate3d(-8%, 7%, 0);
+  }
+}
+
+@keyframes tc-mesh-c {
+  0%,
+  100% {
+    transform: translate3d(0, 4%, 0);
+  }
+  50% {
+    transform: translate3d(6%, -8%, 0);
+  }
+}
+
+.tc-cover:has(.tc-cover-title)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgb(8 10 14 / 0.72), rgb(8 10 14 / 0.08) 62%);
+  pointer-events: none;
+}
+
+@keyframes tc-cover-drift {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tc-cover-title {
+  position: relative;
+  z-index: 2;
+  color: #f6f3ee;
+  text-shadow: 0 1px 12px rgb(8 10 14 / 0.55);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tc-press,
   .tc-press:hover,
-  .tc-press:active {
-    transform: none !important;
-    transition: none !important;
+  .tc-press:active,
+  .tc-card,
+  .tc-card:hover,
+  .tc-card:active,
+  .tc-row,
+  .tc-row:hover {
+    transform: none;
+    transition: none;
+  }
+
+  .tc-cover-blob {
+    animation: none;
   }
 }
 
